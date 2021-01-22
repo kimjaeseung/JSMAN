@@ -8,6 +8,7 @@ class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {
+		//테스트입니다. 김재승 2021.01.22 16:44 test commit
 	}
 
 }
