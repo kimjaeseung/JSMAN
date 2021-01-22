@@ -9,5 +9,5 @@ public class BackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
 	}
-//test 2021.01.22 김재승 17:00 commit test
+//test 2021.01.22 김재승 17:00 commit test 
 }
