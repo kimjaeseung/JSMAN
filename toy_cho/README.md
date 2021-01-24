@@ -1,24 +1,14 @@
 # toy_cho
 
-## Project setup
-```
-yarn install
-```
+## 1. Main![image-20210124221122969](README.assets/image-20210124221122969.png)
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+## 2. scroll open
 
-### Compiles and minifies for production
-```
-yarn build
-```
+![image-20210124221309998](README.assets/image-20210124221309998.png)
 
-### Lints and fixes files
-```
-yarn lint
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## 3. App bar
+
+![image-20210124221156408](README.assets/image-20210124221156408.png)
+
