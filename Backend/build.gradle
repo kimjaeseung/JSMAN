@@ -22,6 +22,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 	compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
+	
 }
 
 test {
