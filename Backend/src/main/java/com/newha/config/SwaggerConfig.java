@@ -1,4 +1,4 @@
-package com.newhi.config;
+package com.newha.config;
 
 import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
