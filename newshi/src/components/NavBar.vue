@@ -1,13 +1,17 @@
 <template>
   <v-app>
       <v-app-bar flat app style="border-bottom:1px solid">
-        <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click="menu_drawer = true"></v-app-bar-nav-icon>
         <v-spacer/>
         <v-img contain src="@/assets/logo.png" style="height: 50%"></v-img>
         <v-spacer/>
-        <v-icon>mdi-magnify</v-icon>
+        <v-icon @click="search_drawer = true">mdi-magnify</v-icon>
       </v-app-bar>
-      <v-navigation-drawer v-model="drawer" absolute temporary>
+      <v-navigation-drawer v-model="search_drawer" absolute temporary bottom>
+    
+      </v-navigation-drawer>
+
+      <v-navigation-drawer v-model="menu_drawer" absolute temporary>
         <v-list>
             <v-list-item-group>
                 <v-list-item>
@@ -91,7 +95,8 @@
 export default {
     data() {
         return {
-            drawer: false,
+            menu_drawer: false,
+            search_drawer: false,
         }
     },
 }
