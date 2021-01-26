@@ -108,5 +108,6 @@ node_modules/
 dist/
 npm-debug.log
 yarn-error.log
-
+toy/
+toy_cho/
 # End of https://www.toptal.com/developers/gitignore/api/java,eclipse,vuejs,vscode
