@@ -7,7 +7,8 @@
         <v-spacer/>
         <v-icon @click="search_drawer = true">mdi-magnify</v-icon>
       </v-app-bar>
-      <v-navigation-drawer v-model="search_drawer" absolute temporary bottom>
+      
+      <v-navigation-drawer bottom v-model="search_drawer" absolute temporary >
           <v-autocomplete :search-input.sync="search_word" :items="autocomp_value" filled></v-autocomplete>
           <br>{{search_word}}
       </v-navigation-drawer>
