@@ -6,7 +6,7 @@ public class Ctest {
 	private String content;
 	
 	public Ctest() {}
-	
+	 
 	public Ctest(String title, String content) {
 		super();
 		this.title = title;
