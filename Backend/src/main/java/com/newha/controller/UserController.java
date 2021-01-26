@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.newha.repository.UserRepository;
 import com.newha.vo.Ctest;
 import com.newha.vo.User;
-import com.sun.xml.bind.v2.model.core.Element;
 
 @RestController
 @RequestMapping("/newha")
@@ -39,4 +38,9 @@ public class UserController {
 			ctest.setContent(content.select("span").text());
 		}
 	}
+	
+	
+	
+	
+	
 }
