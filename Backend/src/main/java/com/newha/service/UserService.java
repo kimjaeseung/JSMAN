@@ -2,7 +2,9 @@ package com.newha.service;
 
 import java.util.ArrayList;
 
+
 import com.newha.vo.User;
+
 
 public interface UserService {
 	
@@ -10,5 +12,6 @@ public interface UserService {
 	public void insert(User u);
 	public void delete(User u);
 	public void update(User u);
-	
+	public User login(User u);
+	public User userInfo(String id);
 }
