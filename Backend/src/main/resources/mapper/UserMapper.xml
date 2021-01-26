@@ -21,5 +21,13 @@
 	<delete id="delete" parameterType="string">
 		
 	</delete>
+	
+	<select id="selectOne" resultType="User">
+		select * from user where id = #{id} and password = #{password}
+	</select>
+	
+	<select id="selectOneById" parameterType="string" resultType="User">
+		select * from user where id = #{id}
+	</select>
 
 </mapper>

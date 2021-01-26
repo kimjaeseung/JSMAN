@@ -9,4 +9,6 @@ public interface UserMapper {
 	public void insert(User u);
 	public void delete(User u);
 	public void update(User u);
+	public User selectOne(User u);
+	public User selectOneById(String id);
 }
