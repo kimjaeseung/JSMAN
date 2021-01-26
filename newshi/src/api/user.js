@@ -28,6 +28,7 @@ function join(info, success, fail) {
     id: info.id,
     name: info.name,
     password: info.password,
+    tags: info.tags,
   };
 
   instance
@@ -36,6 +37,38 @@ function join(info, success, fail) {
     .catch(fail);
 }
 
+function emailTest(id, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .post('user/emailCheck', JSON.stringify(id))
+    .then(success)
+    .catch(fail);
+}
+
+function emailValidTest(num, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .post('user/emailValidCheck', JSON.stringify(num))
+    .then(success)
+    .catch(fail);
+}
+
+function nameTest(name, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .post('user/nameCheck', JSON.stringify(name))
+    .then(success)
+    .catch(fail);
+}
 // async function findById(userid, success, fail) {
 //   instance.defaults.headers['access-token'] = window.localStorage.getItem(
 //     'access-token'
@@ -46,4 +79,4 @@ function join(info, success, fail) {
 //     .catch(fail);
 // }
 
-export { login, join };
+export { login, join, emailTest, emailValidTest, nameTest };
