@@ -19,4 +19,4 @@ public class SwaggerConfig {
                         basePackage("org.springframework.boot")))
                 .paths(PathSelectors.any()).build();
     }
-} 
+}

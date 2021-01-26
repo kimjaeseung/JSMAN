@@ -1,11 +1,15 @@
 package com.newha.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 
-import com.newha.repository.UserRepository;
+import com.newha.vo.User;
 
-@Service
-public class UserService {
-
+public interface UserService {
+	public ArrayList<User> seletAll(); //모든 회원 조회
+	
+	public void insert(User u); //회원가입
+	
+	public void delete(User u); //회원삭제
+	
+	public void update(User u); //회원정보수정
 }
