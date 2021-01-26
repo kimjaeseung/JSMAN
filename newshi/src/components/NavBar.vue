@@ -1,7 +1,7 @@
 <template>
   <v-app>
       <v-app-bar flat app style="border-bottom:1px solid">
-        <v-app-bar-nav-icon @click="menu_drawer = true"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon @click="openNavbar()"></v-app-bar-nav-icon>
         <v-spacer/>
         <v-img contain src="@/assets/logo.png" style="height: 50%"></v-img>
         <v-spacer/>
@@ -62,6 +62,19 @@ export default {
         }
     },
 
+    methods: {
+        openNavbar: function() {
+            // axios request: id로 이름과 썸네일을 불러오도록 한다. 
+            //일단은 그냥 받아온것처럼 함
+            this.member = {
+                name: '김재성',
+                id: 'kimjea23@naver.com',
+                thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
+            }
+            this.menu_drawer = true;
+
+        },
+    },
     watch: {
         search_word: function() {
             console.log("검색어 변경");
@@ -81,13 +94,7 @@ export default {
     },
 
     created() {
-        // axios request: id로 이름과 썸네일을 불러오도록 한다. 
-        //일단은 그냥 받아온것처럼 함
-        this.member = {
-                name: '김재성',
-                id: 'kimjea23@naver.com',
-                thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg'
-        }
+        
     },
 }
 </script>
