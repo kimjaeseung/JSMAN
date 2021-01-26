@@ -25,7 +25,7 @@ public class UserController {
 	public List<User> getAllUser() {
 		return userRepository.findAll();
 	}
-	@GetMapping("/url")
+	@GetMapping("/url") 
 	public void getUrl() throws IOException {
 		String testurl = "https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=101&oid=366&aid=0000658350";
 		
