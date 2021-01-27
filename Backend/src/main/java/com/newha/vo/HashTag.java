@@ -5,9 +5,8 @@ public class HashTag {
 	private String tagNo;
 	private String name;
 	
-	public HashTag(String tagNo, String name) {
-		this.tagNo = tagNo;
-		this.name = name;
+	public HashTag() {
+
 	}
 
 	public String getTagNo() {
