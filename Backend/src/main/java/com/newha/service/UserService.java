@@ -8,7 +8,7 @@ public interface UserService {
 	
 	public ArrayList<User> selectAll();
 	public void insert(User u);
-	public void delete(User u);
+	public void delete(String id);
 	public void update(User u);
 	
 }
