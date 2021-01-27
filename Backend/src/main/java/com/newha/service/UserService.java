@@ -1,7 +1,7 @@
 package com.newha.service;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import com.newha.vo.User;
 
@@ -14,8 +14,5 @@ public interface UserService {
 	public void update(User u);
 	public User login(User u);
 	public User userInfo(String id);
-	public int selectid(String id);
-	public void inserttag(int userNo, String name);
-	public int userNo(String id);
-	
+	public List<User> searchUser(String keyword);
 }

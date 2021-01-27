@@ -1,7 +1,7 @@
 package com.newha.dao;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -39,25 +39,9 @@ public class UserDAOImpl implements UserDAO {
 	public User selectOneById(String id) {
 		return mapper.selectOneById(id);
 	}
-
+	
 	@Override
-	public int selectid(String id) {
-		return mapper.selectid(id);
+	public List<User> selectAllByKeyword(String keyword) {
+		return mapper.selectAllByKeyword(keyword);
 	}
-
-	@Override
-	public int insert(User u) {
-		return mapper.insert(u);
-	}
-
-	@Override
-	public void inserttag(int userNo, String name) {
-		mapper.inserttag(userNo, name);
-	}
-
-	@Override
-	public int userNo(String id) {
-		return mapper.userNo(id);
-	}
-
 }

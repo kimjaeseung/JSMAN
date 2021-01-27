@@ -1,7 +1,7 @@
 package com.newha.service;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,27 +38,9 @@ public class UserServiceImpl implements UserService {
 	public User userInfo(String id) {
 		return dao.selectOneById(id);
 	}
-
+	
 	@Override
-	public int selectid(String id) {
-		return dao.selectid(id);
+	public List<User> searchUser(String keyword) {
+		return dao.selectAllByKeyword(keyword);
 	}
-
-	@Override
-	public int insert(User u) {
-		return dao.insert(u);
-	}
-
-	@Override
-	public void inserttag(int userNo, String name) {
-		dao.inserttag(userNo, name);
-		
-	}
-
-	@Override
-	public int userNo(String id) {
-		return dao.userNo(id);
-	}
-
-
 }
