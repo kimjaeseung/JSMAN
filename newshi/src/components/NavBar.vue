@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <v-app-bar flat app style="border-bottom:1px solid">
       <v-app-bar-nav-icon @click="openNavbar()"></v-app-bar-nav-icon>
       <v-spacer />
@@ -229,7 +229,7 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-  </v-app>
+  </div>
 </template>
 
 <script>
