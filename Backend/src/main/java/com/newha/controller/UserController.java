@@ -1,5 +1,6 @@
 package com.newha.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,9 +110,9 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	//로그인
 	@PostMapping(value="/user/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestBody User user)
-	{
+	public ResponseEntity<Map<String, Object>> login(@RequestBody User user){
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -132,5 +133,10 @@ public class UserController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-}
+	}
+	//사람검색
+	@GetMapping(value="/search/people/{keyword}")
+	public List<User> searchUser(@PathVariable String keyword){
+		return service.searchUser(keyword+"%");
+	}
 }
