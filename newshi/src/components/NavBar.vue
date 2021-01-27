@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <div>
     <v-app-bar flat app style="border-bottom:1px solid">
       <v-app-bar-nav-icon @click="openNavbar()"></v-app-bar-nav-icon>
       <v-spacer />
@@ -71,6 +71,10 @@
               >로그인</v-btn
             >
           </v-form>
+          <hr />
+          <v-btn icon @click="login">
+            <v-icon>mdi-google</v-icon>
+          </v-btn>
         </v-card>
         <v-card v-else>
           <v-toolbar
@@ -181,9 +185,7 @@
               </v-col>
             </v-row>
             <br />
-            <v-btn :disabled="!isValid" color="orange lighten-4" @click="onJoin"
-              >회원가입</v-btn
-            >
+            <v-btn color="orange lighten-4" @click="onJoin">회원가입</v-btn>
           </v-form>
         </v-card>
       </v-dialog>
@@ -229,7 +231,7 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-  </v-app>
+  </div>
 </template>
 
 <script>
@@ -243,6 +245,7 @@ import {
 import { ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
+import { mapActions } from 'vuex';
 
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
@@ -376,6 +379,9 @@ export default {
         }
       );
     },
+    ...mapActions('googleUser', {
+      login: 'login',
+    }),
     checkForm() {
       if (this.isLogin) {
         if (this.id == '' || this.password == '') this.isValid = false;
@@ -478,6 +484,8 @@ export default {
       );
     },
     onJoin() {
+      console.log(this.formData);
+      console.log(this.isLogin);
       if (!this.formData.isValid) {
         alert('모든 정보를 입력해주시기 바랍니다.');
         return;
