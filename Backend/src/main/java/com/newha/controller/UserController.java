@@ -1,6 +1,5 @@
 package com.newha.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newha.service.JwtService;
@@ -45,37 +43,43 @@ public class UserController {
 		return service.selectAll();
 	}
 	
-//	@GetMapping(value = "/idcheck/{id}") // 아이디체크
-//	public Map<String, String> selectid(@PathVariable String id) {
-//		Map<String, Integer> map = new HashMap<>();
-//		int result = service.selectid(id);
-//		map.put("result", result); // 0이면 없는거 1이면 있는거
-//		return map;
-//	}
+	@GetMapping(value = "/idcheck/{id}") // 아이디체크
+	public Map<String, String> selectid(@PathVariable String id) {
+		Map<String, String> map = new HashMap<>();
+		System.out.println(id);
+		int result = service.selectid(id);
+		System.out.println(result);
+		if(result == 0)
+			map.put("message", "success"); // 0이면 없는거 1이면 있는거
+		else
+			map.put("message", "fail");
+		return map;
+	}
 	
-//	@PostMapping(value = "/join")
-//	public Map<String, String> insert(@RequestBody User u /*, @RequestParam List<String> tag*/ ) {
-//		Map<String, String> map = new HashMap<>();
-//		int result = service.insert(u);
-//		int userNo = service.userNo(u.getId());
-//		/*
-//		for (int i = 0; i < tag.size(); i++) {
-//			service.inserttag(userNo, tag.get(i));
-//		}
-//		*/
-//		System.out.println("userNo:"+userNo);
-//		if(result == 0)
-//			map.put("message", "회원가입 실패");
-//		else
-//			map.put("message", "회원가입 성공");
-//		System.out.println(map);
-//		return map;
-//	}
+	@PostMapping(value = "/join")
+	public Map<String, String> insert(@RequestBody User u /*, @RequestParam List<String> tag*/ ) {
+		Map<String, String> map = new HashMap<>();
+		int result = service.insert(u);
+		int userNo = service.userNo(u.getId());
+		/*
+		for (int i = 0; i < tag.size(); i++) {
+			service.inserttag(userNo, tag.get(i));
+		}
+		*/
+		System.out.println("userNo:"+userNo);
+		if(result == 0)
+			map.put("message", "회원가입 실패");
+		else
+			map.put("message", "회원가입 성공");
+		System.out.println(map);
+		return map;
+	}
+	
+	
 	
 	@DeleteMapping(value ="/delete/{id}")
 	public String delete(@PathVariable String id) {
 		service.delete(id);
-		System.out.println(id);
 		return "삭제완료";
 	}
 	@PutMapping(value ="/update")
