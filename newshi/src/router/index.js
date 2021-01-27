@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Login from '../views/Login.vue';
 import Article from "../views/Article.vue";
 import Main from "../views/Main.vue";
+import Article from "../views/Article.vue";
 
 Vue.use(VueRouter);
 
@@ -19,9 +20,10 @@ const routes = [
     component: Login,
   },
   {
-    path: "/article",
+    path: "/article/:newsNo",
     name: "Article",
     component: Article,
+    props: true,
   },
   {
     path: "/main",
