@@ -28,11 +28,16 @@ function join(info, success, fail) {
     id: info.id,
     name: info.name,
     password: info.password,
-    tags: info.tags,
   };
 
+  const tags = info.tags;
+
   instance
-    .post('user/join', JSON.stringify(user))
+    .post('user/join', JSON.stringify(user), {
+      params: {
+        tags: tags,
+      },
+    })
     .then(success)
     .catch(fail);
 }
