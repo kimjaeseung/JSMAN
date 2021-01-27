@@ -10,6 +10,18 @@
 		select * from user
 	</select>
 
+	<select id="selectid" resultType="int">
+		select * from user
+	</select>
+	
+	<select id="userNo" resultType="int">
+		select userNo from user where id = #{id}
+	</select>
+	
+	<insert id="inserttag" parameterType="string">
+		insert into join_tag values(#{userNo}, #{name})
+	</insert>
+	
 	<insert id="insert" parameterType="User">
 		insert into user values(null,#{name},#{password},null,#{id})
 	</insert>
@@ -29,4 +41,7 @@
 	<update id="update" parameterType="string">
 		update user set password = #{password}, thumbnail_path = #{thumbnail_path} where id = #{id};
 	</update>
+	
+	
+	
 </mapper>
