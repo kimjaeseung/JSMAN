@@ -7,7 +7,7 @@ import com.newha.vo.User;
 
 public interface UserMapper {
 	public ArrayList<User> selectAll();
-	public void insert(User u);
+	public int insert(User u);
 	public void delete(String id);
 	public void update(User u);
 	public User selectOne(User u);

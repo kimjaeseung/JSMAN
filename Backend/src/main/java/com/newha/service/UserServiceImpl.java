@@ -10,18 +10,13 @@ import com.newha.dao.UserDAO;
 import com.newha.vo.User;
 
 @Service
-public class UserServiceImpl implements UserService {	
+public class UserServiceImpl implements UserService {
 	@Autowired
 	UserDAO dao;
 
 	@Override
 	public ArrayList<User> selectAll() {
 		return dao.selectAll();
-	}
-
-	@Override
-	public void insert(User u) {
-		dao.insert(u);
 	}
 
 	@Override
@@ -38,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	public User login(User u) {
 		return dao.selectOne(u);
 	}
-	
+
 	@Override
 	public User userInfo(String id) {
 		return dao.selectOneById(id);

@@ -11,18 +11,13 @@ import com.newha.vo.User;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
-	
+
 	@Autowired
 	UserMapper mapper;
 
 	@Override
 	public ArrayList<User> selectAll() {
 		return mapper.selectAll();
-	}
-
-	@Override
-	public void insert(User u) {
-		mapper.insert(u);
 	}
 
 	@Override
@@ -39,7 +34,7 @@ public class UserDAOImpl implements UserDAO {
 	public User selectOne(User u) {
 		return mapper.selectOne(u);
 	}
-	
+
 	@Override
 	public User selectOneById(String id) {
 		return mapper.selectOneById(id);
