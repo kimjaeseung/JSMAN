@@ -9,33 +9,28 @@ import com.newha.dao.UserDAO;
 import com.newha.vo.User;
 
 @Service
-public class UserServiceImpl implements UserService {
-	
+public class UserServiceImpl implements UserService {	
 	@Autowired
-	private UserDAO dao;
+	UserDAO dao;
 
 	@Override
 	public ArrayList<User> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.selectAll();
 	}
 
 	@Override
 	public void insert(User u) {
-		// TODO Auto-generated method stub
-
+		dao.insert(u);
 	}
 
 	@Override
-	public void delete(User u) {
-		// TODO Auto-generated method stub
-
+	public void delete(String id) {
+		dao.delete(id);
 	}
 
 	@Override
 	public void update(User u) {
-		// TODO Auto-generated method stub
-
+		dao.update(u);
 	}
 
 	@Override

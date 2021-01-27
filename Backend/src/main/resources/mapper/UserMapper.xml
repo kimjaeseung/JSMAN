@@ -3,23 +3,19 @@
 <!DOCTYPE mapper
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	
+
 <mapper namespace="com.newha.mapper.UserMapper">
-	
+
 	<select id="selectAll" resultType="User">
-	
+		select * from user
 	</select>
 
 	<insert id="insert" parameterType="User">
-	
+		insert into user values(null,#{name},#{password},null,#{id})
 	</insert>
 
-	<update id="update" parameterType="User">
-	
-	</update>
-
 	<delete id="delete" parameterType="string">
-		
+		delete from user where id = #{id}
 	</delete>
 	
 	<select id="selectOne" resultType="User">
@@ -30,4 +26,7 @@
 		select * from user where id = #{id}
 	</select>
 
+	<update id="update" parameterType="string">
+		update user set password = #{password}, thumbnail_path = #{thumbnail_path} where id = #{id};
+	</update>
 </mapper>

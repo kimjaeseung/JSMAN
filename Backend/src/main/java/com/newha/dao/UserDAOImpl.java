@@ -16,26 +16,22 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public ArrayList<User> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.selectAll();
 	}
 
 	@Override
 	public void insert(User u) {
-		// TODO Auto-generated method stub
-
+		mapper.insert(u);
 	}
 
 	@Override
-	public void delete(User u) {
-		// TODO Auto-generated method stub
-
+	public void delete(String id) {
+		mapper.delete(id);
 	}
 
 	@Override
 	public void update(User u) {
-		// TODO Auto-generated method stub
-
+		mapper.update(u);
 	}
 
 	@Override
