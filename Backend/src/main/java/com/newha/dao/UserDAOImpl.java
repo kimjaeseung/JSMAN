@@ -49,4 +49,14 @@ public class UserDAOImpl implements UserDAO {
 	public List<User> selectAllByKeyword(String keyword) {
 		return mapper.selectAllByKeyword(keyword);
 	}
+
+	@Override
+	public int selectid(String id) {
+		return mapper.selectid(id);
+	}
+
+	@Override
+	public int userNo(String id) {
+		return mapper.userNo(id);
+	}
 }

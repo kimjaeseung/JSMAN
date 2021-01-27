@@ -13,5 +13,7 @@ public interface UserDAO {
 	public User selectOne(User u);
 	public User selectOneById(String id);
 	public List<User> selectAllByKeyword(String keyword);
-	
+	public int selectid(String id);
+	public int userNo(String id);
+
 }

@@ -15,4 +15,7 @@ public interface UserService {
 	public User login(User u);
 	public User userInfo(String id);
 	public List<User> searchUser(String keyword);
+	public int selectid(String id);
+	public int userNo(String id);
+	
 }

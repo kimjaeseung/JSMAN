@@ -48,5 +48,15 @@ public class UserServiceImpl implements UserService {
 	public List<User> searchUser(String keyword) {
 		return dao.selectAllByKeyword(keyword);
 	}
+
+	@Override
+	public int selectid(String id) {
+		return dao.selectid(id);
+	}
+
+	@Override
+	public int userNo(String id) {
+		return dao.userNo(id);
+	}
 	
 }

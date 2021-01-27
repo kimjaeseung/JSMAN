@@ -15,7 +15,7 @@
 	</select>
 
 	<select id="selectid" resultType="int">
-		select * from user
+		select count(*) from user where id = #{id}
 	</select>
 	
 	<select id="userNo" resultType="int">
