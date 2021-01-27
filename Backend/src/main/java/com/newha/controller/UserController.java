@@ -46,7 +46,7 @@ public class UserController {
 	}
 	
 //	@GetMapping(value = "/idcheck/{id}") // 아이디체크
-//	public Map<String, Integer> selectid(@PathVariable String id) {
+//	public Map<String, String> selectid(@PathVariable String id) {
 //		Map<String, Integer> map = new HashMap<>();
 //		int result = service.selectid(id);
 //		map.put("result", result); // 0이면 없는거 1이면 있는거
