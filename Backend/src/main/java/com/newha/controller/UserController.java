@@ -45,32 +45,32 @@ public class UserController {
 		return service.selectAll();
 	}
 	
-	@GetMapping(value = "/idcheck/{id}") // 아이디체크
-	public Map<String, Integer> selectid(@PathVariable String id) {
-		Map<String, Integer> map = new HashMap<>();
-		int result = service.selectid(id);
-		map.put("result", result); // 0이면 없는거 1이면 있는거
-		return map;
-	}
+//	@GetMapping(value = "/idcheck/{id}") // 아이디체크
+//	public Map<String, Integer> selectid(@PathVariable String id) {
+//		Map<String, Integer> map = new HashMap<>();
+//		int result = service.selectid(id);
+//		map.put("result", result); // 0이면 없는거 1이면 있는거
+//		return map;
+//	}
 	
-	@PostMapping(value = "/join")
-	public Map<String, String> insert(@RequestBody User u /*, @RequestParam List<String> tag*/ ) {
-		Map<String, String> map = new HashMap<>();
-		int result = service.insert(u);
-		int userNo = service.userNo(u.getId());
-		/*
-		for (int i = 0; i < tag.size(); i++) {
-			service.inserttag(userNo, tag.get(i));
-		}
-		*/
-		System.out.println("userNo:"+userNo);
-		if(result == 0)
-			map.put("message", "회원가입 실패");
-		else
-			map.put("message", "회원가입 성공");
-		System.out.println(map);
-		return map;
-	}
+//	@PostMapping(value = "/join")
+//	public Map<String, String> insert(@RequestBody User u /*, @RequestParam List<String> tag*/ ) {
+//		Map<String, String> map = new HashMap<>();
+//		int result = service.insert(u);
+//		int userNo = service.userNo(u.getId());
+//		/*
+//		for (int i = 0; i < tag.size(); i++) {
+//			service.inserttag(userNo, tag.get(i));
+//		}
+//		*/
+//		System.out.println("userNo:"+userNo);
+//		if(result == 0)
+//			map.put("message", "회원가입 실패");
+//		else
+//			map.put("message", "회원가입 성공");
+//		System.out.println(map);
+//		return map;
+//	}
 	
 	@DeleteMapping(value ="/delete/{id}")
 	public String delete(@PathVariable String id) {

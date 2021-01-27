@@ -19,6 +19,11 @@ public class UserDAOImpl implements UserDAO {
 	public ArrayList<User> selectAll() {
 		return mapper.selectAll();
 	}
+	
+	@Override
+	public int insert(User u) {
+		return mapper.insert(u);
+	}
 
 	@Override
 	public void delete(String id) {

@@ -18,6 +18,11 @@ public class UserServiceImpl implements UserService {
 	public ArrayList<User> selectAll() {
 		return dao.selectAll();
 	}
+	
+	@Override
+	public int insert(User u) {
+		return dao.insert(u);
+	}
 
 	@Override
 	public void delete(String id) {
@@ -43,4 +48,5 @@ public class UserServiceImpl implements UserService {
 	public List<User> searchUser(String keyword) {
 		return dao.selectAllByKeyword(keyword);
 	}
+	
 }
