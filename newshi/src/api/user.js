@@ -11,7 +11,9 @@ function login(info, success, fail) {
   );
   const user = {
     id: info.id,
+    name: null,
     password: info.password,
+    thumbnail_path: null,
   };
 
   instance
@@ -28,11 +30,17 @@ function join(info, success, fail) {
     id: info.id,
     name: info.name,
     password: info.password,
-    tags: info.tags,
+    thumbnail_path: info.thumbnail_path,
   };
 
+  const tags = info.tags;
+
   instance
-    .post('user/join', JSON.stringify(user))
+    .post('user/join', JSON.stringify(user), {
+      params: {
+        tags: tags,
+      },
+    })
     .then(success)
     .catch(fail);
 }
@@ -69,14 +77,16 @@ function nameTest(name, success, fail) {
     .then(success)
     .catch(fail);
 }
-// async function findById(userid, success, fail) {
-//   instance.defaults.headers['access-token'] = window.localStorage.getItem(
-//     'access-token'
-//   );
-//   await instance
-//     .get(`/user/info/${userid}`)
-//     .then(success)
-//     .catch(fail);
-// }
 
-export { login, join, emailTest, emailValidTest, nameTest };
+function getInfo(id, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .post('user/getInfo', JSON.stringify(id))
+    .then(success)
+    .catch(fail);
+}
+
+export { login, join, emailTest, emailValidTest, nameTest, getInfo };
