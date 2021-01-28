@@ -51,12 +51,22 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public int selectid(String id) {
-		return mapper.selectid(id);
+	public int selectId(String id) {
+		return mapper.selectId(id);
 	}
 
 	@Override
 	public int userNo(String id) {
 		return mapper.userNo(id);
+	}
+
+	@Override
+	public User selectUser(int userNo) {
+		return mapper.selectUser(userNo);
+	}
+
+	@Override
+	public ArrayList<Integer> follow(int userNo) {
+		return mapper.follow(userNo);
 	}
 }

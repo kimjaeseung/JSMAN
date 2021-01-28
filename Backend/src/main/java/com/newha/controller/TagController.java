@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.newha.service.TagService;
 import com.newha.vo.HashTag;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 public class TagController {
@@ -18,8 +21,9 @@ public class TagController {
 	@Autowired
 	TagService service;
 
+	@ApiOperation(value = "태그 검색", notes = "태그 List 리턴", response = List.class)
 	@GetMapping(value = "/search/tag/{keyword}")
-	List<HashTag> searchTag(@PathVariable String keyword){
+	List<HashTag> searchTag(@ApiParam(value = "keyword", required = true)@PathVariable String keyword){
 		return service.searchTag(keyword + "%");
 	}
 }

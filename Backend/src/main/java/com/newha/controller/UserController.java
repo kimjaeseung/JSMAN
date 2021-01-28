@@ -1,9 +1,15 @@
 package com.newha.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -11,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,10 +31,18 @@ import com.newha.service.JwtService;
 import com.newha.service.UserService;
 import com.newha.vo.User;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api("UserController V1")
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
-
+	
+	@Autowired
+	public JavaMailSender javaMailSender;
+	
 	@Autowired
 	private JwtService jwtService;
 	
@@ -38,16 +53,18 @@ public class UserController {
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
+	@ApiOperation(value = "유저 리스트 조회", notes = "유저 리스트를 리턴", response = List.class)
 	@GetMapping(value = "/user")
 	public List<User> selectAll() {
 		return service.selectAll();
 	}
 	
+	@ApiOperation(value = "아이디 중복검사", notes = "아이디 중복검사결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@GetMapping(value = "/idcheck/{id}") // 아이디체크
-	public Map<String, String> selectid(@PathVariable String id) {
+	public Map<String, String> selectid( @ApiParam(value = "id", required = true)@PathVariable String id) {
 		Map<String, String> map = new HashMap<>();
 		System.out.println(id);
-		int result = service.selectid(id);
+		int result = service.selectId(id);
 		System.out.println(result);
 		if(result == 0)
 			map.put("message", "success"); // 0이면 없는거 1이면 있는거
@@ -55,9 +72,43 @@ public class UserController {
 			map.put("message", "fail");
 		return map;
 	}
+	@ApiOperation(value = "이메일 인증", notes = "입력값으로 id(email) 주면 이메일 발송. 리턴값은 confirm: 인증번호 ", response = Map.class)
+	@GetMapping(value = "/emailauth/{id}") // 이메일 인증
+	public Map<String, Integer> emailauth(@ApiParam(value = "String", required = true)@PathVariable String id) throws MessagingException {
+		int confirm = (int) ((Math.random() * (9999 - 1000)) + 1000);
+ 		Map<String, Integer> map = new HashMap<>();
+		MimeMessage message = javaMailSender.createMimeMessage();
+		message.setSubject("뉴하 이메일 인증입니다.");
+		message.setRecipient(Message.RecipientType.TO, new InternetAddress(id));
+		message.setText("인증번호: " + confirm);
+		message.setSentDate(new Date());
+		javaMailSender.send(message);
+		map.put("confirm", confirm);
+		return map;
+	}
 	
+	@ApiOperation(value = "내가 구독한 큐레이터", notes = "아이디 입력하면 구독한 큐레이터 thumbnail_path, name 리턴", response = ArrayList.class)
+	@GetMapping(value = "/subscribe/{id}") // 내가 구독한 큐레이터
+	public ArrayList<Map<String, String>> subscribe(@ApiParam(value = "String", required = true)@PathVariable String id) {
+		ArrayList<Map<String, String>> list = new ArrayList<Map<String,String>>();
+		int userNo = service.userNo(id);
+		System.out.println(userNo);
+		List<Integer> l = service.follow(userNo);
+		System.out.println(l);
+		for (int i = 0; i < l.size(); i++) {
+			Map<String, String> map = new HashMap<String, String>();
+			User user = service.selectUser(l.get(i));
+			map.put("name", user.getName());
+			map.put("thumbnail_path", user.getThumbnail_path());
+			list.add(map);
+		}
+		return list;
+	}
+	
+	
+	@ApiOperation(value = "회원가입", notes = "회원가입 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/join")
-	public Map<String, String> insert(@RequestBody User u /*, @RequestParam List<String> tag*/ ) {
+	public Map<String, String> insert(@ApiParam(value = "User", required = true)@RequestBody User u /*,  @ApiParam(value = "tag List", required = true)@RequestParam List<String> tag*/ ) {
 		Map<String, String> map = new HashMap<>();
 		int result = service.insert(u);
 		int userNo = service.userNo(u.getId());
@@ -76,22 +127,25 @@ public class UserController {
 	}
 	
 	
-	
+	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@DeleteMapping(value ="/delete/{id}")
-	public String delete(@PathVariable String id) {
+	public String delete(@ApiParam(value = "id", required = true)@PathVariable String id) {
 		service.delete(id);
 		return "삭제완료";
 	}
+	
+	@ApiOperation(value = "회원 탈퇴", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PutMapping(value ="/update")
-	public String update(@RequestBody User u) {
+	public String update(@ApiParam(value = "User", required = true)@RequestBody User u) {
 		service.update(u);
 		return "수정완료";
 	}
 	
 	//토근 유효여부 검사
+	@ApiOperation(value = "로그인", notes = "'success' 또는 'fail', httpstatus, userInfo 리턴", response = Map.class)
 	@GetMapping(value="/user/{id}")
 	public ResponseEntity<Map<String, Object>> getInfo(
-			@PathVariable String id,
+			@ApiParam(value = "id", required = true)@PathVariable String id,
 			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -118,8 +172,9 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	//로그인
+	@ApiOperation(value = "토큰 유효성 검사", notes = "'success' 또는 'fail', token 리턴", response = Map.class)
 	@PostMapping(value="/user/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestBody User user){
+	public ResponseEntity<Map<String, Object>> login(@ApiParam(value = "id", required = true)@RequestBody User user){
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -142,8 +197,9 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	//사람검색
+	@ApiOperation(value = "유저 검색", notes = "유저 List 리턴", response = List.class)
 	@GetMapping(value="/search/people/{keyword}")
-	public List<User> searchUser(@PathVariable String keyword){
+	public List<User> searchUser(@ApiParam(value = "keyword", required = true)@PathVariable String keyword){
 		return service.searchUser(keyword+"%");
 	}
 }

@@ -10,11 +10,19 @@
 		select * from user
 	</select>
 	
+	<select id="follow" resultType="int">
+		select followUserNo from follow where userNo = #{userNo};
+	</select>
+	
+	<select id="selectUser" resultType="User">
+		select * from user where userNo = #{userNo}
+	</select>
+	
 	<select id="selectAllByKeyword" parameterType="String" resultType="User">
 		select * from user where name like #{keyword}
 	</select>
 
-	<select id="selectid" resultType="int">
+	<select id="selectId" resultType="int">
 		select count(*) from user where id = #{id}
 	</select>
 	
