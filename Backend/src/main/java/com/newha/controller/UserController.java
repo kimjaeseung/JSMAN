@@ -1,9 +1,15 @@
 package com.newha.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -11,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +39,10 @@ import io.swagger.annotations.ApiParam;
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
 public class UserController {
-
+	
+	@Autowired
+	public JavaMailSender javaMailSender;
+	
 	@Autowired
 	private JwtService jwtService;
 	
@@ -54,7 +64,7 @@ public class UserController {
 	public Map<String, String> selectid( @ApiParam(value = "id", required = true)@PathVariable String id) {
 		Map<String, String> map = new HashMap<>();
 		System.out.println(id);
-		int result = service.selectid(id);
+		int result = service.selectId(id);
 		System.out.println(result);
 		if(result == 0)
 			map.put("message", "success"); // 0이면 없는거 1이면 있는거
@@ -62,6 +72,39 @@ public class UserController {
 			map.put("message", "fail");
 		return map;
 	}
+	
+	@GetMapping(value = "/emailauth/{id}") // 이메일 인증
+	public Map<String, Integer> emailauth(@PathVariable String id) throws MessagingException {
+		int confirm = (int) ((Math.random() * (9999 - 1000)) + 1000);
+		
+ 		Map<String, Integer> map = new HashMap<>();
+		MimeMessage message = javaMailSender.createMimeMessage();
+		message.setSubject("뉴하 이메일 인증입니다.");
+		message.setRecipient(Message.RecipientType.TO, new InternetAddress(id));
+		message.setText("인증번호: " + confirm);
+		message.setSentDate(new Date());
+		javaMailSender.send(message);
+		map.put("confirm", confirm);
+		return map;
+	}
+	
+	@GetMapping(value = "/subscribe/{id}") // 내가 구독한 큐레이터
+	public ArrayList<Map<String, String>> subscribe(@PathVariable String id) {
+		ArrayList<Map<String, String>> list = new ArrayList<Map<String,String>>();
+		int userNo = service.userNo(id);
+		System.out.println(userNo);
+		List<Integer> l = service.follow(userNo);
+		System.out.println(l);
+		for (int i = 0; i < l.size(); i++) {
+			Map<String, String> map = new HashMap<String, String>();
+			User user = service.selectUser(l.get(i));
+			map.put("name", user.getName());
+			map.put("thumbnail_path", user.getThumbnail_path());
+			list.add(map);
+		}
+		return list;
+	}
+	
 	
 	@ApiOperation(value = "회원가입", notes = "회원가입 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/join")

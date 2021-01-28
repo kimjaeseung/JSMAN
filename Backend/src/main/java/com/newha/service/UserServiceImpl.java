@@ -50,13 +50,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int selectid(String id) {
-		return dao.selectid(id);
+	public int selectId(String id) {
+		return dao.selectId(id);
 	}
 
 	@Override
 	public int userNo(String id) {
 		return dao.userNo(id);
+	}
+
+	@Override
+	public User selectUser(int userNo) {
+		return dao.selectUser(userNo);
+	}
+
+	@Override
+	public ArrayList<Integer> follow(int userNo) {
+		return dao.follow(userNo);
 	}
 	
 }
