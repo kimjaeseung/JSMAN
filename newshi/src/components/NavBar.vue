@@ -38,7 +38,7 @@
       right
       bottom
       v-model="search_drawer"
-      absolute
+      fixed
       temporary
     >
       <v-autocomplete
