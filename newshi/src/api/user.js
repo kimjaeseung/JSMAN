@@ -22,6 +22,23 @@ function login(info, success, fail) {
     .catch(fail);
 }
 
+function socialLogin(info, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+  const user = {
+    id: info.id,
+    name: info.name,
+    password: null,
+    thumbnail_path: info.thumbnail_path,
+  };
+
+  instance
+    .post('user/social', JSON.stringify(user))
+    .then(success)
+    .catch(fail);
+}
+
 function join(info, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
@@ -89,4 +106,25 @@ function getInfo(id, success, fail) {
     .catch(fail);
 }
 
-export { login, join, emailTest, emailValidTest, nameTest, getInfo };
+function changePassword(info, success, fail) {
+  const user = {
+    id: info.id,
+    password: info.password,
+  };
+
+  instance
+    .post('user/changePw', JSON.stringify(user))
+    .then(success)
+    .catch(fail);
+}
+
+export {
+  login,
+  join,
+  emailTest,
+  emailValidTest,
+  nameTest,
+  getInfo,
+  socialLogin,
+  changePassword,
+};

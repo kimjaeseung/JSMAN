@@ -60,7 +60,7 @@
           width="183"
           height="45"
         >
-          <v-icon>mdi-google</v-icon>
+          <v-icon class="mr-5" left>mdi-google</v-icon>
           구글 로그인
         </v-btn>
       </v-col>
@@ -73,11 +73,15 @@
         />
       </v-col>
     </v-row>
+    <v-row class="ma-6">
+      <h4>혹시 비밀번호가 기억나지 않으신가요?</h4>
+      <h4>그러시다면, <a href="/findpw">비밀번호찾기</a>를 클릭하세요.</h4>
+    </v-row>
   </v-card>
 </template>
 
 <script>
-import { login } from '@/api/user.js';
+import { login, socialLogin } from '@/api/user.js';
 import { ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
@@ -129,6 +133,7 @@ export default {
           if (response.data.message === 'success') {
             let token = response.data['access-token'];
             localStorage.setItem('access-token', token);
+            localStorage.setItem('id', info.id);
             this.$store.commit('SET_LOGGED', true);
             this.$router.push('/');
           } else {
@@ -147,15 +152,32 @@ export default {
       firebase
         .auth()
         .signInWithPopup(provider)
-        .then(function(result) {
-          let token = result.credential.accessToken;
+        .then((result) => {
           let user = {
             id: result.user.email,
             name: result.user.displayName,
             thumbnail_path: result.user.photoURL,
+            tag: null,
           };
-          this.store.commit('SET_USER', user);
-          localStorage.setItem('access-token', token);
+          socialLogin(
+            user,
+            (response) => {
+              if (response.data.message === 'success') {
+                let token = response.data['access-token'];
+                localStorage.setItem('access-token', token);
+                localStorage.setItem('id', user.id);
+                this.$store.commit('SET_LOGGED', true);
+                this.$store.commit('SET_USER', user);
+                this.$router.push('/');
+              } else {
+                this.isLoginError = true;
+              }
+            },
+            (error) => {
+              console.error(error);
+              alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+            }
+          );
         });
     },
     loginWithKakao() {
@@ -178,7 +200,29 @@ export default {
           if (info.id === undefined) {
             this.changeKakao(info);
           } else {
-            this.social(info);
+            this.$store.commit('SET_LOGGED', true);
+            this.$store.commit('SET_USER', info);
+            localStorage.setItem('id', info.id);
+            this.closeDialog();
+            socialLogin(
+              info,
+              (response) => {
+                if (response.data.message === 'success') {
+                  let token = response.data['access-token'];
+                  localStorage.setItem('access-token', token);
+                  localStorage.setItem('id', info.id);
+                  this.$store.commit('SET_LOGGED', true);
+                  this.$store.commit('SET_USER', info);
+                  this.$router.push('/');
+                } else {
+                  this.isLoginError = true;
+                }
+              },
+              (error) => {
+                console.error(error);
+                alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+              }
+            );
           }
           // }
         },

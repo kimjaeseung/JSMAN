@@ -6,46 +6,40 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     userProfile: {},
-    tags: {},
-    loggedIn: false,
   },
   getters: {
     userProfile: ({ userProfile }) => userProfile,
-    tags: ({ tags }) => tags,
     loggedIn: ({ loggedIn }) => loggedIn,
   },
   mutations: {
     SET_USER(state, userProfile) {
       state.userProfile = userProfile;
-    },
-    SET_TAGS(state, tags) {
-      state.tags = tags;
-    },
-    SET_LOGGED(state, loggedIn) {
-      state.loggedIn = loggedIn;
+      console.log(state.userProfile);
     },
   },
   actions: {
-    getUserInfo() {
+    getUserInfo({ commit }) {
       if (localStorage['access-token'] && localStorage['access-token'] !== '') {
         getInfo(
           localStorage.id,
           (response) => {
             if (response.data.message === 'success') {
               let user = response.data['userInfo'];
-              let tags = response.data['tags'];
-              this.SET_USER(user);
-              this.SET_TAGS(tags);
+              commit('SET_USER', user);
             } else {
               this.isLoginError = true;
             }
           },
           (error) => {
             console.error(error);
-            alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+            alert('회원정보를 가져오지 못했습니다.');
           }
         );
       }
+    },
+    logout({ commit }) {
+      localStorage.clear();
+      commit('SET_USER', null);
     },
   },
   modules: {},
