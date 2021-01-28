@@ -72,11 +72,10 @@ public class UserController {
 			map.put("message", "fail");
 		return map;
 	}
-	
+	@ApiOperation(value = "이메일 인증", notes = "입력값으로 id(email) 주면 이메일 발송. 리턴값은 confirm: 인증번호 ", response = Map.class)
 	@GetMapping(value = "/emailauth/{id}") // 이메일 인증
-	public Map<String, Integer> emailauth(@PathVariable String id) throws MessagingException {
+	public Map<String, Integer> emailauth(@ApiParam(value = "String", required = true)@PathVariable String id) throws MessagingException {
 		int confirm = (int) ((Math.random() * (9999 - 1000)) + 1000);
-		
  		Map<String, Integer> map = new HashMap<>();
 		MimeMessage message = javaMailSender.createMimeMessage();
 		message.setSubject("뉴하 이메일 인증입니다.");
@@ -88,8 +87,9 @@ public class UserController {
 		return map;
 	}
 	
+	@ApiOperation(value = "내가 구독한 큐레이터", notes = "아이디 입력하면 구독한 큐레이터 thumbnail_path, name 리턴", response = ArrayList.class)
 	@GetMapping(value = "/subscribe/{id}") // 내가 구독한 큐레이터
-	public ArrayList<Map<String, String>> subscribe(@PathVariable String id) {
+	public ArrayList<Map<String, String>> subscribe(@ApiParam(value = "String", required = true)@PathVariable String id) {
 		ArrayList<Map<String, String>> list = new ArrayList<Map<String,String>>();
 		int userNo = service.userNo(id);
 		System.out.println(userNo);
