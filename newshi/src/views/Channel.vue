@@ -1,12 +1,14 @@
 <template>
-  <div>
-      <router-view></router-view>
-  </div>
+  <div>채널</div>
 </template>
 
 <script>
 export default {
-  created() {
+    data() {
+        return {
+        }
+    },
+created() {
     console.log(this.$route.params.id);
   },
 }
