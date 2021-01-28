@@ -13,8 +13,8 @@
       >
         <v-tabs-slider color="grey lighten-4"></v-tabs-slider>
           <v-tab
-            v-for="(newsItem, idx) in newsItems"
-            :key="idx"
+            v-for="(newsItem, index) in newsItems"
+            :key="index"
             style="height: 48px; width: 48px;"
           >
             <v-list-item-avatar>
@@ -27,14 +27,14 @@
     <v-tabs-items v-model="tab">
       <v-tab-item
         v-for="(newsItem, idx) in newsItems"
-        :key="idx"
+        :key="newsItem+idx"
       >
       {{ newsItem.name }} 
       <hr>
         <v-list>
-          <template v-for="newsInfo in newsItem.newsLists">
+          <template v-for="(newsInfo, i) in newsItem.newsLists">
             <v-list-item
-              :key="newsInfo"
+              :key="newsInfo+i"
               @click="move(newsInfo.newsNo)"
             >
                 <v-list-item-avatar
