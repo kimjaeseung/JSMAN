@@ -1,112 +1,190 @@
 <template>
-  <v-container>
-    <v-toolbar
-      color="white"
-      flat
-      dense
-    >
-      <v-tabs
-        v-model="tab"
-        center-active
-        show-arrows
-        align-with-title
-      >
-        <v-tabs-slider color="grey lighten-4"></v-tabs-slider>
-        <v-tab
-          v-for="curator in curators"
-          :key="curator"
-          style="height: 48px; width: 48px;"
-        >
-          <v-list-item-avatar>
-            <v-img :src="curator"></v-img>
-          </v-list-item-avatar>
-        </v-tab>
-      </v-tabs>
-    </v-toolbar>
-
-    <v-tabs-items v-model="tab">
-      <v-tab-item
-        v-for="item in items"
-        :key="item"
-      >
-        <v-list>
-          <template v-for="(item, index) in items">
-            <v-subheader
-              v-if="item.header"
-              :key="item.header"
-              v-text="item.header"
-            ></v-subheader>
-
-            <v-divider
-              v-else-if="item.divider"
-              :key="index"
-              :inset="item.inset"
-            ></v-divider>
-
-            <v-list-item
-              v-else
-              :key="item.title"
-            >
-              <v-list-item-avatar
-                tile
-              >
-                <v-img :src="item.avatar"></v-img>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title v-html="item.title"></v-list-item-title>
-                <v-list-item-title v-html="item.subtitle"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </template>
-        </v-list>
-      </v-tab-item>
-    </v-tabs-items>
-  </v-container>
+  <NewsList 
+    :news-infos="newsInfos"
+  />
 </template>
 
 <script>
+import NewsList from '../components/NewsList.vue';
+
 export default {
   name: "Main",
+  components: { 
+    NewsList, 
+  },
   data: function () {
     return {
         tab: null,
-        curators: [
-          'https://cdn.vuetifyjs.com/images/lists/1.jpg', 
-          'https://cdn.vuetifyjs.com/images/lists/2.jpg', 
-          'https://cdn.vuetifyjs.com/images/lists/3.jpg', 
-          'https://cdn.vuetifyjs.com/images/lists/4.jpg', 
-          'https://cdn.vuetifyjs.com/images/lists/5.jpg'
-        ],
-        items: [
-          // { header: 'Today' },
+        newsInfos: [
           {
+            name: 'smith',
             avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate rem vel impedit, animi corporis iure possimus quos dolore reiciendis? Iure animi eos optio, dolor tempore nihil id in odit sunt?',
-            subtitle: 'OO일보'
+            newsLists: [
+            {
+                newsNo: 1,
+                thumbnail: 'https://imgnews.pstatic.net/image/origin/003/2021/01/27/10315482.jpg?type=nf132_90',
+                title: '기아, 지난해 영업이익 2조665억…전년比 2.8%↑(1보)',
+                subtitle: '뉴시스',
+                content: "[서울=뉴시스] 박주연 기자 = 기아는 지난해 연결 재무제표 기준 영업이익이 전년에 비해 2.8% 증가한 2조665억원으로 잠정 집계됐다고 27일 공시했다. 지난해 매출은 1.8% 증가한 59조1681억원, 순이익은 2.5% 증가한 1조5027억원을 각각 나타냈다. 영업이익률은 전년과 동일한 3.5%였다. 고수익 레저차량(RV) 차종 및 신차 판매 확대에 따른 믹스 개선, 친환경차 판매 확대로 매출이 증가했다. 3분기 품질 비용 발생에도 불구하고, 판매 믹스 개선, 평균 판매 가격 상승, 재고 안정화에 따른 인센티브 축소 등 전반적인 수익성 체질 개선으로 영업이익 역시 증가세를 나타냈다. 지난해 도매 기준 연간판매는 전년 대비 7.6% 감소한 260만6832대를 기록했다. 국내에서 전년 대비 6.2% 증가한 55만 2400대, 해외에서 10.7% 감소한 205만 4432대였다.", 
+                news_image_caption: 'newsis제공',
+                image_path: "https://imgnews.pstatic.net/image/003/2021/01/27/NISI20210106_0000669186_web_20210106155806_20210127140159904.jpg?type=w647",
+                url: "https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=101&oid=003&aid=0010315482",
+                article_date: '2021/01/27',
+                article_last_date: '2021/01/27',
+                article_bot_summary: "기아는 지난해 연결 재무제표 기준 영업이익이 전년에 비해 2.8% 증가한 2조665억원으로 잠정 집계됐다고 27일 공시했다. 지난해 도매 기준 연간판매는 전년 대비 7.6% 감소한 260만6832대를 기록했다. 국내에서 전년 대비 6.2% 증가한 55만 2400대, 해외에서 10.7% 감소한 205만 4432대였다.",
+                show: false,
+            },
+            {
+                newsNo: 2,
+                thumbnail: 'https://imgnews.pstatic.net/image/014/2021/01/27/0004573299_001_20210127133020636.jpg?type=w647',
+                title: '설 명절에도 웃지 못하는 부·울 中企',
+                subtitle: '파이낸셜 뉴스',
+                content: '코로나 국면 장기화로 신축년 새해 들어서도 경기회복은 요원한 가운데 설 명절을 맞는 지역 중소기업의 표정도 어둡기만 하다. 중소기업중앙회 부산울산본부(본부장 김기훈)가 부산·울산 중소기업 159곳을 대상으로 조사해 27일 발표한 ‘2021년 설 자금 수요조사’ 결과에 따르면 응답 기업 절반 이상(54.7%)은 자금 사정이 곤란하다고 호소했다. 이는 지난해 조사에서 ‘곤란’이라고 응답한 비율 40.2%과 비교해 약 14.5%p 상승한 수치다. 기업들은 대부분 ‘코로나19(80.5%)’가 영향을 미쳤다고 답해 중소기업 자금지원 정책 필요성이 절실한 것으로 나타났다. 주된 자금사정 곤란 원인으로는 판매부진(41.3%)을 꼽았다. 이와 함께 최근 세계적인 원자재 가격 상승을 반영하듯 원자재 및 부자재 가격상승(18.0%)과 판매대금 회수지연(14.0%) 순으로 조사됐다.',
+                news_image_caption: '',
+                image_path: "https://imgnews.pstatic.net/image/014/2021/01/27/0004573299_001_20210127133020636.jpg?type=w647",
+                url: "https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=101&oid=014&aid=0004573299",
+                article_date: '2021/01/27',
+                article_last_date: '2021/01/27',
+                article_bot_summary: "코로나 국면 장기화로 신축년 새해 들어서도 경기회복은 요원한 가운데 설 명절을 맞는 지역 중소기업의 표정도 어둡기만 하다. 한편 부산·울산지역 중소기업은 설 자금 확보를 위해 납품대금 조기회수, 금융기관 차입, 결제연기, 어음할인 등의 계획을 갖고 있으나 응답자의 약 4분의 1는 '대책 없음'이라고 답해 중소기업을 위한 자금지원 방안 마련이 절실한 것으로 드러났다. 은행 등 금융기관을 통한 자금조달 여건은 '곤란'하다는 응답이 32.7%로 '원활하다'는 응답보다 4배 이상 높았다.",
+                show: false,
+            },
+            ]
           },
-          { divider: true, inset: true },
           {
+            name: 'bob',
             avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate rem vel impedit, animi corporis iure possimus quos dolore reiciendis? Iure animi eos optio, dolor tempore nihil id in odit sunt?',
-            subtitle: 'OO일보'
+            newsLists: [
+            {
+                newsNo: 3,
+                thumbnail: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+                title: 'Helloworld',
+                subtitle: 'OO일보',
+                content: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 잡코리아가 지난 13일부터 22일 동안 직장인 839명을 대상으로 벌인 온라인 설문조사에서 중소기업에 다닌다고 응답한 477명 중 254명(53.2%)이 재택근무를 한 경험이 없다고 답했다. 공기업·공공기관은 61명 중 49명(80.3%), 대기업은 110명 중 84명(76.4%), 중견기업은 191명 중 135명(70.7%)이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다. ‘재직중인 회사가 거리두기 단계예 따라 적극적으로 재택근무를 실시했냐’는 질문에도 중소기업만 유일하게 ‘그렇다’는 응답보다 ‘아니다’라는 응답이 많았다. 중소기업 재직자 269명(56.4%)이 해당 질문에 ‘아니다’ 라고 대답했다. 대기업 재직자 82명(74.5%)이 ‘그렇다’고 대답한 수치와 크게 상반된다. 공기업·공공기관 재직자 48명(78.7%), 중견기업 재직자 126명(66%)도 ‘그렇다’고 답했다. 또 재택근무 경험이 있다고 응답한 직장인을 대상으로 ‘평균 재택근무 실시 기간’을 묻자 중소기업 재직자의 평균 재택근무 일수는 48일로 나타났다. 이는 대기업(61일), 중견기업(51일)보다 적지만 공기업·공공기관(40일)보다는 많았다. 한편, ‘2021년에도 재택근무가 필요할까요?’라는 질문에는 ‘필요하다’는 응답이 기업 분류에 관계없이 794명(94.9%)으로 압도적으로 높았다. 거리두기가 완화될 때까지 재택근무를 해야 한다는 응답은 482명(57.4%), 코로나 종식까지 재택근무를 해야 한다는 응답은 312명(37.2%)이었다.", 
+                news_image_caption: '잡코리아 제공',
+                image_path: "https://imgnews.pstatic.net/image/081/2021/01/25/0003158464_001_20210125125623755.jpg?type=w647",
+                url: "https://m.naver.com",
+                article_date: '2021/01/25',
+                article_last_date: '2021/01/25',
+                article_bot_summary: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 공기업·공공기관은 61명 중 49명, 대기업은 110명 중 84명, 중견기업은 191명 중 135명이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다.",
+                show: false,
+            },
+            {
+                newsNo: 4,
+                thumbnail: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
+                title: 'Helloworld!!!',
+                subtitle: 'XX일보',
+                content: 'lorem',
+                news_image_caption: '훕코리아 제공',
+                image_path: "https://imgnews.pstatic.net/image/081/2021/01/25/0003158464_001_20210125125623755.jpg?type=w647",
+                url: "https://www.ssafy.com",
+                article_date: '2021/01/26',
+                article_last_date: '2021/01/26',
+                article_bot_summary: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 공기업·공공기관은 61명 중 49명, 대기업은 110명 중 84명, 중견기업은 191명 중 135명이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다.",
+                show: false,
+            },
+            ]
           },
-          { divider: true, inset: true },
           {
+            name: 'rachel',
             avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate rem vel impedit, animi corporis iure possimus quos dolore reiciendis? Iure animi eos optio, dolor tempore nihil id in odit sunt?',
-            subtitle: 'OO일보'
+            newsLists: [
+            {
+                newsNo: 5,
+                thumbnail: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
+                title: 'Helloworld',
+                subtitle: 'OO일보',
+                content: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 잡코리아가 지난 13일부터 22일 동안 직장인 839명을 대상으로 벌인 온라인 설문조사에서 중소기업에 다닌다고 응답한 477명 중 254명(53.2%)이 재택근무를 한 경험이 없다고 답했다. 공기업·공공기관은 61명 중 49명(80.3%), 대기업은 110명 중 84명(76.4%), 중견기업은 191명 중 135명(70.7%)이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다. ‘재직중인 회사가 거리두기 단계예 따라 적극적으로 재택근무를 실시했냐’는 질문에도 중소기업만 유일하게 ‘그렇다’는 응답보다 ‘아니다’라는 응답이 많았다. 중소기업 재직자 269명(56.4%)이 해당 질문에 ‘아니다’ 라고 대답했다. 대기업 재직자 82명(74.5%)이 ‘그렇다’고 대답한 수치와 크게 상반된다. 공기업·공공기관 재직자 48명(78.7%), 중견기업 재직자 126명(66%)도 ‘그렇다’고 답했다. 또 재택근무 경험이 있다고 응답한 직장인을 대상으로 ‘평균 재택근무 실시 기간’을 묻자 중소기업 재직자의 평균 재택근무 일수는 48일로 나타났다. 이는 대기업(61일), 중견기업(51일)보다 적지만 공기업·공공기관(40일)보다는 많았다. 한편, ‘2021년에도 재택근무가 필요할까요?’라는 질문에는 ‘필요하다’는 응답이 기업 분류에 관계없이 794명(94.9%)으로 압도적으로 높았다. 거리두기가 완화될 때까지 재택근무를 해야 한다는 응답은 482명(57.4%), 코로나 종식까지 재택근무를 해야 한다는 응답은 312명(37.2%)이었다.", 
+                news_image_caption: '잡코리아 제공',
+                image_path: "https://imgnews.pstatic.net/image/081/2021/01/25/0003158464_001_20210125125623755.jpg?type=w647",
+                url: "https://www.naver.com",
+                article_date: '2021/01/25',
+                article_last_date: '2021/01/25',
+                article_bot_summary: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 공기업·공공기관은 61명 중 49명, 대기업은 110명 중 84명, 중견기업은 191명 중 135명이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다.",
+                show: false,
+            },
+            {
+                newsNo: 6,
+                thumbnail: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                title: 'Helloworld!!!',
+                subtitle: 'XX일보',
+                content: 'lorem',
+                news_image_caption: '훕코리아 제공',
+                image_path: "https://imgnews.pstatic.net/image/081/2021/01/25/0003158464_001_20210125125623755.jpg?type=w647",
+                url: "https://www.seoul.co.kr/news/newsView.php?id=20210125500075&wlog_tag3=naver",
+                article_date: '2021/01/26',
+                article_last_date: '2021/01/26',
+                article_bot_summary: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 공기업·공공기관은 61명 중 49명, 대기업은 110명 중 84명, 중견기업은 191명 중 135명이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다.",
+                show: false,
+            },
+            ]
           },
-          { divider: true, inset: true },
           {
+            name: 'angela',
             avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-            title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate rem vel impedit, animi corporis iure possimus quos dolore reiciendis? Iure animi eos optio, dolor tempore nihil id in odit sunt?',
-            subtitle: 'OO일보'
+            newsLists: [
+            {
+                newsNo: 7,
+                thumbnail: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+                title: 'Helloworld',
+                subtitle: 'OO일보',
+                content: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 잡코리아가 지난 13일부터 22일 동안 직장인 839명을 대상으로 벌인 온라인 설문조사에서 중소기업에 다닌다고 응답한 477명 중 254명(53.2%)이 재택근무를 한 경험이 없다고 답했다. 공기업·공공기관은 61명 중 49명(80.3%), 대기업은 110명 중 84명(76.4%), 중견기업은 191명 중 135명(70.7%)이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다. ‘재직중인 회사가 거리두기 단계예 따라 적극적으로 재택근무를 실시했냐’는 질문에도 중소기업만 유일하게 ‘그렇다’는 응답보다 ‘아니다’라는 응답이 많았다. 중소기업 재직자 269명(56.4%)이 해당 질문에 ‘아니다’ 라고 대답했다. 대기업 재직자 82명(74.5%)이 ‘그렇다’고 대답한 수치와 크게 상반된다. 공기업·공공기관 재직자 48명(78.7%), 중견기업 재직자 126명(66%)도 ‘그렇다’고 답했다. 또 재택근무 경험이 있다고 응답한 직장인을 대상으로 ‘평균 재택근무 실시 기간’을 묻자 중소기업 재직자의 평균 재택근무 일수는 48일로 나타났다. 이는 대기업(61일), 중견기업(51일)보다 적지만 공기업·공공기관(40일)보다는 많았다. 한편, ‘2021년에도 재택근무가 필요할까요?’라는 질문에는 ‘필요하다’는 응답이 기업 분류에 관계없이 794명(94.9%)으로 압도적으로 높았다. 거리두기가 완화될 때까지 재택근무를 해야 한다는 응답은 482명(57.4%), 코로나 종식까지 재택근무를 해야 한다는 응답은 312명(37.2%)이었다.", 
+                news_image_caption: '잡코리아 제공',
+                image_path: "https://imgnews.pstatic.net/image/081/2021/01/25/0003158464_001_20210125125623755.jpg?type=w647",
+                url: "https://www.seoul.co.kr/news/newsView.php?id=20210125500075&wlog_tag3=naver",
+                article_date: '2021/01/25',
+                article_last_date: '2021/01/25',
+                article_bot_summary: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 공기업·공공기관은 61명 중 49명, 대기업은 110명 중 84명, 중견기업은 191명 중 135명이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다.",
+                show: false,
+            },
+            {
+                newsNo: 8,
+                thumbnail: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+                title: 'Helloworld!!!',
+                subtitle: 'XX일보',
+                content: 'lorem',
+                news_image_caption: '훕코리아 제공',
+                image_path: "https://imgnews.pstatic.net/image/081/2021/01/25/0003158464_001_20210125125623755.jpg?type=w647",
+                url: "https://www.seoul.co.kr/news/newsView.php?id=20210125500075&wlog_tag3=naver",
+                article_date: '2021/01/26',
+                article_last_date: '2021/01/26',
+                article_bot_summary: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 공기업·공공기관은 61명 중 49명, 대기업은 110명 중 84명, 중견기업은 191명 중 135명이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다.",
+                show: false,
+            },
+            ]
           },
-          { divider: true, inset: true },
           {
+            name: 'nina',
             avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-            title: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate rem vel impedit, animi corporis iure possimus quos dolore reiciendis? Iure animi eos optio, dolor tempore nihil id in odit sunt?',
-            subtitle: 'OO일보'
+            newsLists: [
+            {
+                newsNo: 9,
+                thumbnail: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+                title: 'Helloworld',
+                subtitle: 'OO일보',
+                content: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 잡코리아가 지난 13일부터 22일 동안 직장인 839명을 대상으로 벌인 온라인 설문조사에서 중소기업에 다닌다고 응답한 477명 중 254명(53.2%)이 재택근무를 한 경험이 없다고 답했다. 공기업·공공기관은 61명 중 49명(80.3%), 대기업은 110명 중 84명(76.4%), 중견기업은 191명 중 135명(70.7%)이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다. ‘재직중인 회사가 거리두기 단계예 따라 적극적으로 재택근무를 실시했냐’는 질문에도 중소기업만 유일하게 ‘그렇다’는 응답보다 ‘아니다’라는 응답이 많았다. 중소기업 재직자 269명(56.4%)이 해당 질문에 ‘아니다’ 라고 대답했다. 대기업 재직자 82명(74.5%)이 ‘그렇다’고 대답한 수치와 크게 상반된다. 공기업·공공기관 재직자 48명(78.7%), 중견기업 재직자 126명(66%)도 ‘그렇다’고 답했다. 또 재택근무 경험이 있다고 응답한 직장인을 대상으로 ‘평균 재택근무 실시 기간’을 묻자 중소기업 재직자의 평균 재택근무 일수는 48일로 나타났다. 이는 대기업(61일), 중견기업(51일)보다 적지만 공기업·공공기관(40일)보다는 많았다. 한편, ‘2021년에도 재택근무가 필요할까요?’라는 질문에는 ‘필요하다’는 응답이 기업 분류에 관계없이 794명(94.9%)으로 압도적으로 높았다. 거리두기가 완화될 때까지 재택근무를 해야 한다는 응답은 482명(57.4%), 코로나 종식까지 재택근무를 해야 한다는 응답은 312명(37.2%)이었다.", 
+                news_image_caption: '잡코리아 제공',
+                image_path: "https://imgnews.pstatic.net/image/081/2021/01/25/0003158464_001_20210125125623755.jpg?type=w647",
+                url: "https://www.seoul.co.kr/news/newsView.php?id=20210125500075&wlog_tag3=naver",
+                article_date: '2021/01/25',
+                article_last_date: '2021/01/25',
+                article_bot_summary: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 공기업·공공기관은 61명 중 49명, 대기업은 110명 중 84명, 중견기업은 191명 중 135명이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다.",
+                show: false,
+            },
+            {
+                newsNo: 10,
+                thumbnail: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
+                title: 'Helloworld!!!',
+                subtitle: 'XX일보',
+                content: 'lorem',
+                news_image_caption: '훕코리아 제공',
+                image_path: "https://imgnews.pstatic.net/image/081/2021/01/25/0003158464_001_20210125125623755.jpg?type=w647",
+                url: "https://www.seoul.co.kr/news/newsView.php?id=20210125500075&wlog_tag3=naver",
+                article_date: '2021/01/26',
+                article_last_date: '2021/01/26',
+                article_bot_summary: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 공기업·공공기관은 61명 중 49명, 대기업은 110명 중 84명, 중견기업은 191명 중 135명이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다.",
+                show: false,
+            },
+            ]
           },
         ],
       }
@@ -115,7 +193,5 @@ export default {
 </script>
 
 <style>
-.container {
-  max-width: 800px;
-}
+
 </style>

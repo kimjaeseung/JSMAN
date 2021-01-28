@@ -1,15 +1,16 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Article from '../views/Article.vue';
-import Main from '../views/Main.vue';
+import Article from "../views/Article.vue";
+import Main from "../views/Main.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/article',
-    name: 'Article',
+    path: "/article/:newsNo",
+    name: "Article",
     component: Article,
+    props: true,
   },
   {
     path: '/',
