@@ -4,6 +4,7 @@ import Article from "../views/Article.vue";
 import Main from "../views/Main.vue";
 import MyPage from "../views/MyPage.vue";
 import MyInfo from "../components/mypage/MyInfo";
+import Channel from "../views/Channel.vue";
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,11 @@ const routes = [
         component: MyInfo
       }
     ]
+  },
+  {
+    path: "/channel/:id",
+    name: "Channel",
+    component: Channel,
   }
 ];
 
