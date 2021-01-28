@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <v-btn link href="/login">로그인</v-btn>
-  </div>
+  <div></div>
 </template>
 
 <script>
