@@ -1,8 +1,7 @@
 <template>
-  <v-app>
-      mypage임
+  <div>
       <router-view></router-view>
-  </v-app>
+  </div>
 </template>
 
 <script>
