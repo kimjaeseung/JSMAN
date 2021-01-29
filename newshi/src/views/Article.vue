@@ -1,84 +1,42 @@
 <template>
-  <v-container>
-    <!-- news header -->
-    <header>
-      <div class="news-title text-center">
-        {{ title }}
-      </div>
-      <div class="news-header text-center">
-        {{ article_date }}
-      </div>
-      <div class="news-info d-flex justify-content-start">
-        <div>신문사</div>
-        <div>기자명</div>
-        <div>
-          <a :href="url">원본보기</a>
-        </div>
-        <v-spacer></v-spacer>
-        <v-btn icon>
-          <v-icon medium>mdi-bookmark</v-icon>
-        </v-btn>
-      </div>
-    </header>
-    <!-- main image -->
-    <section>
-      <div class="news-image">
-        <v-img
-          :src="image_path"
-          max-width:="700"
-          max-height="480"
-        >
-        </v-img>
-        <div class="news-image-caption text-center">
-          {{ news_image_caption }}
-        </div>
-      </div>
-    </section>
-    <!-- news body -->
-    <section class="my-2">
-      <div class="news-body-text">
-        <div class="article-bot-summary">
-          <p>핵심 요약</p>
-          <p>{{ article_bot_summary }}</p>
-        </div>
-        <div>
-          <span class="my-auto">본문 보기</span>
-            <v-btn
-              icon
-              @click="show = !show"
-            >
-              <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-            </v-btn>
-        </div>
-        <v-expand-transition>
-          <div v-show="show">
-            <div class="article-content">
-              <p>{{ content }}</p>
-            </div>
-          </div>
-        </v-expand-transition>
-      </div>
-    </section>
-  </v-container>
+  <div>
+    <ArticleDetail 
+      :news-info="newsInfo"
+    />
+  </div>
 </template>
 
 <script>
+import ArticleDetail from '../components/ArticleDetail'
+
 export default {
   name: "Article",
+  components: { 
+    ArticleDetail,
+  },
   data: function () {
     return {
-      title: "재택근무서도 드러난 코로나 양극화",
-      subtitle: "중소기업 직장인 53.2% “재택근무 경험 없다",
-      content: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 잡코리아가 지난 13일부터 22일 동안 직장인 839명을 대상으로 벌인 온라인 설문조사에서 중소기업에 다닌다고 응답한 477명 중 254명(53.2%)이 재택근무를 한 경험이 없다고 답했다. 공기업·공공기관은 61명 중 49명(80.3%), 대기업은 110명 중 84명(76.4%), 중견기업은 191명 중 135명(70.7%)이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다. ‘재직중인 회사가 거리두기 단계예 따라 적극적으로 재택근무를 실시했냐’는 질문에도 중소기업만 유일하게 ‘그렇다’는 응답보다 ‘아니다’라는 응답이 많았다. 중소기업 재직자 269명(56.4%)이 해당 질문에 ‘아니다’ 라고 대답했다. 대기업 재직자 82명(74.5%)이 ‘그렇다’고 대답한 수치와 크게 상반된다. 공기업·공공기관 재직자 48명(78.7%), 중견기업 재직자 126명(66%)도 ‘그렇다’고 답했다. 또 재택근무 경험이 있다고 응답한 직장인을 대상으로 ‘평균 재택근무 실시 기간’을 묻자 중소기업 재직자의 평균 재택근무 일수는 48일로 나타났다. 이는 대기업(61일), 중견기업(51일)보다 적지만 공기업·공공기관(40일)보다는 많았다. 한편, ‘2021년에도 재택근무가 필요할까요?’라는 질문에는 ‘필요하다’는 응답이 기업 분류에 관계없이 794명(94.9%)으로 압도적으로 높았다. 거리두기가 완화될 때까지 재택근무를 해야 한다는 응답은 482명(57.4%), 코로나 종식까지 재택근무를 해야 한다는 응답은 312명(37.2%)이었다.",
-      news_image_caption: '잡코리아 제공',
-      image_path: "https://imgnews.pstatic.net/image/081/2021/01/25/0003158464_001_20210125125623755.jpg?type=w647",
-      url: "https://www.seoul.co.kr/news/newsView.php?id=20210125500075&wlog_tag3=naver",
-      article_date: '2021/01/25',
-      article_last_date: '2021.01.25',
-      article_bot_summary: "코로나19로 인한 양극화가 대기업과 중소기업의 재택근무에서도 드러났다. 공기업·공공기관은 61명 중 49명, 대기업은 110명 중 84명, 중견기업은 191명 중 135명이 재택 근무 경험이 있었다. 대기업, 중견기업, 중소기업 공기업·공공기관 재직자 군 중 재택근무 경험이 없는 사람이 재택근무 경험이 있는 사람보다 더 많은 곳은 중소기업 뿐이었다.",
-      show: false,
+      newsInfo: {
+          newsNo: 1,
+          thumbnail: 'https://imgnews.pstatic.net/image/origin/003/2021/01/27/10315482.jpg?type=nf132_90',
+          title: '기아, 지난해 영업이익 2조665억…전년比 2.8%↑(1보)',
+          subtitle: '뉴시스',
+          content: "[서울=뉴시스] 박주연 기자 = 기아는 지난해 연결 재무제표 기준 영업이익이 전년에 비해 2.8% 증가한 2조665억원으로 잠정 집계됐다고 27일 공시했다. 지난해 매출은 1.8% 증가한 59조1681억원, 순이익은 2.5% 증가한 1조5027억원을 각각 나타냈다. 영업이익률은 전년과 동일한 3.5%였다. 고수익 레저차량(RV) 차종 및 신차 판매 확대에 따른 믹스 개선, 친환경차 판매 확대로 매출이 증가했다. 3분기 품질 비용 발생에도 불구하고, 판매 믹스 개선, 평균 판매 가격 상승, 재고 안정화에 따른 인센티브 축소 등 전반적인 수익성 체질 개선으로 영업이익 역시 증가세를 나타냈다. 지난해 도매 기준 연간판매는 전년 대비 7.6% 감소한 260만6832대를 기록했다. 국내에서 전년 대비 6.2% 증가한 55만 2400대, 해외에서 10.7% 감소한 205만 4432대였다.", 
+          news_image_caption: 'newsis제공',
+          image_path: "https://imgnews.pstatic.net/image/003/2021/01/27/NISI20210106_0000669186_web_20210106155806_20210127140159904.jpg?type=w647",
+          url: "https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=101&oid=003&aid=0010315482",
+          article_date: '2021/01/27',
+          article_last_date: '2021/01/27',
+          article_bot_summary: "기아는 지난해 연결 재무제표 기준 영업이익이 전년에 비해 2.8% 증가한 2조665억원으로 잠정 집계됐다고 27일 공시했다. 지난해 도매 기준 연간판매는 전년 대비 7.6% 감소한 260만6832대를 기록했다. 국내에서 전년 대비 6.2% 증가한 55만 2400대, 해외에서 10.7% 감소한 205만 4432대였다.",
+          show: false,
+      },
+      newsNo: 0,
     }
   },
+  created: function() {
+    this.newsNo = this.$route.params.newsNo;
+    console.log(this.newsNo);
+  }
 };
 </script>
 
