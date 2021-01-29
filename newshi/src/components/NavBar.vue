@@ -1,22 +1,38 @@
 <template>
   <div>
     <v-app-bar flat app style="border-bottom:1px solid">
-      <v-app-bar-nav-icon @click="openNavbar()"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        @click="menu_drawer = !menu_drawer"
+      ></v-app-bar-nav-icon>
       <v-spacer />
-      <v-img contain src="@/assets/logo.png" style="height: 50%"></v-img>
+      <a href="/">
+        <v-img contain src="@/assets/logo.png" style="height: 50%"></v-img>
+      </a>
       <v-spacer />
       <v-icon @click="search_drawer = !search_drawer">mdi-magnify</v-icon>
       <v-dialog
         v-model="dialog"
         width="500"
         height="500"
+        v-if="!logged"
         :fullscreen="isFull"
         transition="dialog-top-transition"
       >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="black" dark v-bind="attrs" v-on="on" icon>
-            <v-icon>mdi-account-outline</v-icon>
-          </v-btn>
+        <template v-slot:activator="{ on: dialog, attrs }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on: tooltip }">
+              <v-btn
+                color="black"
+                dark
+                v-bind="attrs"
+                v-on="{ ...tooltip, ...dialog }"
+                icon
+              >
+                <v-icon>mdi-account-outline</v-icon>
+              </v-btn>
+            </template>
+            <span>로그인</span>
+          </v-tooltip>
         </template>
         <Login
           v-if="isLogin"
@@ -32,6 +48,26 @@
           @changeKakao="changeKakao"
         ></Join>
       </v-dialog>
+      <v-menu open-on-hover offset-y v-else>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="black" dark v-bind="attrs" v-on="on" icon>
+            <v-icon>mdi-account-outline</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item>
+            <v-list-item-title
+              ><v-btn @click="myPage">마이페이지</v-btn></v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title
+              ><v-btn @click="logout">로그아웃</v-btn></v-list-item-title
+            >
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-navigation-drawer
@@ -52,13 +88,22 @@
     <v-navigation-drawer v-model="menu_drawer" absolute temporary>
       <v-list>
         <v-list-item-group>
-          <v-list-item>
+          <v-list-item v-if="logged">
             <v-list-item-avatar>
               <v-img :src="member.thumbnail_path"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title>{{ member.name }}</v-list-item-title>
               <v-list-item-subtitle>{{ member.id }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item v-else>
+            <v-list-item-avatar>
+              <v-icon>mdi-account-outline</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>로그인이 필요합니다</v-list-item-title>
+              <v-list-item-subtitle>로그인 해주세요</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
           <v-divider />
@@ -80,6 +125,7 @@
 <script>
 import Login from '@/components/Login.vue';
 import Join from '@/components/Join.vue';
+import { mapActions } from 'vuex';
 
 export default {
   components: {
@@ -110,6 +156,7 @@ export default {
       isLogin: true,
       isKakao: false,
       info: {},
+      logged: false,
     };
   },
   computed: {
@@ -136,16 +183,7 @@ export default {
     },
   },
   methods: {
-    openNavbar: function() {
-      // axios request: id로 이름과 썸네일을 불러오도록 한다.
-      //일단은 그냥 받아온것처럼 함
-      this.member = {
-        name: '김재성',
-        id: 'kimjea23@naver.com',
-        thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-      };
-      this.menu_drawer = true;
-    },
+    ...mapActions(['logout']),
     closeDialog() {
       this.dialog = !this.dialog;
       this.isLogin = true;
@@ -160,6 +198,9 @@ export default {
       this.info = info;
       this.isLogin = false;
       this.isKakao = true;
+    },
+    myPage() {
+      this.$router.push('/mypage');
     },
   },
   watch: {
@@ -178,8 +219,12 @@ export default {
       }
     },
   },
-
-  created() {},
+  created() {
+    this.logged = this.$store.getters.loggedIn;
+    this.member = this.$store.getters.userProfile;
+    console.log(this.logged);
+    console.log(this.member);
+  },
 };
 </script>
 

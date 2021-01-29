@@ -184,6 +184,7 @@ import {
   emailTest,
   emailValidTest,
   nameTest,
+  socialLogin,
 } from '@/api/user.js';
 import { ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
@@ -379,11 +380,11 @@ export default {
         return;
       }
       let info = {
-        id: this.formData.id,
-        name: this.formData.name,
-        password: this.formData.password,
+        id: this.id,
+        name: this.name,
+        password: this.password,
         thumbnail_path: null,
-        tags: this.formData.tags,
+        tags: this.tags,
       };
 
       join(
@@ -439,22 +440,23 @@ export default {
         password: null,
         tags: this.tags,
       };
-      join(
+      socialLogin(
         info,
         (response) => {
           if (response.data.message === 'success') {
-            alert('회원가입에 성공했습니다.');
-            this.onSubmit();
+            let token = response.data['access-token'];
+            localStorage.setItem('access-token', token);
+            localStorage.setItem('id', info.id);
+            this.$store.commit('SET_LOGGED', true);
+            this.$store.commit('SET_USER', info);
+            this.$router.push('/');
           } else {
-            this.isDupEmailCheck = false;
-            this.isEmailValid = false;
-            this.isDupNameCheck = false;
-            alert('회원가입에 실패했습니다. 다시 한번 확인해주세요.');
+            this.isLoginError = true;
           }
         },
         (error) => {
           console.error(error);
-          alert('회원가입 중 오류가 발생했습니다.');
+          alert('아이디 또는 비밀번호가 일치하지 않습니다.');
         }
       );
     },
