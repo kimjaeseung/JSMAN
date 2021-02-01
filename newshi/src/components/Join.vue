@@ -8,6 +8,7 @@
         <v-btn icon @click="closeDialog">
           <v-icon>mdi-close</v-icon>
         </v-btn>
+        <v-spacer></v-spacer>
         <v-toolbar-title> 회원가입</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items>

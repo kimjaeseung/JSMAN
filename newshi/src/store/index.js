@@ -40,6 +40,7 @@ const store = new Vuex.Store({
     logout({ commit }) {
       localStorage.clear();
       commit('SET_USER', null);
+      window.location.reload();
     },
   },
   modules: {},

@@ -7,6 +7,7 @@
       <v-btn icon @click="closeDialog">
         <v-icon>mdi-close</v-icon>
       </v-btn>
+      <v-spacer></v-spacer>
       <v-toolbar-title> 로그인</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -135,7 +136,7 @@ export default {
             localStorage.setItem('access-token', token);
             localStorage.setItem('id', info.id);
             this.$store.commit('SET_LOGGED', true);
-            this.$router.push('/');
+            this.login();
           } else {
             this.isLoginError = true;
           }
@@ -168,7 +169,7 @@ export default {
                 localStorage.setItem('id', user.id);
                 this.$store.commit('SET_LOGGED', true);
                 this.$store.commit('SET_USER', user);
-                this.$router.push('/');
+                this.login();
               } else {
                 this.isLoginError = true;
               }
@@ -203,7 +204,7 @@ export default {
             this.$store.commit('SET_LOGGED', true);
             this.$store.commit('SET_USER', info);
             localStorage.setItem('id', info.id);
-            this.closeDialog();
+            this.login();
             socialLogin(
               info,
               (response) => {
@@ -213,7 +214,7 @@ export default {
                   localStorage.setItem('id', info.id);
                   this.$store.commit('SET_LOGGED', true);
                   this.$store.commit('SET_USER', info);
-                  this.$router.push('/');
+                  this.login();
                 } else {
                   this.isLoginError = true;
                 }
@@ -236,6 +237,9 @@ export default {
     },
     changeKakao(info) {
       this.$emit('changeKakao', info);
+    },
+    login() {
+      this.$emit('login');
     },
   },
   watch: {
