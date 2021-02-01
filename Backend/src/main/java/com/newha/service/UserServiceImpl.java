@@ -74,5 +74,9 @@ public class UserServiceImpl implements UserService {
 		dao.thumbnailPath(userNo, thumbnail_path);
 	}
 
-	
+	@Override
+	public void inserttag(String id, String tag) {
+		dao.inserttag(id, tag);
+	}
+
 }

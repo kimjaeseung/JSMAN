@@ -75,4 +75,11 @@ public class UserDAOImpl implements UserDAO {
 		mapper.thumbnailPath(userNo, thumbnail_path);
 	}
 
+	@Override
+	public void inserttag(String id, String tag) {
+		mapper.inserttag(id, tag);
+	}
+
+	
+
 }
