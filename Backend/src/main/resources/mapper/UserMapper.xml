@@ -54,6 +54,8 @@
 		update user set password = #{password}, thumbnail_path = #{thumbnail_path} where id = #{id};
 	</update>
 	
-	
+	<update id="thumbnailPath" parameterType="String">
+		update user set thumbnail_path = #{thumbnail_path} where userNo = #{userNo};
+	</update>
 	
 </mapper>
