@@ -2,6 +2,7 @@ package com.newha.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.newha.vo.User;
 
 public interface UserMapper {
