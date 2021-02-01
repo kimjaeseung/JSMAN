@@ -129,19 +129,10 @@ public class UserController {
 
 	@ApiOperation(value = "회원가입", notes = "회원가입 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/join")
-	public ResponseEntity<Map<String, String>> insert(
-			@ApiParam(value = "User", required = true) @RequestBody User u /*
-																			 * , @ApiParam(value = "tag List", required
-																			 * = true)@RequestParam List<String> tag
-																			 */ ) {
+	public ResponseEntity<Map<String, String>> insert(@ApiParam(value = "User", required = true) @RequestBody User u) {
 		Map<String, String> map = new HashMap<>();
 		int result = service.insert(u);
-		int userNo = service.userNo(u.getId());
 		HttpStatus status = null;
-		/*
-		 * for (int i = 0; i < tag.size(); i++) { service.inserttag(userNo, tag.get(i));
-		 * }
-		 */
 		if (result == 0) {
 			map.put("message", "회원가입 실패");
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -151,7 +142,21 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-
+	@ApiOperation(value = "관심 태그 넣기", notes = "관심 태그 넣기 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@PostMapping(value = "/inserttag")
+	public ResponseEntity<Map<String, String>> inserttag(@ApiParam(value = "tag List", required = true) @RequestParam List<String> tag,
+			@RequestParam String id){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		System.out.println(tag.toString());
+		for (int i = 0; i < tag.size(); i++) {
+				service.inserttag(id, tag.get(i));
+		}
+		map.put("message", "관심 태그 넣기 성공");
+		status = HttpStatus.ACCEPTED;
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
 	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@DeleteMapping(value = "/delete/{id}")
 	public ResponseEntity<Map<String, String>> delete(
@@ -187,15 +192,14 @@ public class UserController {
 
 	@ApiOperation(value = "파일 업로드", notes = "파일업로드'성공' 또는 '실패' 문자열을 리턴", response = Map.class)
 	@PostMapping("/upload")
-	public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file, @RequestParam String id) {
+	public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file,
+			@RequestParam String id) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		String userNo = String.valueOf(service.userNo(id));
 		service.thumbnailPath(userNo, file.getOriginalFilename());
-		try (
-				FileOutputStream fos = new FileOutputStream("c:/tmp/" + file.getOriginalFilename());
-				InputStream is = file.getInputStream();
-				) {
+		try (FileOutputStream fos = new FileOutputStream("c:/tmp/" + file.getOriginalFilename());
+				InputStream is = file.getInputStream();) {
 			int readCount = 0;
 			status = HttpStatus.ACCEPTED;
 			map.put("message", "파일업로드 성공");

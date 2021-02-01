@@ -31,11 +31,11 @@
 	</select>
 	
 	<insert id="inserttag" parameterType="string">
-		insert into join_tag values(#{userNo}, #{name})
+		insert into join_tag values ( ( select userNo from user where id = #{id} ), #{name} );
 	</insert>
 	
 	<insert id="insert" parameterType="User">
-		insert into user values(null,#{name},#{password},null,#{id})
+		insert into user values(null,#{name},#{password},null,#{id},#{platformType})
 	</insert>
 
 	<delete id="delete" parameterType="string">

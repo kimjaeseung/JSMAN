@@ -22,5 +22,7 @@ public interface UserService {
 	public int userNo(String id);
 	
 	public void thumbnailPath(String userNo, String thumbnail_path);
+	
+	public void inserttag(String id, String name);
 
 }
