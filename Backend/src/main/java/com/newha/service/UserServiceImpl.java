@@ -68,5 +68,11 @@ public class UserServiceImpl implements UserService {
 	public ArrayList<Integer> follow(int userNo) {
 		return dao.follow(userNo);
 	}
+
+	@Override
+	public void thumbnailPath(String userNo, String thumbnail_path) {
+		dao.thumbnailPath(userNo, thumbnail_path);
+	}
+
 	
 }

@@ -21,4 +21,6 @@ public interface UserService {
 	public int selectId(String id);
 	public int userNo(String id);
 	
+	public void thumbnailPath(String userNo, String thumbnail_path);
+
 }

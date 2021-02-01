@@ -1,5 +1,7 @@
 package com.newha.controller;
 
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,7 +27,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.newha.service.JwtService;
 import com.newha.service.UserService;
@@ -79,8 +83,8 @@ public class UserController {
 
 	@ApiOperation(value = "이메일 인증", notes = "입력값으로 id(email) 주면 이메일 발송. 리턴값은 confirm: 인증번호 ", response = Map.class)
 	@GetMapping(value = "/emailauth/{id}") // 이메일 인증
-	public ResponseEntity<Map<String, Integer>> emailauth(@ApiParam(value = "String", required = true) @PathVariable String id)
-			throws MessagingException {
+	public ResponseEntity<Map<String, Integer>> emailauth(
+			@ApiParam(value = "String", required = true) @PathVariable String id) throws MessagingException {
 		int confirm = (int) ((Math.random() * (9999 - 1000)) + 1000);
 		HttpStatus status = null;
 		Map<String, Integer> map = new HashMap<>();
@@ -96,7 +100,7 @@ public class UserController {
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
+
 		return new ResponseEntity<Map<String, Integer>>(map, status);
 	}
 
@@ -141,39 +145,68 @@ public class UserController {
 		if (result == 0) {
 			map.put("message", "회원가입 실패");
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			}
-		else {
+		} else {
 			map.put("message", "회원가입 성공");
 			status = HttpStatus.ACCEPTED;
-			}
+		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
 	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@DeleteMapping(value = "/delete/{id}")
-	public ResponseEntity<Map<String, String>> delete(@ApiParam(value = "id", required = true) @PathVariable String id) {
+	public ResponseEntity<Map<String, String>> delete(
+			@ApiParam(value = "id", required = true) @PathVariable String id) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
 			service.delete(id);
+			map.put("message", "회원탈퇴 성공");
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			map.put("message", "회원탈퇴 실패");
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
-	@ApiOperation(value = "회원 탈퇴", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@ApiOperation(value = "회원 정보 수정", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PutMapping(value = "/update")
 	public ResponseEntity<Map<String, String>> update(@ApiParam(value = "User", required = true) @RequestBody User u) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
 			service.update(u);
+			map.put("message", "회원정보 수정 성공");
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			map.put("message", "회원정보 수정 실패");
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+
+	@ApiOperation(value = "파일 업로드", notes = "파일업로드'성공' 또는 '실패' 문자열을 리턴", response = Map.class)
+	@PostMapping("/upload")
+	public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file, @RequestParam String id) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		String userNo = String.valueOf(service.userNo(id));
+		service.thumbnailPath(userNo, file.getOriginalFilename());
+		try (
+				FileOutputStream fos = new FileOutputStream("c:/tmp/" + file.getOriginalFilename());
+				InputStream is = file.getInputStream();
+				) {
+			int readCount = 0;
+			status = HttpStatus.ACCEPTED;
+			map.put("message", "파일업로드 성공");
+			byte[] buffer = new byte[1024];
+			while ((readCount = is.read(buffer)) != -1) {
+				fos.write(buffer, 0, readCount);
+			}
+		} catch (Exception ex) {
+			map.put("message", "파일업로드 실패");
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			throw new RuntimeException("file Save Error");
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}

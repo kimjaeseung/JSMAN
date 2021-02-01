@@ -3,6 +3,8 @@ package com.newha.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.newha.vo.User;
 
 public interface UserMapper {
@@ -18,5 +20,6 @@ public interface UserMapper {
 	public List<User> selectAllByKeyword(String keyword);
 	public int selectId(String id);
 	public int userNo(String id);
-
+	
+	public void thumbnailPath(@Param("userNo") String userNo, @Param("thumbnail_path") String thumbnail_path);
 }

@@ -69,4 +69,10 @@ public class UserDAOImpl implements UserDAO {
 	public ArrayList<Integer> follow(int userNo) {
 		return mapper.follow(userNo);
 	}
+
+	@Override
+	public void thumbnailPath(String userNo, String thumbnail_path) {
+		mapper.thumbnailPath(userNo, thumbnail_path);
+	}
+
 }
