@@ -52,7 +52,6 @@
             <v-icon>mdi-account-outline</v-icon>
           </v-btn>
         </template>
-
         <v-list>
           <v-list-item>
             <v-list-item-title
@@ -67,7 +66,6 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-
     <v-navigation-drawer right bottom v-model="search_drawer" fixed temporary>
       <v-autocomplete
         :search-input.sync="search_word"
@@ -76,7 +74,6 @@
       ></v-autocomplete>
       <br />{{ search_word }}
     </v-navigation-drawer>
-
     <v-navigation-drawer v-model="menu_drawer" absolute temporary>
       <v-list>
         <v-list-item-group>
@@ -99,7 +96,6 @@
             </v-list-item-content>
           </v-list-item>
           <v-divider />
-
           <v-list-item v-for="(menu, index) in menus" :key="index">
             <v-list-item-icon>
               <v-icon>mdi-{{ menu.icon }}</v-icon>
@@ -247,5 +243,11 @@ export default {
 <style>
 #switch {
   display: inline;
+}
+.theme--dark.v-app-bar.v-toolbar.v-sheet {
+  background-color: #1E1E1E !important;
+}
+.theme--dark.v-navigation-drawer{
+  background-color: #252525 !important;
 }
 </style>
