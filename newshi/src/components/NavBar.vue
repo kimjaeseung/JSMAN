@@ -35,9 +35,10 @@
           </v-tooltip>
         </template>
         <Login
-          v-if="isLogin"
+          v-if="isLoginForm"
           @closeDialog="closeDialog"
           @changeJoin="changeJoin"
+          @login="login"
         ></Login>
         <Join
           v-else
@@ -130,11 +131,7 @@ export default {
     return {
       menu_drawer: false,
       search_drawer: false,
-      member: {
-        name: '김재성',
-        id: 'kimjea23@naver.com',
-        thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-      },
+      member: {},
       autocomp_value: [],
       search_word: '',
       menus: [
@@ -151,10 +148,10 @@ export default {
       ],
       mounted_flag: false,
       dialog: null,
-      isLogin: true,
+      isLoginForm: true,
       isKakao: false,
       info: {},
-      logged: true,
+      logged: false,
     };
   },
   computed: {
@@ -200,6 +197,9 @@ export default {
     myPage() {
       this.$router.push('/mypage');
     },
+    login() {
+      window.location.reload();
+    },
   },
   watch: {
     search_word: function() {
@@ -218,8 +218,14 @@ export default {
     },
   },
   created() {
-    this.logged = this.$store.getters.loggedIn;
-    this.member = this.$store.getters.userProfile;
+    if (localStorage['access-token'] && localStorage['access-token'] !== '') {
+      this.logged = this.$store.getters.loggedIn;
+      this.member = this.$store.getters.userProfile;
+    } else if (localStorage['id'] && localStorage['id'] !== '') {
+      this.logged = true;
+
+      this.member = this.$store.getters.userProfile;
+    }
     console.log(this.logged);
     console.log(this.member);
   },
