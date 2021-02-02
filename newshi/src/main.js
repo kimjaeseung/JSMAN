@@ -5,6 +5,7 @@ import store from './store';
 import vuetify from './plugins/vuetify';
 import { ValidationProvider, extend } from 'vee-validate';
 import firebase from 'firebase';
+import './styles/tiptap/main.scss';
 
 // Initialize Firebase
 firebase.initializeApp({

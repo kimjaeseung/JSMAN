@@ -1,51 +1,32 @@
 <template>
   <v-expansion-panels v-model="panel" accordion>
     <v-expansion-panel>
-      <v-expansion-panel-header>
-        <v-row>
-          <v-col sm="10">{{ news.url }}</v-col>
-          <v-col sm="1"
-            ><v-btn color="red darken-4" dark icon @click="remove"
-              ><v-icon>mdi-close</v-icon></v-btn
-            ></v-col
+      <v-expansion-panel-header
+        hide-actions
+        class="panels rounded-xl no-margin"
+      >
+        <v-row class="no-margin">
+          <v-col class="no-margin">{{ news.url }}</v-col>
+          <v-btn color="red darken-4" dark icon @click="remove"
+            ><v-icon large>mdi-close</v-icon></v-btn
           >
         </v-row>
       </v-expansion-panel-header>
-      <v-expansion-panel-content>
-        <v-textarea
-          outlined
-          v-model="summary"
-          label="Outlined textarea"
-          placeholder="직접 요약하고 싶다면 작성해주세요."
-        ></v-textarea>
-        <span><h4>관심 목록</h4></span>
-        <v-row justify="space-around">
-          <v-col cols="10" sm="10" md="8">
-            <v-sheet outlined width="330">
-              <v-chip-group
-                v-model="tags"
-                multiple
-                active-class="yellow --text"
-              >
-                <v-chip border large v-for="tag in tagName" :key="tag">
-                  {{ tag }}
-                </v-chip>
-              </v-chip-group>
-            </v-sheet>
-          </v-col>
-        </v-row>
-        <v-row class="d-flex flex-row-reverse">
-          <v-btn v-if="!isSaveOnce" @click="save">저장</v-btn>
-          <v-btn v-else @click="save">수정</v-btn>
-        </v-row>
+      <v-expansion-panel-content class="pl-6">
+        <Tiptap @saveData="saveOther"></Tiptap>
       </v-expansion-panel-content>
     </v-expansion-panel>
   </v-expansion-panels>
 </template>
 
 <script>
+import Tiptap from '@/components/Tiptap.vue';
+
 export default {
   name: 'NewsForm',
+  components: {
+    Tiptap,
+  },
   props: {
     news: Object,
     num: Number,
@@ -73,13 +54,27 @@ export default {
       this.$emit('remove', this.num);
       this.panel = [];
     },
-    save() {
-      this.$emit('save', this.summary, this.tags, this.num);
-      this.isSaveOnce = true;
+    saveOther(summary, fullTag) {
+      this.$emit('save', summary, fullTag, this.num);
       this.panel = [];
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+.panels {
+  border: 1px solid gray;
+  background-color: lightgray;
+  width: 80%;
+  height: 10%;
+}
+.left-border {
+  border-left: 2px solid gray;
+}
+.no-margin {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  float: right;
+}
+</style>

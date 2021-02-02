@@ -24,14 +24,9 @@
       </v-toolbar>
 
       <v-form class="pa-6" @submit.prevent="registURL">
-        <ValidationProvider
-          name="id"
-          rules="required|url"
-          v-slot="{ errors }"
-        >
+        <ValidationProvider name="url" rules="url" v-slot="{ errors }">
           <v-text-field
             v-model="url"
-            ref="regist"
             :error-messages="errors"
             required
             placeholder="URL을 등록해주세요"
@@ -54,7 +49,7 @@
         <v-text-field
           v-model="postName"
           required
-          placeholder="포스트 이름을 작성해주세요"
+          placeholder="포스트 제목을 작성해주세요"
         ></v-text-field>
         <v-btn color="orange lighten-4" @click="registPost"
           >등록<v-icon right>mdi-cloud-upload</v-icon>
@@ -69,6 +64,7 @@ import { ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
 import NewsForm from '@/components/NewsForm.vue';
+import { saveArticle } from '@/api/article.js';
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });
@@ -95,7 +91,8 @@ export default {
   },
   methods: {
     registURL() {
-      const news = {
+      if (this.url === '') return;
+      let news = {
         url: this.url,
         summary: '',
         tags: [],
@@ -103,7 +100,37 @@ export default {
       this.post.push(news);
       this.url = '';
     },
-    registPost() {},
+    registPost() {
+      if (this.postName === '' || this.postName == null) {
+        alert('포스트 제목을 작성해주세요');
+        return;
+      }
+      for (let i = 0; i < this.post.length; i++) {
+        let news = {
+          url: this.post[i].url,
+          summary: this.post[i].summary,
+          tags: this.post[i].tags,
+          id: localStorage['id'],
+          name: this.postName,
+        };
+        this.post.splice(i, 1, news);
+      }
+
+      saveArticle(
+        this.post,
+        (response) => {
+          if (response.data.message === 'success') {
+            alert('포스트 생성에 성공하셨습니다.');
+          } else {
+            alert('포스트 생성에 실패하셨습니다.');
+          }
+        },
+        (error) => {
+          console.error(error);
+          alert('포스트 생성 중 에러가 발생했습니다.');
+        }
+      );
+    },
     removeURL(index) {
       this.post.splice(index, 1);
       console.log(this.post);
