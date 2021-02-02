@@ -22,8 +22,6 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
               <v-btn
-                color="black"
-                dark
                 v-bind="attrs"
                 v-on="{ ...tooltip, ...dialog }"
                 icon
@@ -35,10 +33,9 @@
           </v-tooltip>
         </template>
         <Login
-          v-if="isLoginForm"
+          v-if="isLogin"
           @closeDialog="closeDialog"
           @changeJoin="changeJoin"
-          @login="login"
         ></Login>
         <Join
           v-else
@@ -55,7 +52,6 @@
             <v-icon>mdi-account-outline</v-icon>
           </v-btn>
         </template>
-
         <v-list>
           <v-list-item>
             <v-list-item-title
@@ -70,7 +66,6 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-
     <v-navigation-drawer right bottom v-model="search_drawer" fixed temporary>
       <v-autocomplete
         :search-input.sync="search_word"
@@ -79,7 +74,6 @@
       ></v-autocomplete>
       <br />{{ search_word }}
     </v-navigation-drawer>
-
     <v-navigation-drawer v-model="menu_drawer" absolute temporary>
       <v-list>
         <v-list-item-group>
@@ -102,7 +96,6 @@
             </v-list-item-content>
           </v-list-item>
           <v-divider />
-
           <v-list-item v-for="(menu, index) in menus" :key="index">
             <v-list-item-icon>
               <v-icon>mdi-{{ menu.icon }}</v-icon>
@@ -110,6 +103,15 @@
             <v-list-item-title>
               {{ menu.title }}
             </v-list-item-title>
+            <v-switch
+              v-if="menu.title === '다크모드'"
+              v-model="switchTheme"
+              value="true"
+              @click="changeTheme()"
+              inset
+              dense
+              color="orange"
+            ></v-switch>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -122,6 +124,8 @@ import Login from '@/components/Login.vue';
 import Join from '@/components/Join.vue';
 import { mapActions } from 'vuex';
 
+const localThemeMode = localStorage.getItem('themeMode');
+
 export default {
   components: {
     Login,
@@ -131,7 +135,11 @@ export default {
     return {
       menu_drawer: false,
       search_drawer: false,
-      member: {},
+      member: {
+        name: '김재성',
+        id: 'kimjea23@naver.com',
+        thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+      },
       autocomp_value: [],
       search_word: '',
       menus: [
@@ -148,10 +156,11 @@ export default {
       ],
       mounted_flag: false,
       dialog: null,
-      isLoginForm: true,
+      isLogin: true,
       isKakao: false,
       info: {},
-      logged: false,
+      logged: true,
+      switchTheme: '',
     };
   },
   computed: {
@@ -197,9 +206,11 @@ export default {
     myPage() {
       this.$router.push('/mypage');
     },
-    login() {
-      window.location.reload();
-    },
+    changeTheme() {
+        // true일 때 darkmode, false일 때 lightmode
+        this.$store.dispatch('getThemeMode', this.switchTheme)
+        this.$vuetify.theme.dark = this.switchTheme
+    }
   },
   watch: {
     search_word: function() {
@@ -218,18 +229,25 @@ export default {
     },
   },
   created() {
-    if (localStorage['access-token'] && localStorage['access-token'] !== '') {
-      this.logged = this.$store.getters.loggedIn;
-      this.member = this.$store.getters.userProfile;
-    } else if (localStorage['id'] && localStorage['id'] !== '') {
-      this.logged = true;
-
-      this.member = this.$store.getters.userProfile;
-    }
+    this.logged = this.$store.getters.loggedIn;
+    this.member = this.$store.getters.userProfile;
+    this.switchTheme = localStorage.getItem('themeMode');
+    localThemeMode.toString() == 'true' ? this.$vuetify.theme.dark = true: this.$vuetify.theme.dark = false; // 시작하자마자 다크테마인지 아닌지 체크
     console.log(this.logged);
     console.log(this.member);
   },
+  
 };
 </script>
 
-<style></style>
+<style>
+#switch {
+  display: inline;
+}
+.theme--dark.v-app-bar.v-toolbar.v-sheet {
+  background-color: #1E1E1E !important;
+}
+.theme--dark.v-navigation-drawer{
+  background-color: #252525 !important;
+}
+</style>

@@ -40,6 +40,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 //http://localhost/swagger-ui.html
+
 @Api("UserController V1")
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
@@ -57,25 +58,28 @@ public class UserController {
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
-
+	
 	@ApiOperation(value = "유저 리스트 조회", notes = "유저 리스트를 리턴", response = List.class)
 	@GetMapping(value = "/user")
 	public List<User> selectAll() {
 		return service.selectAll();
 	}
 
-	@ApiOperation(value = "아이디 중복검사", notes = "아이디 중복검사결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/idcheck/{id}") // 아이디체크
+	@ApiOperation(value = "이메일 중복검사", notes = "'success'는 사용 가능한 아이디, 'fail'은 이미 사용중인 아이디", response = Map.class)
+	@GetMapping(value = "/idcheck/{id}") // 이메일체크
 	public ResponseEntity<Map<String, String>> selectid(
 			@ApiParam(value = "id", required = true) @PathVariable String id) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		int result = service.selectId(id);
-		if (result == 0) {
-			map.put("message", "success"); // 0이면 없는거 1이면 있는거
+		try {
+			int result = service.selectId(id);
+			if (result == 0) {
+				map.put("message", SUCCESS);
+			} else {
+				map.put("message", FAIL);
+			}
 			status = HttpStatus.ACCEPTED;
-		} else {
-			map.put("message", "fail");
+		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -83,7 +87,7 @@ public class UserController {
 
 	@ApiOperation(value = "이메일 인증", notes = "입력값으로 id(email) 주면 이메일 발송. 리턴값은 confirm: 인증번호 ", response = Map.class)
 	@GetMapping(value = "/emailauth/{id}") // 이메일 인증
-	public ResponseEntity<Map<String, Integer>> emailauth(
+	public ResponseEntity<Map<String, Integer>> emailAuth(
 			@ApiParam(value = "String", required = true) @PathVariable String id) throws MessagingException {
 		int confirm = (int) ((Math.random() * (9999 - 1000)) + 1000);
 		HttpStatus status = null;
@@ -100,10 +104,9 @@ public class UserController {
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-
 		return new ResponseEntity<Map<String, Integer>>(map, status);
 	}
-
+	
 	@ApiOperation(value = "내가 구독한 큐레이터", notes = "아이디 입력하면 구독한 큐레이터 thumbnail_path, name 리턴", response = ArrayList.class)
 	@GetMapping(value = "/subscribe/{id}") // 내가 구독한 큐레이터
 	public ResponseEntity<ArrayList<Map<String, String>>> subscribe(
@@ -112,7 +115,9 @@ public class UserController {
 		int userNo = service.userNo(id);
 		HttpStatus status = null;
 		try {
+			
 			List<Integer> l = service.follow(userNo);
+			
 			for (int i = 0; i < l.size(); i++) {
 				Map<String, String> map = new HashMap<String, String>();
 				User user = service.selectUser(l.get(i));
@@ -129,31 +134,21 @@ public class UserController {
 
 	@ApiOperation(value = "회원가입", notes = "회원가입 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/join")
-	public ResponseEntity<Map<String, String>> insert(@ApiParam(value = "User", required = true) @RequestBody User u) {
+	public ResponseEntity<Map<String, String>> insert(@ApiParam(value = "User", required = true) @RequestBody User u,
+			@ApiParam(value = "tag List", required = true) @RequestParam List<String> tag) {
 		Map<String, String> map = new HashMap<>();
-		int result = service.insert(u);
 		HttpStatus status = null;
-		if (result == 0) {
-			map.put("message", "회원가입 실패");
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		} else {
-			map.put("message", "회원가입 성공");
+		try {
+			service.insert(u);
+			for (int i = 0; i < tag.size(); i++) {
+				service.insertTag(u.getId(), tag.get(i));
+			}
+			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<Map<String, String>>(map, status);
-	}
-	@ApiOperation(value = "관심 태그 넣기", notes = "관심 태그 넣기 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@PostMapping(value = "/inserttag")
-	public ResponseEntity<Map<String, String>> inserttag(@ApiParam(value = "tag List", required = true) @RequestParam List<String> tag,
-			@RequestParam String id){
-		Map<String, String> map = new HashMap<>();
-		HttpStatus status = null;
-		System.out.println(tag.toString());
-		for (int i = 0; i < tag.size(); i++) {
-				service.inserttag(id, tag.get(i));
-		}
-		map.put("message", "관심 태그 넣기 성공");
-		status = HttpStatus.ACCEPTED;
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 	
@@ -165,10 +160,10 @@ public class UserController {
 		HttpStatus status = null;
 		try {
 			service.delete(id);
-			map.put("message", "회원탈퇴 성공");
+			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
-			map.put("message", "회원탈퇴 실패");
+			map.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -181,16 +176,16 @@ public class UserController {
 		HttpStatus status = null;
 		try {
 			service.update(u);
-			map.put("message", "회원정보 수정 성공");
+			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
-			map.put("message", "회원정보 수정 실패");
+			map.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
-	@ApiOperation(value = "파일 업로드", notes = "파일업로드'성공' 또는 '실패' 문자열을 리턴", response = Map.class)
+	@ApiOperation(value = "파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
 	@PostMapping("/upload")
 	public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file,
 			@RequestParam String id) {
@@ -202,13 +197,13 @@ public class UserController {
 				InputStream is = file.getInputStream();) {
 			int readCount = 0;
 			status = HttpStatus.ACCEPTED;
-			map.put("message", "파일업로드 성공");
+			map.put("message", SUCCESS);
 			byte[] buffer = new byte[1024];
 			while ((readCount = is.read(buffer)) != -1) {
 				fos.write(buffer, 0, readCount);
 			}
 		} catch (Exception ex) {
-			map.put("message", "파일업로드 실패");
+			map.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			throw new RuntimeException("file Save Error");
 		}

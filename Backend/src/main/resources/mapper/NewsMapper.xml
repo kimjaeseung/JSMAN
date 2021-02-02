@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newha.mapper.NewsMapper">
+
+	<insert id="insertNews" parameterType="News">
+		insert into news values(null, #{title}, #{subtitle}, #{content}, #{image_path}, #{url}, #{article_date}, #{article_bot_summary}, #{article_image_caption}, #{company});
+	</insert>
+	
+	<insert id="insertImages" parameterType="java.util.List">
+    INSERT INTO
+        news_image
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+        (#{item.newsNo}, #{item.news_image}, #{item.image_caption})
+    </foreach>
+	</insert>
+	
+	<insert id="insertPost" parameterType="String">
+		insert into post values(null, #{name});
+	</insert>
+	
+	<insert id="insertUserScrapNews" parameterType="UserScrapNews">
+		insert into user_scrap_news values(null, #{newsNo}, #{postNo}, #{userNo}, timstamp(), #{curator_summary}, 0, 0);
+	</insert>
+	
+	<insert id="insertPostTag" parameterType="PostTag">
+		insert into post_tag values(#{scrapNo}, #{tagNo});
+	</insert>
+	
+	<insert id="insertHashTag" parameterType="java.util.List">
+    INSERT INTO
+        hashtag
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+        (null, #{item})
+        WHERE NOT EXISTS 
+		(SELECT * FROM hashtag WHERE name = #{item})
+    </foreach>
+	</insert>
+	
+	<select id="selectByUrl" parameterType="String" resultType="int">
+		select newsNo from news where url = #{url};
+	</select>
+	
+	<select id="selectPostByName" parameterType="String" resultType="int">
+		select postNo from post where name = #{name};
+	</select>
+	
+	<select id="selectUserById" parameterType="String" resultType="int">
+		select userNo from user where id = #{id};
+	</select>
+	
+	<select id="selectUserScrapNewsByPostNo" parameterType="String" resultType="List">
+		select scarapNo from user_scrap_news where postNo = #{postNo};
+	</select>
+	
+	<select id="selectHashTagByName" parameterType="String" resultType="int">
+		select tagNo from hashtag where name = #{name};
+	</select>
+	
+</mapper>

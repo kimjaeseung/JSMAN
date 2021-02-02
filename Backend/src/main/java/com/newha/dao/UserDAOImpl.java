@@ -21,8 +21,8 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	@Override
-	public int insert(User u) {
-		return mapper.insert(u);
+	public void insert(User u) {
+		mapper.insert(u);
 	}
 
 	@Override
@@ -76,8 +76,8 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public void inserttag(String id, String tag) {
-		mapper.inserttag(id, tag);
+	public void insertTag(String id, String tag) {
+		mapper.insertTag(id, tag);
 	}
 
 	

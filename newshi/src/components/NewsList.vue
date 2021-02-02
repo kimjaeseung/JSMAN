@@ -1,23 +1,19 @@
 <template>
   <v-container>
     <v-toolbar
-        color="white"
         flat
         dense
     >
-      <v-tabs
-        v-model="tab"
-        center-active
-        show-arrows
-        align-with-title
-      >
-        <v-tabs-slider color="grey lighten-4"></v-tabs-slider>
+      <v-tabs v-model="tab" center-active >
+        <v-tabs-slider color="transparent"></v-tabs-slider>
           <v-tab
             v-for="(newsItem, index) in newsItems"
             :key="index"
-            style="height: 48px; width: 48px;"
+            :ripple="false"
           >
-            <v-list-item-avatar>
+            <v-list-item-avatar circle
+              style="width: 50px; height: 50px;"
+            >
               <v-img :src="newsItem.avatar"></v-img>
             </v-list-item-avatar>
           </v-tab>
@@ -29,7 +25,7 @@
         v-for="(newsItem, idx) in newsItems"
         :key="newsItem+idx"
       >
-      {{ newsItem.name }} 
+      <p class="mt-2">{{ newsItem.name }} 님의 추천 </p>
       <hr>
         <v-list>
           <template v-for="(newsInfo, i) in newsItem.newsLists">
@@ -37,10 +33,8 @@
               :key="newsInfo+i"
               @click="move(newsInfo.newsNo)"
             >
-                <v-list-item-avatar
-                  tile
-                >
-                  <v-img :src="newsInfo.thumbnail"></v-img>
+                <v-list-item-avatar rounded >
+                  <v-img :src="newsInfo.thumbnail" centered></v-img>
                 </v-list-item-avatar>
                 <v-list-item-content>
                     <v-list-item-title v-html="newsInfo.title"></v-list-item-title>
@@ -55,6 +49,7 @@
 </template>
 
 <script>
+
 export default {
   props: [
     'newsInfos'
@@ -77,5 +72,20 @@ export default {
 <style>
 .container {
   max-width: 800px;
+}
+.theme--dark.v-sheet{
+  background-color: #121212;
+}
+.theme--dark.v-tabs{
+  background-color: #121212;
+}
+.theme--dark.v-tabs-items {
+  background-color: #121212 !important;
+}
+.v-slide-group__prev--disabled{
+  display: none !important;
+}
+.v-tab {
+  padding:0 0 !important;
 }
 </style>
