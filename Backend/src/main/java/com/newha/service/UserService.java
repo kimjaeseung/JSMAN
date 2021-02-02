@@ -11,7 +11,7 @@ public interface UserService {
 	public ArrayList<User> selectAll();
 	public ArrayList<Integer> follow(int userNo);
 
-	public int insert(User u);
+	public void insert(User u);
 	public void delete(String id);
 	public void update(User u);
 	public User selectUser(int userNo);
@@ -23,6 +23,6 @@ public interface UserService {
 	
 	public void thumbnailPath(String userNo, String thumbnail_path);
 	
-	public void inserttag(String id, String name);
+	public void insertTag(String id, String name);
 
 }
