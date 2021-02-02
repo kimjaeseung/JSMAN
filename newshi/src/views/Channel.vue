@@ -22,36 +22,22 @@
       <v-row> 
         <v-col class="d-flex justify-center">
           <v-container>
-            <v-row>
+            <v-row v-if="mypage == true">
               <v-col><v-btn block>스크랩 만들기</v-btn></v-col>
+              <v-col><v-btn block>커뮤니티</v-btn></v-col>
+            </v-row>
+            <v-row v-else>
+              <v-col><v-btn block>구독하기</v-btn></v-col>
               <v-col><v-btn block>커뮤니티</v-btn></v-col>
             </v-row>
           </v-container>
         </v-col>
       </v-row>
+      <v-row no-gutters>현재 스크랩 수: {{scrabs.length}}</v-row>
       <v-row no-gutters>
         <v-col>
-          <v-card height="500px" style="overflow-y: scroll">
-              <v-container>
-                <v-row justify="center">
-                  <v-col v-for="(scrab, index) in scrabs" :key="index" cols="auto">
-                    <v-hover v-slot="{ hover }">
-                      <v-card width='150' height='150'>
-                        <v-img :src="scrab.scrab_thumbnail" aspect-ratio="1">
-                          <div v-if="hover == false" class="scrab_dark"></div>
-                          <div fill-height style="width:100%; height:100%;" class="d-flex justify-center align-center" else>
-                            <v-btn :disabled="hover == false" :href="now_url + '/' + scrab.scrab_no">버튼</v-btn>
-                          </div>
-                        </v-img>
-                      <div class="ellipsis">{{scrab.title}}</div>
-                      </v-card>
-                    </v-hover>
-                  </v-col>
-                  <!-- <v-col v-for="n in 20" :key="n" cols="auto">
-                    <v-card width="120" height="120"></v-card>
-                  </v-col> -->
-                </v-row>
-              </v-container>
+          <v-card height="600px" style="overflow-y: scroll">
+            <router-view></router-view>
           </v-card>
         </v-col>
       </v-row>
@@ -64,21 +50,26 @@ export default {
     data() {
         return {
           member: {},
-          scrabs: [],
           now_url: window.location.href,
+          mypage: false,
         }
     },
+    methods: {
+      showScrab(scrab_no) {
+        console.log("scrab_no>>>>" + scrab_no);
+      }
+    },
   created() {
-      console.log(this.$route.params.id);
+      console.log("아이디>>>>" + this.$route.params.id);
       //유저 정보 받아오는 axios
       this.member = {
           name: '김재성',
           id: 'kimjea23@naver.com',
           thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
       };
-
+      // 내 정보랑 같은지 체크해서
+      this.mypage = true;
       //스크랩 받아오는 axios
-      this.postNo = 1;
       this.scrabs = [
         {
           title: '테스트1',

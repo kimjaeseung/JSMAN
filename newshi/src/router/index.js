@@ -7,7 +7,8 @@ import FindPw from '../views/FindPw.vue';
 import ChangePw from '../views/ChangePw.vue';
 import MyInfo from '../components/mypage/MyInfo';
 import Channel from "../views/Channel.vue";
-import Scrab from "../views/Scrab.vue";
+import Scrab from "../components/channel/Scrab.vue";
+import ScrabNews from "../components/channel/ScrabNews.vue";
 
 Vue.use(VueRouter);
 
@@ -50,12 +51,20 @@ const routes = [
     path: "/channel/:id",
     name: "Channel",
     component: Channel,
+    children: [
+      {
+        path: "",
+        name: "Scrab",
+        component: Scrab,
+      },
+      {
+        path: ":scrab_no",
+        name: "ScrabNews",
+        component: ScrabNews,
+      }
+    ]
   },
-  {
-    path: "/channel/:id/:scrab_no",
-    name: "Scrab",
-    component: Scrab,
-  }
+  
 ];
 
 const router = new VueRouter({
