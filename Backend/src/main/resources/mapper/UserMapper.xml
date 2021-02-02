@@ -30,7 +30,7 @@
 		select userNo from user where id = #{id}
 	</select>
 	
-	<insert id="inserttag" parameterType="string">
+	<insert id="insertTag" parameterType="string">
 		insert into join_tag values ( ( select userNo from user where id = #{id} ), #{name} );
 	</insert>
 	

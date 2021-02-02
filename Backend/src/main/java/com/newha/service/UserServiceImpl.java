@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public int insert(User u) {
-		return dao.insert(u);
+	public void insert(User u) {
+		dao.insert(u);
 	}
 
 	@Override
@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void inserttag(String id, String tag) {
-		dao.inserttag(id, tag);
+	public void insertTag(String id, String tag) {
+		dao.insertTag(id, tag);
 	}
 
 }

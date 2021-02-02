@@ -9,7 +9,7 @@ public interface UserDAO {
 	public ArrayList<User> selectAll();
 	public ArrayList<Integer> follow(int userNo);
 	
-	public int insert(User u);
+	public void insert(User u);
 	public void delete(String id);
 	public void update(User u);
 	
@@ -21,6 +21,6 @@ public interface UserDAO {
 	public int userNo(String id);
 
 	public void thumbnailPath(String userNo, String thumbnail_path);
-	public void inserttag(String id, String name);
+	public void insertTag(String id, String name);
 
 }
