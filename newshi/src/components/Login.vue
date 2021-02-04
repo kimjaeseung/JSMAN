@@ -65,13 +65,15 @@
           구글 로그인
         </v-btn>
       </v-col>
-      <v-col>
-        <img
-          class="kakao_btn"
-          src="@/assets/kakao_login_medium_narrow.png"
-          @click="loginWithKakao"
-          alt="카카오 로그인"
-        />
+      <v-col style="width:0">
+        <v-btn width="183" height="45">
+          <img
+            class="kakao_btn"
+            src="@/assets/kakao_login_medium_narrow.png"
+            @click="loginWithKakao"
+            alt="카카오 로그인"
+          />
+        </v-btn>
       </v-col>
     </v-row>
     <v-row class="ma-6">
