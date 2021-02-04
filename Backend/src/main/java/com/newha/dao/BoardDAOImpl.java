@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.newha.mapper.BoardMapper;
 import com.newha.vo.Board;
+import com.newha.vo.BoardComment;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO{
@@ -30,7 +31,7 @@ public class BoardDAOImpl implements BoardDAO{
 	}
 
 	@Override
-	public Board selectBoard(int boardPostNo) {
+	public Board selectBoard(String boardPostNo) {
 		return mapper.selectBoard(boardPostNo);
 	}
 
@@ -42,6 +43,26 @@ public class BoardDAOImpl implements BoardDAO{
 	@Override
 	public void boardDelete(String boardPostNo) {
 		mapper.boardDelete(boardPostNo);
+	}
+
+	@Override
+	public void visitCnt(String boardPostNo) {
+		mapper.visitCnt(boardPostNo);
+	}
+
+	@Override
+	public void boardCommentInsert(String boardPostNo, String id, String content) {
+		mapper.boardCommentInsert(boardPostNo, id, content);
+	}
+
+	@Override
+	public List<Integer> boardCommentList(String boardPostNo) {
+		return mapper.boardCommentList(boardPostNo);
+	}
+
+	@Override
+	public BoardComment boardComment(String commentNo) {
+		return mapper.boardComment(commentNo);
 	}
 	
 }

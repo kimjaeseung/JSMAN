@@ -6,7 +6,7 @@
 
 <mapper namespace="com.newha.mapper.BoardMapper">
 	<insert id="boardInsert" parameterType="Board">
-		insert into user_board_post values(null,(select userNo from user where id = #{boardPostNo}),(select userNo from user where id = #{userNo}),
+		insert into user_board_post values(null,(select userNo from user where id = #{boardNo}),(select userNo from user where id = #{userNo}),
 		#{title},#{content},null,0,0) 
 	</insert>
 	
@@ -28,6 +28,24 @@
 	
 	<delete id="boardDelete" parameterType="string">
 		delete from user_board_post where boardPostNo = #{boardPostNo}
-	</delete> 
+	</delete>
+	
+	<update id="visitCnt" parameterType="string">
+		update user_board_post set visit_cnt = visit_cnt+1 where boardPostNo = #{boardPostNo}
+	</update>
+	
+	<insert id="boardCommentInsert" parameterType="String">
+		insert into user_board_comment values( null, #{boardPostNo}, (select userNo from user where id = #{id}), #{content}, null);
+	</insert>
+	
+	<select id="boardCommentList" resultType="int">
+		select commentNo from user_board_comment where boardPostNo = #{boardPostNo};
+	</select>
+	
+		
+	<select id="boardComment" resultType="BoardComment">
+	select * from user_board_comment where commentNo = #{commentNo};
+	</select>
+	
 	
 </mapper>

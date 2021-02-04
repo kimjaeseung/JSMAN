@@ -23,6 +23,7 @@ public interface UserService {
 	
 	public void thumbnailPath(String userNo, String thumbnail_path);
 	
-	public void insertTag(String id, String name);
+	public void insertTag(String id, String tag);
+	public void subscribe(String id, String name);
 
 }

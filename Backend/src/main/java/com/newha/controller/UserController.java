@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.newha.service.BoardService;
 import com.newha.service.JwtService;
 import com.newha.service.UserService;
 import com.newha.vo.User;
@@ -54,6 +55,9 @@ public class UserController {
 
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private BoardService boardservice;
 
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	private static final String SUCCESS = "success";
@@ -131,6 +135,23 @@ public class UserController {
 		}
 		return new ResponseEntity<ArrayList<Map<String, String>>>(list, status);
 	}
+	
+	@ApiOperation(value = "큐레이터 구독", notes = "큐레이터 구독 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@PostMapping(value = "/subsc")
+	public ResponseEntity<Map<String, String>> insert(@ApiParam(value = "String", required = true) @RequestParam String id, 
+			@ApiParam(value = "String", required = true) @RequestParam String name) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			service.subscribe(id, name);
+			map.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
 
 	@ApiOperation(value = "회원가입", notes = "회원가입 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/join")
@@ -149,6 +170,7 @@ public class UserController {
 			map.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		boardservice.boardCreate(u.getId()); //회원가입과 동시에 개인 게시판 생성
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 	
