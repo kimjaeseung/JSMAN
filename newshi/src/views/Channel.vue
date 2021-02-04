@@ -68,7 +68,7 @@ export default {
       // 내 정보랑 같은지 체크해서
       this.isMyPage = true;
       // 하위 컴포넌트에 전달
-      this.showScrab();
+      // this.showScrab();
     },
 }
 </script>

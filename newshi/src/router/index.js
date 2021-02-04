@@ -9,6 +9,7 @@ import MyInfo from '../components/mypage/MyInfo';
 import Channel from "../views/Channel.vue";
 import Scrab from "../components/channel/Scrab.vue";
 import ScrabNews from "../components/channel/ScrabNews.vue";
+import ToScrab from "../components/channel/ToScrab.vue";
 
 Vue.use(VueRouter);
 
@@ -53,6 +54,11 @@ const routes = [
     component: Channel,
     children: [
       {
+        path: "",
+        name: "ToScrab",
+        component: ToScrab
+      },
+      {
         path: "main",
         name: "Scrab",
         component: Scrab,
@@ -62,6 +68,10 @@ const routes = [
         path: ":scrab_no",
         name: "ScrabNews",
         component: ScrabNews,
+      },
+      {
+        path: "modify/:scrab_no",
+        name: "ModifyScrab"
       }
     ]
   },
