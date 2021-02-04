@@ -128,6 +128,51 @@
           </button>
         </div>
       </editor-menu-bar>
+      <editor-menu-bubble
+        class="menububble"
+        :editor="editor"
+        @hide="hideLinkMenu"
+        v-slot="{ commands, isActive, getMarkAttrs, menu }"
+      >
+        <div
+          class="menububble"
+          :class="{ 'is-active': menu.isActive }"
+          :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+        >
+          <form
+            class="menububble__form"
+            v-if="linkMenuIsActive"
+            @submit.prevent="setLinkUrl(commands.link, linkUrl)"
+          >
+            <input
+              class="menububble__input"
+              type="text"
+              v-model="linkUrl"
+              placeholder="https://"
+              ref="linkInput"
+              @keydown.esc="hideLinkMenu"
+            />
+            <button
+              class="menububble__button"
+              @click="setLinkUrl(commands.link, null)"
+              type="button"
+            >
+              <img class="icon" src="@/assets/tiptap/icons/remove.svg" alt="" />
+            </button>
+          </form>
+
+          <template v-else>
+            <button
+              class="menububble__button"
+              @click="showLinkMenu(getMarkAttrs('link'))"
+              :class="{ 'is-active': isActive.link() }"
+            >
+              <span>{{ isActive.link() ? 'Update Link' : 'Add Link' }}</span>
+              <img class="icon" src="@/assets/tiptap/icons/link.svg" alt="" />
+            </button>
+          </template>
+        </div>
+      </editor-menu-bubble>
       <v-divider dark></v-divider>
       <editor-content class="editor__content" :editor="editor" />
     </div>
@@ -147,7 +192,7 @@
 </template>
 
 <script>
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
+import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from 'tiptap';
 import {
   Blockquote,
   CodeBlock,
@@ -171,6 +216,7 @@ export default {
   components: {
     EditorContent,
     EditorMenuBar,
+    EditorMenuBubble,
   },
   data() {
     return {
@@ -208,6 +254,8 @@ export default {
         '오피니언',
       ],
       isSaveOnce: false,
+      linkUrl: null,
+      linkMenuIsActive: false,
     };
   },
   beforeDestroy() {
@@ -223,6 +271,21 @@ export default {
       console.log(fullTag);
       this.$emit('saveData', this.editor.getHTML(), fullTag);
       this.isSaveOnce = true;
+    },
+    showLinkMenu(attrs) {
+      this.linkUrl = attrs.href;
+      this.linkMenuIsActive = true;
+      this.$nextTick(() => {
+        this.$refs.linkInput.focus();
+      });
+    },
+    hideLinkMenu() {
+      this.linkUrl = null;
+      this.linkMenuIsActive = false;
+    },
+    setLinkUrl(command, url) {
+      command({ href: url });
+      this.hideLinkMenu();
     },
   },
 };
