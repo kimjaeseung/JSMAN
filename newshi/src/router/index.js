@@ -53,9 +53,10 @@ const routes = [
     component: Channel,
     children: [
       {
-        path: "",
+        path: "main",
         name: "Scrab",
         component: Scrab,
+        props: true
       },
       {
         path: ":scrab_no",

@@ -8,7 +8,18 @@
             <v-img :src="scrab.scrab_thumbnail" aspect-ratio="1">
                 <div v-if="hover == false" class="scrab_dark"></div>
                 <div fill-height style="width:100%; height:100%;" class="d-flex justify-center align-center" else>
-                <v-btn :disabled="hover == false" @click="showNews(scrab.scrab_no)">버튼</v-btn>
+                  <v-container >
+                    <v-row>
+                      <v-col class="d-flex justify-center align-center">
+                         <v-btn :disabled="hover == false" @click="showNews(scrab.scrab_no)">보러가기</v-btn>
+                      </v-col>
+                    </v-row>
+                    <v-row v-if="isMyPage==true">
+                      <v-col class="d-flex justify-center align-center">
+                         <v-btn :disabled="hover == false">수정하기</v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-container>
                 </div>
             </v-img>
             <div class="ellipsis">{{scrab.title}}</div>
@@ -21,17 +32,25 @@
 
 <script>
 export default {
+    props: {
+      propsIsMyPage: {
+        type: Boolean
+      }
+    },
     data() {
         return {
+          isMyPage: Boolean,
           scrabs: [],
         }
     },
     methods: {
       showNews(scrab_no) {
-        this.$router.push('./' + this.$route.params.id + '/' + scrab_no);
+        this.$router.push('./' + scrab_no);
       }
     },
     created() {
+      console.log("Scrab propsIsMyPage>>>" + this.propsIsMyPage);
+      this.isMyPage = this.propsIsMyPage;
         //스크랩 받아오는 axios
       this.scrabs = [
         {

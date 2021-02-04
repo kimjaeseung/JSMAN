@@ -65,7 +65,7 @@ export default {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     backPage() {
-      this.$router.go(-1);
+      this.$emit("callScrab");
     }
   },
   created() {
