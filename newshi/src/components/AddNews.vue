@@ -2,7 +2,7 @@
   <v-dialog v-model="addDialog" fullscreen>
     <template v-slot:activator="{ on, attrs }">
       <v-btn
-        color="orange lighten-4"
+        color="#fcbf49"
         fixed
         bottom
         right
@@ -10,7 +10,7 @@
         v-bind="attrs"
         v-on="on"
       >
-        <v-icon>mdi-plus</v-icon>
+        <v-icon>mdi-pencil</v-icon>
       </v-btn>
     </template>
     <v-card max-height="300px">

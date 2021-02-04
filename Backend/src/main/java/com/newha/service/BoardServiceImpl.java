@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.newha.dao.BoardDAO;
 import com.newha.vo.Board;
+import com.newha.vo.BoardComment;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -30,7 +31,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public Board selectBoard(int boardPostNo) {
+	public Board selectBoard(String boardPostNo) {
 		return dao.selectBoard(boardPostNo);
 	}
 
@@ -42,6 +43,31 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void boardDelete(String boardPostNo) {
 		dao.boardDelete(boardPostNo);
+	}
+
+	@Override
+	public void visitCnt(String boardPostNo) {
+		dao.visitCnt(boardPostNo);
+	}
+
+	@Override
+	public void boardCommentInsert(String boardPostNo, String id, String content) {
+		dao.boardCommentInsert(boardPostNo, id, content);
+	}
+
+	@Override
+	public List<Integer> boardCommentList(String boardPostNo) {
+		return dao.boardCommentList(boardPostNo);
+	}
+
+	@Override
+	public BoardComment boardComment(String commentNo) {
+		return dao.boardComment(commentNo);
+	}
+
+	@Override
+	public String boardCommentCount(String temp) {
+		return dao.boardCommentCount(temp);
 	}
 
 }

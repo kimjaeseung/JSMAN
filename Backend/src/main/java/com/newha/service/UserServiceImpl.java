@@ -79,4 +79,14 @@ public class UserServiceImpl implements UserService {
 		dao.insertTag(id, tag);
 	}
 
+	@Override
+	public void subscribe(String id, String name) {
+		dao.subscribe(id, name);
+	}
+
+	@Override
+	public void subscdelete(String id, String id2) {
+		dao.subscdelete(id, id2);
+	}
+
 }
