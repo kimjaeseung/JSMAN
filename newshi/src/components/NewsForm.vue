@@ -6,9 +6,13 @@
         class="panels rounded-xl no-margin"
       >
         <v-row class="no-margin">
-          <v-col class="no-margin">{{ news.url }}</v-col>
-          <v-btn color="red darken-4" dark icon @click="remove"
-            ><v-icon large>mdi-close</v-icon></v-btn
+          <v-col class="no-margin"
+            ><div class="ellipsis">{{ news.url }}</div></v-col
+          >
+          <v-col class="no-margin">
+            <v-btn color="red darken-4 " dark icon @click="remove"
+              ><v-icon large>mdi-close</v-icon></v-btn
+            ></v-col
           >
         </v-row>
       </v-expansion-panel-header>
@@ -76,5 +80,11 @@ export default {
   margin: 0 0 0 0;
   padding: 0 0 0 0;
   float: right;
+}
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
 }
 </style>

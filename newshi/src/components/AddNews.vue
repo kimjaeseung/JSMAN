@@ -115,7 +115,7 @@ export default {
         };
         this.post.splice(i, 1, news);
       }
-
+      console.log(this.post);
       saveArticle(
         this.post,
         (response) => {
