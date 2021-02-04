@@ -6,7 +6,12 @@
       ></v-app-bar-nav-icon>
       <v-spacer />
       <a href="/">
-        <v-img contain src="@/assets/logo.png" style="height: 50%"></v-img>
+      <div v-if="this.switchTheme == 'true'">
+        <v-img contain src="@/assets/logo_darkmode.png"></v-img>
+      </div>
+      <div v-else>
+        <v-img contain src="@/assets/logo_lightmode.png"></v-img>
+      </div>
       </a>
       <v-spacer />
       <v-icon @click="search_drawer = !search_drawer">mdi-magnify</v-icon>
@@ -26,7 +31,7 @@
                 v-on="{ ...tooltip, ...dialog }"
                 icon
               >
-                <v-icon>mdi-account-outline</v-icon>
+                <v-icon>mdi-account</v-icon>
               </v-btn>
             </template>
             <span>로그인</span>
@@ -49,7 +54,7 @@
       <v-menu open-on-hover offset-y v-else>
         <template v-slot:activator="{ on, attrs }">
           <v-btn color="black" dark v-bind="attrs" v-on="on" icon>
-            <v-icon>mdi-account-outline</v-icon>
+            <v-icon>mdi-account</v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -231,7 +236,7 @@ export default {
   created() {
     this.logged = this.$store.getters.loggedIn;
     this.member = this.$store.getters.userProfile;
-    this.switchTheme = localStorage.getItem('themeMode');
+    this.switchTheme = localThemeMode;
     localThemeMode.toString() == 'true' ? this.$vuetify.theme.dark = true: this.$vuetify.theme.dark = false; // 시작하자마자 다크테마인지 아닌지 체크
     console.log(this.logged);
     console.log(this.member);
@@ -249,5 +254,8 @@ export default {
 }
 .theme--dark.v-navigation-drawer{
   background-color: #252525 !important;
+}
+.theme--light.v-app-bar.v-toolbar.v-sheet {
+  background-color: #ffffff !important;
 }
 </style>

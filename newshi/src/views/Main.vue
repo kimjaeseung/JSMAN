@@ -12,6 +12,8 @@ export default {
   components: { 
     NewsList, 
   },
+  methods: {
+  },
   data: function () {
     return {
         tab: null,
