@@ -22,7 +22,7 @@ public interface UserMapper {
 	public int userNo(String id);
 	
 	public void thumbnailPath(@Param("userNo") String userNo, @Param("thumbnail_path") String thumbnail_path);
-	public void insertTag(@Param("id")String id, @Param("name")String name);
+	public void insertTag(@Param("id")String id, @Param("tag")String tag);
 
-
+	public void subscribe(@Param("id")String id, @Param("name")String name);
 }

@@ -80,6 +80,11 @@ public class UserDAOImpl implements UserDAO {
 		mapper.insertTag(id, tag);
 	}
 
+	@Override
+	public void subscribe(String id, String name) {
+		mapper.subscribe(id, name);
+	}
+
 	
 
 }

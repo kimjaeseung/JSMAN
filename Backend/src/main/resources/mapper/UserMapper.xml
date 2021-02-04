@@ -31,7 +31,7 @@
 	</select>
 	
 	<insert id="insertTag" parameterType="string">
-		insert into join_tag values ( ( select userNo from user where id = #{id} ), #{name} );
+		insert into join_tag values ( ( select userNo from user where id = #{id} ), #{tag} );
 	</insert>
 	
 	<insert id="insert" parameterType="User">
@@ -57,5 +57,10 @@
 	<update id="thumbnailPath" parameterType="String">
 		update user set thumbnail_path = #{thumbnail_path} where userNo = #{userNo};
 	</update>
+	
+	<insert id="subscribe" parameterType="string">
+		insert into follow values ( ( select userNo from user where id = #{id} ), ( select userNo from user where name = #{name} ) );
+	</insert>
+	
 	
 </mapper>

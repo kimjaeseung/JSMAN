@@ -3,6 +3,7 @@ package com.newha.service;
 import java.util.List;
 
 import com.newha.vo.Board;
+import com.newha.vo.BoardComment;
 
 public interface BoardService {
 
@@ -12,10 +13,18 @@ public interface BoardService {
 
 	public List<Integer> boardListNo(int userNo);
 
-	public Board selectBoard(int boardPostNo);
+	public Board selectBoard(String boardPostNo);
 
 	public void boardUpdate(Board b);
 
 	public void boardDelete(String boardPostNo);
+
+	public void visitCnt(String boardPostNo);
+
+	public void boardCommentInsert(String boardPostNo, String id, String content);
+
+	public List<Integer> boardCommentList(String boardPostNo);
+
+	public BoardComment boardComment(String commentNo);
 
 }
