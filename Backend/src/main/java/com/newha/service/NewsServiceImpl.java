@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.newha.dao.NewsDAO;
+import com.newha.vo.HashTag;
 import com.newha.vo.News;
 import com.newha.vo.NewsImage;
+import com.newha.vo.Post;
 import com.newha.vo.PostTag;
+import com.newha.vo.User;
 import com.newha.vo.UserScrapNews;
 
 @Service
@@ -29,22 +32,22 @@ public class NewsServiceImpl implements NewsService {
 	}
 	
 	@Override
-	public int selectByUrl(String url) {
+	public List<News> selectByUrl(String url) {
 		return dao.selectByUrl(url);
 	}
 	
 	@Override
-	public int insertPost(String name) {
-		return dao.insertPost(name);
+	public int insertPost(Post post) {
+		return dao.insertPost(post);
 	}
 	
 	@Override
-	public int selectPostByName(String name) {
+	public List<Post> selectPostByName(String name) {
 		return dao.selectPostByName(name);
 	}
 	
 	@Override
-	public int selectUserById(String id) {
+	public User selectUserById(String id) {
 		return dao.selectUserById(id);
 	}
 	
@@ -54,22 +57,47 @@ public class NewsServiceImpl implements NewsService {
 	}
 	
 	@Override
-	public int insertHashTag(ArrayList<String> tags) {
-		return dao.insertHashTag(tags);
+	public int insertHashTag(String tag) {
+		return dao.insertHashTag(tag);
 	}
 	
 	@Override
-	public List<String> selectUserScrapNewsByPostNo(String postNo) {
+	public List<UserScrapNews> selectUserScrapNewsByPostNo(String postNo) {
 		return dao.selectUserScrapNewsByPostNo(postNo);
 	}
 	
 	@Override
-	public int selectHashTagByName(String name) {
+	public List<HashTag> selectHashTagByName(String name) {
 		return dao.selectHashTagByName(name);
 	}
 	
 	@Override
 	public int insertPostTag(PostTag tag) {
 		return dao.insertPostTag(tag);
+	}
+	
+	@Override
+	public int deletePost(String postNo) {
+		return dao.deletePost(postNo);
+	}
+	
+	@Override
+	public int deleteScrap(String scarpNo) {
+		return dao.deleteScrap(scarpNo);
+	}
+	
+	@Override
+	public int updatePost(Post post) {
+		return dao.updatePost(post);
+	}
+	
+	@Override
+	public int updateScrap(UserScrapNews scrap) {
+		return dao.updateScrap(scrap);
+	}
+	
+	@Override
+	public List<Post> selectPostById(String id) {
+		return dao.selectPostById(id);
 	}
 }
