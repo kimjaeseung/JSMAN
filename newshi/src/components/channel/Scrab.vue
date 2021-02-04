@@ -16,7 +16,26 @@
                     </v-row>
                     <v-row v-if="isMyPage==true">
                       <v-col class="d-flex justify-center align-center">
-                         <v-btn :disabled="hover == false">수정하기</v-btn>
+                        <v-dialog width="500">
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on">
+                             수정하기
+                            </v-btn>
+                          </template>
+                          <v-card>
+                            <input type="text" v-model="scrab.title" style="font-size:30px; width:100%; text-align:center">
+                            <v-card-actions>
+                              <v-spacer></v-spacer>
+                              <v-btn color="primary" @click="modify(scrab.title)">
+                                수정
+                              </v-btn>
+                              <v-btn color="primary" @click="refreshPage">
+                                취소
+                              </v-btn>
+                            </v-card-actions>
+                          </v-card>
+                        </v-dialog>
+                         <!-- <v-btn :disabled="hover == false">수정하기</v-btn> -->
                       </v-col>
                     </v-row>
                   </v-container>
@@ -41,11 +60,21 @@ export default {
         return {
           isMyPage: Boolean,
           scrabs: [],
+          dialog: false,
         }
     },
     methods: {
       showNews(scrab_no) {
         this.$router.push('./' + scrab_no);
+      },
+      modify(scrab_title) {
+        //여기에 수정 api
+        //이후 refreshPage
+        console.log(scrab_title);
+        this.refreshPage();
+      },
+      refreshPage() {
+        this.$router.push({name:'ToScrab'});
       }
     },
     created() {
