@@ -69,10 +69,17 @@ public class BoardController {
 				String temp = Integer.toString(l.get(i));
 				Map<String, String> map = new HashMap<String, String>();
 				Board board = service.selectBoard(temp);
+				String boardCommentCount = service.boardCommentCount(temp);
 				map.put("boardPostNo", board.getBoardPostNo());
 				map.put("title", board.getTitle());
 				map.put("date", board.getDate());
 				map.put("visit_cnt", board.getVisit_cnt());
+				map.put("userNo", board.getUserNo());
+				map.put("content", board.getContent());
+				map.put("is_notice", board.getIs_notice());
+				
+				map.put("boardCommentCount", boardCommentCount); // 댓글 갯수
+				
 				list.add(map);
 			}
 			status = HttpStatus.ACCEPTED;
@@ -117,32 +124,18 @@ public class BoardController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
-	// @PutMapping(value= "/visitCnt")
-	// public void visitCnt(@ApiParam(value = "String", required = true)
-	// @RequestParam String boardPostNo) {
-	// }
 
 	@ApiOperation(value = "게시글", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
 	@GetMapping(value = "/boardDetail")
 	public ResponseEntity<List<Map<String, String>>> boardDetail(
 			@ApiParam(value = "int", required = true) @RequestParam String boardPostNo) {
+		// list의 처음부분만 게시글의 정보이고 나머지 부분은 전부 댓글입니다.
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		Map<String, String> map = new HashMap<String, String>();
 		HttpStatus status = null;
 		
 		try {
-			Board board = service.selectBoard(boardPostNo);
 			List<Integer> l = service.boardCommentList(boardPostNo);
 
-			map.put("boardPostNo", board.getBoardPostNo());
-			map.put("userNo", board.getUserNo());
-			map.put("title", board.getTitle());
-			map.put("content", board.getContent());
-			map.put("date", board.getDate());
-			map.put("visit_cnt", board.getVisit_cnt());
-			map.put("is_notice", board.getIs_notice());
-			list.add(map);
-			
 			for (int i = 0; i < l.size(); i++) {
 				String commentNo = Integer.toString(l.get(i));
 				BoardComment bc = service.boardComment(commentNo);
@@ -171,14 +164,14 @@ public class BoardController {
 			@ApiParam(value = "String", required = true) @RequestParam String content) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		//try {
+		try {
 			service.boardCommentInsert(boardPostNo, id, content);
-		//	map.put("message", SUCCESS);
+			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
-		//} catch (Exception e) {
-		//	map.put("message", FAIL);
-		//	status = HttpStatus.INTERNAL_SERVER_ERROR;
-		//}
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 	

@@ -84,4 +84,9 @@ public class UserServiceImpl implements UserService {
 		dao.subscribe(id, name);
 	}
 
+	@Override
+	public void subscdelete(String id, String id2) {
+		dao.subscdelete(id, id2);
+	}
+
 }

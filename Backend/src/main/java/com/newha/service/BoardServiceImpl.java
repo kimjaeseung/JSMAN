@@ -65,4 +65,9 @@ public class BoardServiceImpl implements BoardService{
 		return dao.boardComment(commentNo);
 	}
 
+	@Override
+	public String boardCommentCount(String temp) {
+		return dao.boardCommentCount(temp);
+	}
+
 }

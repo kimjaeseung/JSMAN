@@ -47,5 +47,10 @@
 	select * from user_board_comment where commentNo = #{commentNo};
 	</select>
 	
+	<select id="boardCommentCount" resultType="string">
+		select count(*) from user_board_comment where boardPostNo = #{boardPostNo};
+	</select>
+	
+	
 	
 </mapper>
