@@ -7,9 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.newha.mapper.NewsMapper;
+import com.newha.vo.HashTag;
 import com.newha.vo.News;
 import com.newha.vo.NewsImage;
+import com.newha.vo.Post;
 import com.newha.vo.PostTag;
+import com.newha.vo.User;
 import com.newha.vo.UserScrapNews;
 
 @Repository
@@ -29,22 +32,22 @@ public class NewsDAOImpl implements NewsDAO {
 	}
 	
 	@Override
-	public int selectByUrl(String url) {
+	public List<News> selectByUrl(String url) {
 		return mapper.selectByUrl(url);
 	}
 	
 	@Override
-	public int insertPost(String name) {
-		return mapper.insertPost(name);
+	public int insertPost(Post post) {
+		return mapper.insertPost(post);
 	}
 	
 	@Override
-	public int selectPostByName(String name) {
+	public List<Post> selectPostByName(String name) {
 		return mapper.selectPostByName(name);
 	}
 	
 	@Override
-	public int selectUserById(String id) {
+	public User selectUserById(String id) {
 		return mapper.selectUserById(id);
 	}
 	
@@ -54,22 +57,47 @@ public class NewsDAOImpl implements NewsDAO {
 	}
 	
 	@Override
-	public int insertHashTag(ArrayList<String> tags) {
-		return mapper.insertHashTag(tags);
+	public int insertHashTag(String tag) {
+		return mapper.insertHashTag(tag);
 	}
 	
 	@Override
-	public List<String> selectUserScrapNewsByPostNo(String postNo) {
+	public List<UserScrapNews> selectUserScrapNewsByPostNo(String postNo) {
 		return mapper.selectUserScrapNewsByPostNo(postNo);
 	}
 	
 	@Override
-	public int selectHashTagByName(String name) {
+	public List<HashTag> selectHashTagByName(String name) {
 		return mapper.selectHashTagByName(name);
 	}
 	
 	@Override
 	public int insertPostTag(PostTag tag) {
 		return mapper.insertPostTag(tag);
+	}
+	
+	@Override
+	public int deletePost(String postNo) {
+		return mapper.deletePost(postNo);
+	}
+	
+	@Override
+	public int deleteScrap(String scarpNo) {
+		return mapper.deleteScrap(scarpNo);
+	}
+	
+	@Override
+	public int updatePost(Post post) {
+		return mapper.updatePost(post);
+	}
+	
+	@Override
+	public int updateScrap(UserScrapNews scrap) {
+		return mapper.updateScrap(scrap);
+	}
+	
+	@Override
+	public List<Post> selectPostById(String id) {
+		return mapper.selectPostById(id);
 	}
 }
