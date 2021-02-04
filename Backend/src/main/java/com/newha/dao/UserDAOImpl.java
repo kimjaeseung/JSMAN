@@ -85,6 +85,11 @@ public class UserDAOImpl implements UserDAO {
 		mapper.subscribe(id, name);
 	}
 
+	@Override
+	public void subscdelete(String id, String id2) {
+		mapper.subscdelete(id, id2);
+	}
+
 	
 
 }

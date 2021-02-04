@@ -27,4 +27,6 @@ public interface BoardService {
 
 	public BoardComment boardComment(String commentNo);
 
+	public String boardCommentCount(String temp);
+
 }

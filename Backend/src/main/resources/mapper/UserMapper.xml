@@ -59,8 +59,11 @@
 	</update>
 	
 	<insert id="subscribe" parameterType="string">
-		insert into follow values ( ( select userNo from user where id = #{id} ), ( select userNo from user where name = #{name} ) );
+		insert into follow values ( ( select userNo from user where id = #{id} ), ( select userNo from user where id = #{id2} ) );
 	</insert>
 	
+	<insert id="subscdelete" parameterType="string">
+		delete from follow where userNo = (select userNo from user where id = #{id}) and followUserNo = (select userNo from user where id = #{id2});
+	</insert>
 	
 </mapper>

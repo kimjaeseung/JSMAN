@@ -24,6 +24,7 @@ public interface UserService {
 	public void thumbnailPath(String userNo, String thumbnail_path);
 	
 	public void insertTag(String id, String tag);
-	public void subscribe(String id, String name);
+	public void subscribe(String id, String id2);
+	public void subscdelete(String id, String id2);
 
 }

@@ -18,6 +18,7 @@ public interface BoardMapper {
 	public void boardCommentInsert(@Param("boardPostNo")String boardPostNo, @Param("id")String id, @Param("content")String content);
 	public List<Integer> boardCommentList(String boardPostNo);
 	public BoardComment boardComment(String commentNo);
+	public String boardCommentCount(String temp);
 
 }
  
