@@ -13,6 +13,7 @@ import com.newha.vo.NewsImage;
 import com.newha.vo.Post;
 import com.newha.vo.PostTag;
 import com.newha.vo.User;
+import com.newha.vo.UserGoodNews;
 import com.newha.vo.UserScrapNews;
 
 @Repository
@@ -110,5 +111,54 @@ public class NewsDAOImpl implements NewsDAO {
 	public News selectNews(String newsNo) {
 		
 		return mapper.selectNews(newsNo);
+    }
+	@Override
+	public int increaseLike(String scrapNo) {
+		return mapper.increaseLike(scrapNo);
+	}
+	
+	@Override
+	public int increaseDisLike(String scrapNo) {
+		return mapper.increaseDisLike(scrapNo);
+	}
+	
+	@Override
+	public int decreaseLike(String scrapNo) {
+		return mapper.decreaseLike(scrapNo);
+	}
+	
+	@Override
+	public int decreaseDisLike(String scrapNo) {
+		return mapper.decreaseDisLike(scrapNo);
+	}
+	
+	@Override
+	public int updateLike(UserGoodNews userGoodNews) {
+		return mapper.updateLike(userGoodNews);
+	}
+	
+	@Override
+	public int insertUserGoodNews(UserGoodNews userGoodNews) {
+		return mapper.insertUserGoodNews(userGoodNews);
+	}
+	
+	@Override
+	public int updateDisLike(UserGoodNews userGoodNews) {
+		return mapper.updateDisLike(userGoodNews);
+	}
+	
+	@Override
+	public int updateSave(UserGoodNews userGoodNews) {
+		return mapper.updateSave(userGoodNews);
+	}
+	
+	@Override
+	public UserGoodNews selectLikeNews(UserGoodNews userGoodNews) {
+		return mapper.selectLikeNews(userGoodNews);
+	}
+	
+	@Override
+	public UserGoodNews selectDisLikeNews(UserGoodNews userGoodNews) {
+		return mapper.selectDisLikeNews(userGoodNews);
 	}
 }

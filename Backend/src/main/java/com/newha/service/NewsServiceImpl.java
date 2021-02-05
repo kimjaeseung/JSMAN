@@ -13,6 +13,7 @@ import com.newha.vo.NewsImage;
 import com.newha.vo.Post;
 import com.newha.vo.PostTag;
 import com.newha.vo.User;
+import com.newha.vo.UserGoodNews;
 import com.newha.vo.UserScrapNews;
 
 @Service
@@ -109,5 +110,55 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public News selectNews(String newsNo) {
 		return dao.selectNews(newsNo);
+	}
+	
+	@Override
+	public int increaseLike(String scrapNo) {
+		return dao.increaseLike(scrapNo);
+	}
+	
+	@Override
+	public int increaseDisLike(String scrapNo) {
+		return dao.increaseDisLike(scrapNo);
+	}
+	
+	@Override
+	public int decreaseLike(String scrapNo) {
+		return dao.decreaseLike(scrapNo);
+	}
+	
+	@Override
+	public int decreaseDisLike(String scrapNo) {
+		return dao.decreaseDisLike(scrapNo);
+	}
+	
+	@Override
+	public int updateLike(UserGoodNews userGoodNews) {
+		return dao.updateLike(userGoodNews);
+	}
+	
+	@Override
+	public int insertUserGoodNews(UserGoodNews userGoodNews) {
+		return dao.insertUserGoodNews(userGoodNews);
+	}
+	
+	@Override
+	public int updateDisLike(UserGoodNews userGoodNews) {
+		return dao.updateDisLike(userGoodNews);
+	}
+	
+	@Override
+	public int updateSave(UserGoodNews userGoodNews) {
+		return dao.updateSave(userGoodNews);
+	}
+	
+	@Override
+	public UserGoodNews selectLikeNews(UserGoodNews userGoodNews) {
+		return dao.selectLikeNews(userGoodNews);
+	}
+	
+	@Override
+	public UserGoodNews selectDisLikeNews(UserGoodNews userGoodNews) {
+		return dao.selectDisLikeNews(userGoodNews);
 	}
 }

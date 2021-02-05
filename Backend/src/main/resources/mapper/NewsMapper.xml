@@ -38,6 +38,13 @@
 		(SELECT * FROM hashtag WHERE name = #{tag})
 	</insert>
 	
+	<insert id="insertUserGoodNews" parameterType="UserGoodNews">
+    INSERT INTO user_good_news(userNo, scrapNo)
+        SELECT #{userNo}, #{scrapNo} FROM DUAL
+        WHERE NOT EXISTS 
+		(SELECT * FROM user_good_news WHERE userNo = #{userNo} and scrapNo = #{scrapNo})
+	</insert>
+	
 	<select id="selectByUrl" parameterType="String" resultType="News">
 		select * from news where url like #{url};
 	</select>
@@ -60,6 +67,14 @@
 	
 	<select id="selectPostById" parameterType="String" resultType="Post">
 		select * from post where id = #{id};
+	</select>
+	
+	<select id="selectLikeNews" parameterType="UserGoodNews" resultType="UserGoodNews">
+		select * from user_good_news where userNo = #{userNo} and scrapNo = #{scrapNo};
+	</select>
+	
+	<select id="selectDisLikeNews" parameterType="UserGoodNews" resultType="UserGoodNews">
+		select * from user_good_news where userNo = #{userNo} and scrapNo = #{scrapNo};
 	</select>
 	
 	<delete id="deletePost" parameterType="string">
@@ -85,5 +100,33 @@
 	<select id="selectNews" parameterType="String" resultType="News">
 		select * from News where newsNo = #{newsNo};
 	</select>
+
+	<update id="increaseLike" parameterType="String">
+		update user_scrap_news set like_cnt = like_cnt + 1 where scrapNo = #{scrapNo}
+	</update>
 	
+	<update id="increaseDisLike" parameterType="String">
+		update user_scrap_news set dislike_cnt = dislike_cnt + 1 where scrapNo = #{scrapNo}
+	</update>
+	
+	<update id="decreaseLike" parameterType="String">
+		update user_scrap_news set like_cnt = like_cnt - 1 where scrapNo = #{scrapNo}
+	</update>
+	
+	<update id="decreaseDisLike" parameterType="String">
+		update user_scrap_news set dislike_cnt = dislike_cnt - 1 where scrapNo = #{scrapNo}
+	</update>
+	
+	<update id="updateLike" parameterType="UserGoodNews">
+		update user_good_news set is_like = !is_like where scrapNo = #{scrapNo} and userNo = #{userNo};
+	</update>
+	
+	<update id="updateDisLike" parameterType="UserGoodNews">
+		update user_good_news set is_dislike = !is_dislike where scrapNo = #{scrapNo} and userNo = #{userNo};
+	</update>
+	
+	<update id="updateSave" parameterType="UserGoodNews">
+		update user_good_news set is_save = !is_save where scrapNo = #{scrapNo} and userNo = #{userNo};
+	</update>
+
 </mapper>
