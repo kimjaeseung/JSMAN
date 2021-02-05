@@ -1,4 +1,4 @@
-# [대문]4주차 평가를 위한 README작성
+#4주차 README 
 
 상태: 진행 중
 엔지니어: 성국 조, 창민 천, JS K
@@ -13,7 +13,7 @@
 
                                                                      잘생긴 팀원들을 소개합니다.
 
-[재성님의꿀보이스0](README.assets/honeyvoice.m4a)
+[재성님의꿀보이스](README.assets/honeyvoice.m4a)
 
                                                                       꿀보이스 재성님의 '잘자요'
 
