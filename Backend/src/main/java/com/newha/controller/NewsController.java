@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newha.service.NewsService;
+import com.newha.service.UserService;
 import com.newha.vo.News;
 import com.newha.vo.NewsImage;
 import com.newha.vo.Post;
@@ -48,6 +49,9 @@ public class NewsController {
 	
 	@Autowired
 	NewsService service;
+	
+	@Autowired
+	UserService userservice;
 	
 	//WebDriver 설정
 	private WebDriver driver;
@@ -284,4 +288,33 @@ public class NewsController {
 		}
 		return new ResponseEntity<List<UserScrapNews>>(list, status);
 	}
+	
+	@ApiOperation(value = "내가 구독한 큐레이터의 최신 스크랩 목록", notes = "내가 구독한 큐레이터의 최신 스크랩 목록을 반환", response = List.class)
+	@GetMapping(value = "/article/curatorscrap/{id}")
+	public ResponseEntity<List<Map<String,String>>> getCuratorScrap(@ApiParam(value = "String", required = true)@PathVariable String id){
+		HttpStatus status = null;
+		List<String> list = new ArrayList<String>(); 
+		List<Map<String,String>> newsList = new ArrayList<Map<String,String>>();
+
+		try {
+			String userNo = Integer.toString(userservice.userNo(id));
+			list = service.selectUserScrapNews(userNo); // userNo를 이용해서 list에 newsNo를 받아온다. scrapNo를 기준으로 내림차순(desc)
+														// 해줬기에 가장 나중에 만들어진(최신의) 기사를 우선적으로 가져온다.
+			for (int i = 0; i < list.size(); i++) {
+				Map<String, String> map = new HashMap<String, String>();
+				News temp = service.selectNews(list.get(i));
+				map.put("title", temp.getTitle());
+				map.put("newsNo", temp.getNewsNo());
+				map.put("image_path", temp.getImage_path());
+				newsList.add(map);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<Map<String,String>>>(newsList, status);
+	}
+	
+	
+	
 }

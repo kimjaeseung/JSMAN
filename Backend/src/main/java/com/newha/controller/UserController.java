@@ -188,7 +188,7 @@ public class UserController {
 		}
 		boardservice.boardCreate(u.getId()); //회원가입과 동시에 개인 게시판 생성
 		return new ResponseEntity<Map<String, String>>(map, status);
-	}
+	}	
 	
 	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@DeleteMapping(value = "/delete/{id}")
