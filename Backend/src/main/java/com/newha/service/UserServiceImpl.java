@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public int insert(User u) {
-		return dao.insert(u);
+	public void insert(User u) {
+		dao.insert(u);
 	}
 
 	@Override
@@ -68,5 +68,25 @@ public class UserServiceImpl implements UserService {
 	public ArrayList<Integer> follow(int userNo) {
 		return dao.follow(userNo);
 	}
-	
+
+	@Override
+	public void thumbnailPath(String userNo, String thumbnail_path) {
+		dao.thumbnailPath(userNo, thumbnail_path);
+	}
+
+	@Override
+	public void insertTag(String id, String tag) {
+		dao.insertTag(id, tag);
+	}
+
+	@Override
+	public void subscribe(String id, String name) {
+		dao.subscribe(id, name);
+	}
+
+	@Override
+	public void subscdelete(String id, String id2) {
+		dao.subscdelete(id, id2);
+	}
+
 }

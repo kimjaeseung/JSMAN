@@ -3,14 +3,16 @@
     <nav-bar></nav-bar>
     <br /><br /><br />
     <router-view></router-view>
+    <AddNews></AddNews>
   </v-app>
 </template>
 
 <script>
 import NavBar from './components/NavBar.vue';
+import AddNews from './components/AddNews.vue';
 
 export default {
-  components: { NavBar },
+  components: { NavBar, AddNews },
 };
 </script>
 <style>

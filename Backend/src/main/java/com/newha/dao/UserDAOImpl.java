@@ -21,8 +21,8 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	@Override
-	public int insert(User u) {
-		return mapper.insert(u);
+	public void insert(User u) {
+		mapper.insert(u);
 	}
 
 	@Override
@@ -69,4 +69,27 @@ public class UserDAOImpl implements UserDAO {
 	public ArrayList<Integer> follow(int userNo) {
 		return mapper.follow(userNo);
 	}
+
+	@Override
+	public void thumbnailPath(String userNo, String thumbnail_path) {
+		mapper.thumbnailPath(userNo, thumbnail_path);
+	}
+
+	@Override
+	public void insertTag(String id, String tag) {
+		mapper.insertTag(id, tag);
+	}
+
+	@Override
+	public void subscribe(String id, String name) {
+		mapper.subscribe(id, name);
+	}
+
+	@Override
+	public void subscdelete(String id, String id2) {
+		mapper.subscdelete(id, id2);
+	}
+
+	
+
 }

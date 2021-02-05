@@ -6,23 +6,32 @@ public class User {
 	private String password;
 	private String thumbnail_path;
 	private String id;
-	
+	private String platformType;
 	
 	@Override
 	public String toString() {
 		return "User [userNo=" + userNo + ", name=" + name + ", password=" + password + ", thumbnail_path="
-				+ thumbnail_path + ", id=" + id + "]";
+				+ thumbnail_path + ", id=" + id + ", platformType=" + platformType + "]";
 	}
 
 	public User() {}
-	
-	public User(String userNo, String name, String password, String thumbnail_path, String id) {
+
+	public String getPlatformType() {
+		return platformType;
+	}
+
+	public void setPlatformType(String platformType) {
+		this.platformType = platformType;
+	}
+
+	public User(String userNo, String name, String password, String thumbnail_path, String id, String platformType) {
 		super();
 		this.userNo = userNo;
 		this.name = name;
 		this.password = password;
 		this.thumbnail_path = thumbnail_path;
 		this.id = id;
+		this.platformType = platformType;
 	}
 
 	public String getUserNo() {

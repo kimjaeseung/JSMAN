@@ -30,12 +30,12 @@
 		select userNo from user where id = #{id}
 	</select>
 	
-	<insert id="inserttag" parameterType="string">
-		insert into join_tag values(#{userNo}, #{name})
+	<insert id="insertTag" parameterType="string">
+		insert into join_tag values ( ( select userNo from user where id = #{id} ), #{tag} );
 	</insert>
 	
 	<insert id="insert" parameterType="User">
-		insert into user values(null,#{name},#{password},null,#{id})
+		insert into user values(null,#{name},#{password},null,#{id},#{platformType})
 	</insert>
 
 	<delete id="delete" parameterType="string">
@@ -54,6 +54,16 @@
 		update user set password = #{password}, thumbnail_path = #{thumbnail_path} where id = #{id};
 	</update>
 	
+	<update id="thumbnailPath" parameterType="String">
+		update user set thumbnail_path = #{thumbnail_path} where userNo = #{userNo};
+	</update>
 	
+	<insert id="subscribe" parameterType="string">
+		insert into follow values ( ( select userNo from user where id = #{id} ), ( select userNo from user where id = #{id2} ) );
+	</insert>
+	
+	<insert id="subscdelete" parameterType="string">
+		delete from follow where userNo = (select userNo from user where id = #{id}) and followUserNo = (select userNo from user where id = #{id2});
+	</insert>
 	
 </mapper>
