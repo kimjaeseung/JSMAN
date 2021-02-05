@@ -8,7 +8,7 @@
 
                                                                      잘생긴 팀원들을 소개합니다.
 
-[재승님의꿀보이스](README.assets/honeyvoice.m4a)
+[재성님의꿀보이스](README.assets/honeyvoice.m4a)
 
                                                                       꿀보이스 재성님의 '잘자요'
 
