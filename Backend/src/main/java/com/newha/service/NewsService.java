@@ -32,6 +32,8 @@ public interface NewsService {
 	public int deleteScrap(String scarpNo);
 	public int updatePost(Post post);
 	public int updateScrap(UserScrapNews scrap);
+	public List<String> selectUserScrapNews(String userNo);
+	public News selectNews(String newsNo);
 	public int increaseLike(String scrapNo);
 	public int increaseDisLike(String scrapNo);
 	public int decreaseLike(String scrapNo);
