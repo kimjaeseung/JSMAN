@@ -249,7 +249,7 @@ public class UserController {
 	}
 
 	// 토근 유효여부 검사
-	@ApiOperation(value = "로그인", notes = "'success' 또는 'fail', httpstatus, userInfo 리턴", response = Map.class)
+	@ApiOperation(value = "토큰유효성검사", notes = "'success' 또는 'fail', httpstatus, userInfo 리턴", response = Map.class)
 	@GetMapping(value = "/user/{id}")
 	public ResponseEntity<Map<String, Object>> getInfo(@ApiParam(value = "id", required = true) @PathVariable String id,
 			HttpServletRequest request) {
@@ -261,7 +261,7 @@ public class UserController {
 			try {
 //				로그인 사용자 정보.
 				User user = service.userInfo(id);
-				System.out.println(user.getId());
+				user.setPassword("");
 				resultMap.put("userInfo", user);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
@@ -279,7 +279,7 @@ public class UserController {
 	}
 
 	// 로그인
-	@ApiOperation(value = "토큰 유효성 검사", notes = "'success' 또는 'fail', token 리턴", response = Map.class)
+	@ApiOperation(value = "로그인", notes = "'success' 또는 'fail', token 리턴", response = Map.class)
 	@PostMapping(value = "/user/login")
 	public ResponseEntity<Map<String, Object>> login(@ApiParam(value = "id", required = true) @RequestBody User user) {
 		Map<String, Object> resultMap = new HashMap<>();
