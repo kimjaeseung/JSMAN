@@ -101,6 +101,16 @@ public class NewsServiceImpl implements NewsService {
 	public List<Post> selectPostById(String id) {
 		return dao.selectPostById(id);
 	}
+
+	@Override
+	public List<String> selectUserScrapNews(String userNo) {
+		return dao.selectUserScrapNews(userNo);
+	}
+
+	@Override
+	public News selectNews(String newsNo) {
+		return dao.selectNews(newsNo);
+	}
 	
 	@Override
 	public int increaseLike(String scrapNo) {
