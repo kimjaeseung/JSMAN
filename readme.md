@@ -29,17 +29,7 @@
 - ER-Diagram
 
     >ER-Diagram
-<details>
-<summary>상세 내용 확인</summary>
-<div markdown="1">
-
-div 에 markdown attribute 를 1 로 
-하는 이유는 div 안에서
-markdown 을 사용하기 위해서 입니다.
-
-
-</div>
-</details>
+    
     ![%5B%E1%84%83%E1%85%A2%E1%84%86%E1%85%AE%E1%86%AB%5D4%E1%84%8C%E1%85%AE%E1%84%8E%E1%85%A1%20%E1%84%91%E1%85%A7%E1%86%BC%E1%84%80%E1%85%A1%E1%84%85%E1%85%B3%E1%86%AF%20%E1%84%8B%E1%85%B1%E1%84%92%E1%85%A1%E1%86%AB%20README%E1%84%8C%E1%85%A1%E1%86%A8%E1%84%89%E1%85%A5%E1%86%BC%205ef98b6a2c644b4486b6509a31eb5c72/ERDiagram.jpg](README.assets/ERDiagram.jpg)
 
 - 와이어프레임
