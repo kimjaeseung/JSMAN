@@ -4,7 +4,7 @@
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
     <v-container>
-      <v-row v-for="(news, index) in scrab_news" :key="index">
+      <v-row v-for="(news, index) in scrap_news" :key="index">
         <v-col>
           <v-card>
             <v-container>
@@ -55,9 +55,9 @@
 export default {
   data() {
     return {
-      scrab_no: 0,
+      scrap_no: 0,
       id: String,
-      scrab_news: []
+      scrap_news: []
     }
   },
   methods: {
@@ -65,15 +65,15 @@ export default {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     backPage() {
-      this.$emit("callScrab");
+      this.$emit("callScrap");
     }
   },
   created() {
-    this.scrab_no = this.$route.params.scrab_no;
+    this.scrap_no = this.$route.params.scrap_no;
     this.id = this.$route.params.id;
 
     // 스크랩 기사들 axios
-    this.scrab_news = [
+    this.scrap_news = [
       {
         title: '증여세는 시가 기준…증여 직후 거래가격 뛰면 세금 더 낼수도',
         curator_summary: '기사요약기사요약기사요약기사요약기사요약기사요약기사요약',

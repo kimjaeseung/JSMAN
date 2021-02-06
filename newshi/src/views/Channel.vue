@@ -36,7 +36,7 @@
       <v-row no-gutters>
         <v-col>
           <v-card height="600px" style="overflow-y: scroll">
-            <router-view @callScrab="showScrab"></router-view>
+            <router-view @callScrap="showScrap"></router-view>
           </v-card>
         </v-col>
       </v-row>
@@ -53,8 +53,8 @@ export default {
         }
     },
     methods: {
-      showScrab() {
-        this.$router.push({name:"Scrab", params: {propsIsMyPage: this.isMyPage}});
+      showScrap() {
+        this.$router.push({name:"Scrap", params: {propsIsMyPage: this.isMyPage}});
       },
     },
   created() {
@@ -68,13 +68,13 @@ export default {
       // 내 정보랑 같은지 체크해서
       this.isMyPage = true;
       // 하위 컴포넌트에 전달
-      // this.showScrab();
+      // this.showScrap();
     },
 }
 </script>
 
 <style scoped>
-  .scrab_dark{
+  .scrap_dark{
     background-color:black;
     opacity: 0.4;
     width: 100%;

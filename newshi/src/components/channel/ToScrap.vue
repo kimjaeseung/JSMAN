@@ -1,11 +1,11 @@
 <template>
-  <div>ㅎㅎㅎ</div>
+  <div></div>
 </template>
 
 <script>
 export default {
     created() {
-          this.$emit("callScrab");  
+          this.$emit("callScrap");  
         },
 }
 </script>
