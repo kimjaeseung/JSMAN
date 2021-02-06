@@ -35,7 +35,7 @@
 	</update>
 	
 	<insert id="boardCommentInsert" parameterType="String">
-		insert into user_board_comment values( null, #{boardPostNo}, (select userNo from user where id = #{id}), #{content}, null);
+		insert into user_board_comment values( null, #{boardPostNo}, (select userNo from user where id = #{id}), #{content}, now());
 	</insert>
 	
 	<select id="boardCommentList" resultType="int">
@@ -51,6 +51,12 @@
 		select count(*) from user_board_comment where boardPostNo = #{boardPostNo};
 	</select>
 	
+	<delete id="boardCommentDelete" parameterType="string">
+		delete from user_board_comment where commentNo = #{commentNo};
+	</delete>
 	
+	<update id="boardCommentUpdate" parameterType="string">
+		update user_board_comment set content = #{content}, date = now() where commentNo = #{commentNo};
+	</update>
 	
 </mapper>

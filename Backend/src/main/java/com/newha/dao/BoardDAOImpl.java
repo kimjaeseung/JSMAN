@@ -69,5 +69,16 @@ public class BoardDAOImpl implements BoardDAO{
 	public String boardCommentCount(String temp) {
 		return mapper.boardCommentCount(temp);
 	}
+
+	@Override
+	public void boardCommentDelete(String commentNo) {
+		mapper.boardCommentDelete(commentNo);
+		
+	}
+
+	@Override
+	public void boardCommentUpdate(BoardComment bc) {
+		mapper.boardCommentUpdate(bc);
+	}
 	
 }

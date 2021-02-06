@@ -16,6 +16,7 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.Sleeper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +31,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newha.service.NewsService;
+import com.newha.service.UserService;
 import com.newha.vo.News;
 import com.newha.vo.NewsImage;
 import com.newha.vo.Post;
 import com.newha.vo.PostTag;
+import com.newha.vo.UserGoodNews;
 import com.newha.vo.UserScrapNews;
 
 import io.swagger.annotations.Api;
@@ -48,6 +51,9 @@ public class NewsController {
 	
 	@Autowired
 	NewsService service;
+	
+	@Autowired
+	UserService userservice;
 	
 	//WebDriver 설정
 	private WebDriver driver;
@@ -284,4 +290,226 @@ public class NewsController {
 		}
 		return new ResponseEntity<List<UserScrapNews>>(list, status);
 	}
+	
+	@ApiOperation(value = "내가 구독한 큐레이터의 최신 스크랩 목록", notes = "내가 구독한 큐레이터의 최신 스크랩 목록을 반환", response = List.class)
+	@GetMapping(value = "/article/curatorscrap/{id}")
+	public ResponseEntity<List<Map<String,String>>> getCuratorScrap(@ApiParam(value = "String", required = true)@PathVariable String id){
+		HttpStatus status = null;
+		List<String> list = new ArrayList<String>(); 
+		List<Map<String,String>> newsList = new ArrayList<Map<String,String>>();
+
+		try {
+			String userNo = Integer.toString(userservice.userNo(id));
+			list = service.selectUserScrapNews(userNo); // userNo를 이용해서 list에 newsNo를 받아온다. scrapNo를 기준으로 내림차순(desc)
+														// 해줬기에 가장 나중에 만들어진(최신의) 기사를 우선적으로 가져온다.
+			for (int i = 0; i < list.size(); i++) {
+				Map<String, String> map = new HashMap<String, String>();
+				News temp = service.selectNews(list.get(i));
+				map.put("title", temp.getTitle());
+				map.put("newsNo", temp.getNewsNo());
+				map.put("image_path", temp.getImage_path());
+				newsList.add(map);
+            }
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+	   }
+	   return new ResponseEntity<List<Map<String,String>>>(newsList, status);
+	}
+	
+
+	@ApiOperation(value = "좋아요 증가", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@GetMapping(value = "/article/increalike/{scrapNo}")
+	public ResponseEntity<Map<String, String>> increaseLike(@ApiParam(value = "String", required = true)@PathVariable String scrapNo){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			if(service.increaseLike(scrapNo) > 0){
+				map.put("message", SUCCESS);
+			}else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "좋아요 감소", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@GetMapping(value = "/article/decrealike/{scrapNo}")
+	public ResponseEntity<Map<String, String>> decreaseLike(@ApiParam(value = "String", required = true)@PathVariable String scrapNo){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			if(service.decreaseLike(scrapNo) > 0){
+				map.put("message", SUCCESS);
+			}else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "싫어요 증가", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@GetMapping(value = "/article/increadislike/{scrapNo}")
+	public ResponseEntity<Map<String, String>> increaseDisLike(@ApiParam(value = "String", required = true)@PathVariable String scrapNo){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			if(service.increaseDisLike(scrapNo) > 0){
+				map.put("message", SUCCESS);
+			}else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "싫어요 감소", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@GetMapping(value = "/article/decreadislike/{scrapNo}")
+	public ResponseEntity<Map<String, String>> decreaseDisLike(@ApiParam(value = "String", required = true)@PathVariable String scrapNo){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			if(service.decreaseDisLike(scrapNo) > 0){
+				map.put("message", SUCCESS);
+			}else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "유저가 좋아요 누른 목록 등록/해제", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@GetMapping(value = "/article/like/{scrapNo}/{id}")
+	public ResponseEntity<Map<String, String>> updateLike(@ApiParam(value = "String", required = true)@PathVariable String scrapNo, @ApiParam(value = "String", required = true)@PathVariable String id){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			String userNo = service.selectUserById(id).getUserNo();
+			UserGoodNews userGoodNews = new UserGoodNews();
+			userGoodNews.setScrapNo(scrapNo);
+			userGoodNews.setUserNo(userNo);
+			service.insertUserGoodNews(userGoodNews);
+			if(service.updateLike(userGoodNews) > 0){
+				map.put("message", SUCCESS);
+			}else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "유저가 싫어요 누른 목록 등록/해제", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@GetMapping(value = "/article/dislike/{scrapNo}/{id}")
+	public ResponseEntity<Map<String, String>> updateDisLike(@ApiParam(value = "String", required = true)@PathVariable String scrapNo, @ApiParam(value = "String", required = true)@PathVariable String id){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			String userNo = service.selectUserById(id).getUserNo();
+			UserGoodNews userGoodNews = new UserGoodNews();
+			userGoodNews.setScrapNo(scrapNo);
+			userGoodNews.setUserNo(userNo);
+			service.insertUserGoodNews(userGoodNews);
+			if(service.updateDisLike(userGoodNews) > 0){
+				map.put("message", SUCCESS);
+			}else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "유저가 저장 누른 목록 등록/해제", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@GetMapping(value = "/article/save/{scrapNo}/{id}")
+	public ResponseEntity<Map<String, String>> updateSave(@ApiParam(value = "String", required = true)@PathVariable String scrapNo, @ApiParam(value = "String", required = true)@PathVariable String id){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			String userNo = service.selectUserById(id).getUserNo();
+			UserGoodNews userGoodNews = new UserGoodNews();
+			userGoodNews.setScrapNo(scrapNo);
+			userGoodNews.setUserNo(userNo);
+			service.insertUserGoodNews(userGoodNews);
+			if(service.updateSave(userGoodNews) > 0){
+				map.put("message", SUCCESS);
+			}else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "유저가 좋아요 눌럿는지 여부 파악", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@GetMapping(value = "/article/islike/{scrapNo}/{id}")
+	public ResponseEntity<Map<String, String>> isLike(@ApiParam(value = "String", required = true)@PathVariable String scrapNo, @ApiParam(value = "String", required = true)@PathVariable String id){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			String userNo = service.selectUserById(id).getUserNo();
+			UserGoodNews userGoodNews = new UserGoodNews();
+			userGoodNews.setScrapNo(scrapNo);
+			userGoodNews.setUserNo(userNo);
+			service.insertUserGoodNews(userGoodNews);
+			userGoodNews = service.selectLikeNews(userGoodNews);
+			if(userGoodNews.getIs_like().equals("1")){
+				map.put("message", SUCCESS);
+			}else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "유저가 싫어요 눌럿는지 여부 파악", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@GetMapping(value = "/article/isdislike/{scrapNo}/{id}")
+	public ResponseEntity<Map<String, String>> isDisLike(@ApiParam(value = "String", required = true)@PathVariable String scrapNo, @ApiParam(value = "String", required = true)@PathVariable String id){
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			String userNo = service.selectUserById(id).getUserNo();
+			UserGoodNews userGoodNews = new UserGoodNews();
+			userGoodNews.setScrapNo(scrapNo);
+			userGoodNews.setUserNo(userNo);
+			service.insertUserGoodNews(userGoodNews);
+			userGoodNews = service.selectLikeNews(userGoodNews);
+			if(userGoodNews.getIs_dislike().equals("1")){
+				map.put("message", SUCCESS);
+			}else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+
 }

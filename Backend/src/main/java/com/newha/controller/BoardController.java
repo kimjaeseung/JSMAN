@@ -175,4 +175,40 @@ public class BoardController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 	
+	@ApiOperation(value = "댓글 삭제", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
+	@DeleteMapping(value = "/boardCommentDelete")
+	public ResponseEntity<Map<String, String>> boardCommentDelete(
+			@ApiParam(value = "String", required = true) @RequestParam String commentNo) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			service.boardCommentDelete(commentNo);
+			map.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "댓글 수정", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
+	@PutMapping(value = "/boardCommentUpdate")
+	public ResponseEntity<Map<String, String>> boardCommentUpdate(
+			@ApiParam(value = "Board", required = true) @RequestBody BoardComment bc) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			service.boardCommentUpdate(bc);
+			map.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	
+	
 }
