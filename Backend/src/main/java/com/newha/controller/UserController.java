@@ -89,6 +89,28 @@ public class UserController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
+	@ApiOperation(value = "name 중복검사", notes = "'success'는 사용 가능한 name, 'fail'은 이미 사용중인 name", response = Map.class)
+	@GetMapping(value = "/namecheck/{name}") // 이메일체크
+	public ResponseEntity<Map<String, String>> selectname(
+			@ApiParam(value = "name", required = true) @PathVariable String name) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			int result = service.selectName(name);
+			if (result == 0) {
+				map.put("message", SUCCESS);
+			} else {
+				map.put("message", FAIL);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	
+	
 	@ApiOperation(value = "이메일 인증", notes = "입력값으로 id(email) 주면 이메일 발송. 리턴값은 confirm: 인증번호 ", response = Map.class)
 	@GetMapping(value = "/emailauth/{id}") // 이메일 인증
 	public ResponseEntity<Map<String, Integer>> emailAuth(
@@ -235,7 +257,7 @@ public class UserController {
 				InputStream is = file.getInputStream();) {
 			int readCount = 0;
 			status = HttpStatus.ACCEPTED;
-			map.put("message", SUCCESS);
+			map.put("message", SUCCESS); 
 			byte[] buffer = new byte[1024];
 			while ((readCount = is.read(buffer)) != -1) {
 				fos.write(buffer, 0, readCount);
@@ -310,4 +332,31 @@ public class UserController {
 	public List<User> searchUser(@ApiParam(value = "keyword", required = true) @PathVariable String keyword) {
 		return service.searchUser(keyword + "%");
 	}
+	
+	
+
+	@ApiOperation(value = "사이드바용 유저 정보", notes = "name, thumbnail_path 반환", response = Map.class)
+	@GetMapping(value = "/sidebarUser/{id}") // 이메일체크
+	public ResponseEntity<Map<String, String>> sidebarUser(
+			@ApiParam(value = "id", required = true) @PathVariable String id) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			User u = service.userInfo(id);
+			map.put("name", u.getName());
+			map.put("thumbnail_path", u.getThumbnail_path());
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			map.put("message", FAIL);
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	
+	
+	
+	
+	
+	
 }

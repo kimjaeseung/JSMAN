@@ -26,6 +26,10 @@
 		select count(*) from user where id = #{id}
 	</select>
 	
+	<select id="selectName" resultType="int">
+		select count(*) from user where name = #{name}
+	</select>
+	
 	<select id="userNo" resultType="int">
 		select userNo from user where id = #{id}
 	</select>
