@@ -20,4 +20,87 @@ function boardList(id, success, fail) {
     .catch(fail);
 }
 
-export { boardList };
+function boardInsert(board, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .get('/boardInsert', board)
+    .then(success)
+    .catch(fail);
+}
+
+function boardDelete(boardno, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .delete('/boardDelete', {
+      params: {
+        boardPostNo = boardno,
+      }
+    })
+    .then(success)
+    .catch(fail);
+}
+
+function boardCommentList(boardPostNo, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .get('/boardDetail/${boardPostNo}', {
+    })
+    .then(success)
+    .catch(fail);
+}
+
+function boardCommentInsert(comment, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .post('/boardCommentInsert', {
+      params: {
+        boardPostNo = comment.boardPostNo,
+        id = comment.id,
+        content = comment.content,
+      }
+    })
+    .then(success)
+    .catch(fail);
+}
+
+function boardCommentUpdate(comment, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .put('/boardCommentUpdate', comment)
+    .then(success)
+    .catch(fail);
+}
+
+function boardCommentDelete(commentno, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .delete('/boardCommentDelete', {
+      params: {
+        commentNo = commentno,
+      }
+    })
+    .then(success)
+    .catch(fail);
+}
+
+
+
+export { boardList, boardDelete, boardCommentList, boardCommentDelete, boardCommentInsert, boardCommentUpdate };
