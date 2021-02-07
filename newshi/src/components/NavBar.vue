@@ -105,9 +105,11 @@
             <v-list-item-icon>
               <v-icon>mdi-{{ menu.icon }}</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>
-              {{ menu.title }}
-            </v-list-item-title>
+            <router-link :to="menu.router">
+              <v-list-item-title>
+                {{ menu.title }}
+              </v-list-item-title>
+            </router-link>
             <v-switch
               v-if="menu.title === '다크모드'"
               v-model="switchTheme"
@@ -116,6 +118,7 @@
               inset
               dense
               color="orange"
+              class="mx-3"
             ></v-switch>
           </v-list-item>
         </v-list-item-group>
@@ -123,7 +126,6 @@
     </v-navigation-drawer>
   </div>
 </template>
-
 <script>
 import Login from '@/components/Login.vue';
 import Join from '@/components/Join.vue';
@@ -150,14 +152,15 @@ export default {
       menus: [
         {
           icon: 'newspaper-variant-multiple-outline',
-          title: '내가 댓글 남긴 기사',
+          title: '나중에 볼 기사',
+          router: '/save'
         },
-        { icon: 'newspaper-plus', title: '언론사 선택하기' },
-        { icon: 'brightness-6', title: '다크모드' },
-        { icon: 'email-open-outline', title: '피드백 보내기' },
-        { icon: 'comment-processing-outline', title: '댓글 운영 정책' },
-        { icon: 'home', title: '홈페이지 바로가기' },
-        { icon: 'information-outline', title: '버전 정보' },
+        { icon: 'newspaper-plus', title: '언론사 선택하기', router: '/press' },
+        { icon: 'brightness-6', title: '다크모드', router: '' },
+        { icon: 'email-open-outline', title: '피드백 보내기', router: '/feedback' },
+        { icon: 'comment-processing-outline', title: '댓글 운영 정책', router: '/commentpolicy' },
+        { icon: 'home', title: '홈페이지 바로가기', router: '/home' },
+        { icon: 'information-outline', title: '버전 정보', router: '/version' },
       ],
       mounted_flag: false,
       dialog: null,
@@ -257,5 +260,12 @@ export default {
 }
 .theme--light.v-app-bar.v-toolbar.v-sheet {
   background-color: #ffffff !important;
+}
+.v-application a {
+  text-decoration: none;
+  color: inherit !important;
+}
+.v-list-item__icon {
+  margin-left: 0px !important;
 }
 </style>

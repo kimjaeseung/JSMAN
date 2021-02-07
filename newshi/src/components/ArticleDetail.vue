@@ -49,7 +49,7 @@
     <section class="my-2" v-if="swipeDirection === 'Right'">
       <div class="news-body-text">
         <div class="article-bot-summary">
-          <p class="text-center">핵심 요약</p>
+          <h3 class="text-center">핵심 요약</h3>
           <p>{{ news.article_bot_summary }}</p>
         </div>
         <div class="text-center my-2">
@@ -70,10 +70,10 @@
         </v-expand-transition>
         <div class="news-body-text hidden">
           <div class="article-bot-summary">
-            <p class="text-center">큐레이터의 오피니언</p>
+            <h3 class="text-center">큐레이터의 오피니언</h3>
             <p>{{ news.article_bot_summary }}</p>
           </div>
-          <div class="d-flex">
+          <div class="d-flex my-2">
             <div class="mx-auto">
               <v-btn 
                 icon 
@@ -132,6 +132,7 @@
 </template>
 
 <script>
+
 export default {
   name: "ArticleDetail",
   props: [
@@ -159,7 +160,7 @@ export default {
       liked: false,
       disliked: false,
     }
-  }
+  },
 }
 </script>
 
