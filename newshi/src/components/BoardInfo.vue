@@ -65,7 +65,8 @@ export default {
       content: {
         front: '',
         behind: '',
-      }
+      },
+      isMyPage: false,
     };
   },
   methods: {
@@ -73,7 +74,7 @@ export default {
        this.$router.push({name: 'Channel', params: {id: this.member.id} });
     },
     boardDetail() {
-       this.$router.push({name: 'BoardDetail', params: {board: this.board} });
+       this.$router.push({name: 'BoardDetail', params: {board: this.board, member: this.member, num: this.num} });
     },
     modifyBoard() {
       this.$router.push({name: 'AddBoard', params: {board: this.board} });
@@ -89,8 +90,11 @@ export default {
       this.content.front = this.board.content.substring(0, locP+4);
       this.content.behind = this.board.content.substring(locP+4, this.board.content.length);
     } else {
-      this.content.front = this.board.content.substring(0, locH+4);
-      this.content.behind = this.board.content.substring(locP+4, this.board.content.length);
+      this.content.front = this.board.content.substring(0, locH+5);
+      this.content.behind = this.board.content.substring(locH+5, this.board.content.length);
+    }
+    if(this.member.id === localStorage['id']) {
+      this.isMyPage = true;
     }
   }
 };
