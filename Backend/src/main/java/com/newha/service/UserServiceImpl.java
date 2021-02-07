@@ -89,4 +89,9 @@ public class UserServiceImpl implements UserService {
 		dao.subscdelete(id, id2);
 	}
 
+	@Override
+	public int selectName(String name) {
+		return dao.selectName(name);
+	}
+
 }
