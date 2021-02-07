@@ -1,9 +1,18 @@
 <template>
     <v-container>
       <div class="d-flex justify-center">
-      <v-avatar size="150px">
-        <v-img :src="member.thumbnail_path"></v-img>
-      </v-avatar>
+      <v-dialog v-model="dialog" width="500">
+        <template v-slot:activator="{ on, attrs }">
+          <v-avatar size="150px" v-bind="attrs" v-on="on">
+            <v-img :src="member.thumbnail_path"></v-img>
+          </v-avatar>
+        </template>
+        <v-card>
+          <v-card-title>파일 업로드</v-card-title>
+          <v-file-input v-model="file"></v-file-input>
+          <v-btn @click="fileUpload">전송하기!</v-btn>
+        </v-card>
+      </v-dialog>
       </div>
       <div class="d-flex justify-center mt-3" ><h2>{{member.name}}</h2></div>
       <div class="d-flex justify-center">{{member.id}}</div>
@@ -35,12 +44,31 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
+  methods: {
+    fileUpload() {
+      console.log(this.file);
+      var frm = new FormData();
+      frm.append("file", this.file);
+      frm.append("id", 'kimjea23@naver.com');
+      axios.post('http://localhost/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' } }) 
+      .then((response) => { 
+        // 응답 처리 
+        console.log(response)
+      }) .catch((error) => { 
+        // 예외 처리 
+        console.log(error);
+      })
+      }
+  },
   data() {
     return {
       member: {},
       hashtags: [],
-      followers: []
+      followers: [],
+      file: [],
+      dialog: false,
     }
   },
   created() {
