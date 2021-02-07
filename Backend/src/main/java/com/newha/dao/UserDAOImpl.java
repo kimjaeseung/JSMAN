@@ -90,6 +90,11 @@ public class UserDAOImpl implements UserDAO {
 		mapper.subscdelete(id, id2);
 	}
 
+	@Override
+	public int selectName(String name) {
+		return mapper.selectName(name);
+	}
+
 	
 
 }
