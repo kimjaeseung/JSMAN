@@ -7,9 +7,9 @@ import FindPw from '../views/FindPw.vue';
 import ChangePw from '../views/ChangePw.vue';
 import MyInfo from '../components/mypage/MyInfo';
 import Channel from "../views/Channel.vue";
-import Scrab from "../components/channel/Scrab.vue";
-import ScrabNews from "../components/channel/ScrabNews.vue";
-import ToScrab from "../components/channel/ToScrab.vue";
+import Scrap from "../components/channel/Scrap.vue";
+import ScrapNews from "../components/channel/ScrapNews.vue";
+import ToScrap from "../components/channel/ToScrap.vue";
 
 Vue.use(VueRouter);
 
@@ -55,23 +55,23 @@ const routes = [
     children: [
       {
         path: "",
-        name: "ToScrab",
-        component: ToScrab
+        name: "ToScrap",
+        component: ToScrap
       },
       {
         path: "main",
-        name: "Scrab",
-        component: Scrab,
+        name: "Scrap",
+        component: Scrap,
         props: true
       },
       {
-        path: ":scrab_no",
-        name: "ScrabNews",
-        component: ScrabNews,
+        path: ":scrap_no",
+        name: "ScrapNews",
+        component: ScrapNews,
       },
       {
-        path: "modify/:scrab_no",
-        name: "ModifyScrab"
+        path: "modify/:scrap_no",
+        name: "ModifyScrap"
       }
     ]
   },
