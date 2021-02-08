@@ -60,8 +60,11 @@ public class NewsController {
 
 	// Properties 설정
 	public static String WEB_DRIVER_ID = "webdriver.chrome.driver";
-	public static String WEB_DRIVER_PATH = System.getProperty("user.dir") + "\\chromedriver.exe";
-
+//  window chromedriver
+//	public static String WEB_DRIVER_PATH = System.getProperty("user.dir") + "\\chromedriver_window.exe";
+//  aws 서버용 chromedriver
+	public static String WEB_DRIVER_PATH = System.getProperty("user.dir") + "\\chromedriver_linux.exe";
+	
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
