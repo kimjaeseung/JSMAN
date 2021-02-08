@@ -47,6 +47,7 @@ public class BoardController {
 			) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
+
 		try {
 			String userNo = Integer.toString(userservice.userNo(id));
 			b.setUserNo(userNo);

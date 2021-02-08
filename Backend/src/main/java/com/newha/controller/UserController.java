@@ -62,12 +62,6 @@ public class UserController {
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
-	
-	@ApiOperation(value = "유저 리스트 조회", notes = "유저 리스트를 리턴", response = List.class)
-	@GetMapping(value = "/user")
-	public List<User> selectAll() {
-		return service.selectAll();
-	}
 
 	@ApiOperation(value = "이메일 중복검사", notes = "'success'는 사용 가능한 아이디, 'fail'은 이미 사용중인 아이디", response = Map.class)
 	@GetMapping(value = "/idcheck") // 이메일체크
@@ -108,8 +102,6 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-	
-	
 	
 	@ApiOperation(value = "이메일 인증", notes = "입력값으로 id(email) 주면 이메일 발송. 리턴값은 confirm: 인증번호 ", response = Map.class)
 	@GetMapping(value = "/emailauth") // 이메일 인증
@@ -353,8 +345,8 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	
-	// 사람검색
+
+	// 사람검색 
 	@ApiOperation(value = "유저 검색", notes = "유저 List 리턴", response = List.class)
 	@GetMapping(value = "/search/people")
 	public List<User> searchUser(@ApiParam(value = "keyword", required = true) @RequestParam String keyword) {
@@ -379,10 +371,5 @@ public class UserController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 	
-	
-	
-	
-	
-	
-	
+
 }

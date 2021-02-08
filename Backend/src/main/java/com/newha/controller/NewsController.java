@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newha.service.NewsService;
@@ -194,9 +195,9 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "포스트 삭제", notes = "삭제 결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@DeleteMapping(value = "/article/post/{postNo}")
+	@DeleteMapping(value = "/article/post")
 	public ResponseEntity<Map<String, String>> deletePost(
-			@ApiParam(value = "String", required = true) @PathVariable String postNo) {
+			@ApiParam(value = "String", required = true) @RequestParam String postNo) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -213,9 +214,9 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "스크랩 삭제", notes = "삭제 결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@DeleteMapping(value = "/article/scrap/{scrapNo}")
+	@DeleteMapping(value = "/article/scrap")
 	public ResponseEntity<Map<String, String>> deleteScrap(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -270,8 +271,8 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "포스트 목록", notes = "해당 id가 작성한 포스트 목록을 반환", response = List.class)
-	@GetMapping(value = "/article/post/{id}")
-	public ResponseEntity<List<Post>> getPost(@ApiParam(value = "String", required = true) @PathVariable String id) {
+	@GetMapping(value = "/article/post")
+	public ResponseEntity<List<Post>> getPost(@ApiParam(value = "String", required = true) @RequestParam String id) {
 		HttpStatus status = null;
 		List<Post> list = new ArrayList<Post>();
 		try {
@@ -284,9 +285,9 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "스크랩 목록", notes = "해당 포스트에 포함된 스크랩 목록을 반환", response = List.class)
-	@GetMapping(value = "/article/scrap/{postNo}")
+	@GetMapping(value = "/article/scrap")
 	public ResponseEntity<List<UserScrapNews>> getScrap(
-			@ApiParam(value = "String", required = true) @PathVariable String postNo) {
+			@ApiParam(value = "String", required = true) @RequestParam String postNo) {
 		HttpStatus status = null;
 		List<UserScrapNews> list = new ArrayList<UserScrapNews>();
 		try {
@@ -299,9 +300,9 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "내가 구독한 큐레이터의 최신 스크랩 목록", notes = "내가 구독한 큐레이터의 최신 스크랩 목록을 반환", response = List.class)
-	@GetMapping(value = "/article/curatorscrap/{id}")
+	@GetMapping(value = "/article/curatorscrap")
 	public ResponseEntity<List<Map<String, String>>> getCuratorScrap(
-			@ApiParam(value = "String", required = true) @PathVariable String id) {
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
 		HttpStatus status = null;
 		List<String> list = new ArrayList<String>();
 		List<Map<String, String>> newsList = new ArrayList<Map<String, String>>();
@@ -326,9 +327,9 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "좋아요 증가", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/increalike/{scrapNo}")
+	@GetMapping(value = "/article/increalike")
 	public ResponseEntity<Map<String, String>> increaseLike(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -345,9 +346,9 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "좋아요 감소", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/decrealike/{scrapNo}")
+	@GetMapping(value = "/article/decrealike")
 	public ResponseEntity<Map<String, String>> decreaseLike(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -364,9 +365,9 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "싫어요 증가", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/increadislike/{scrapNo}")
+	@GetMapping(value = "/article/increadislike")
 	public ResponseEntity<Map<String, String>> increaseDisLike(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -383,9 +384,9 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "싫어요 감소", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/decreadislike/{scrapNo}")
+	@GetMapping(value = "/article/decreadislike")
 	public ResponseEntity<Map<String, String>> decreaseDisLike(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -402,10 +403,10 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "유저가 좋아요 누른 목록 등록/해제", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/like/{scrapNo}/{id}")
+	@GetMapping(value = "/article/like")
 	public ResponseEntity<Map<String, String>> updateLike(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo,
-			@ApiParam(value = "String", required = true) @PathVariable String id) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo,
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -428,10 +429,10 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "유저가 싫어요 누른 목록 등록/해제", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/dislike/{scrapNo}/{id}")
+	@GetMapping(value = "/article/dislike")
 	public ResponseEntity<Map<String, String>> updateDisLike(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo,
-			@ApiParam(value = "String", required = true) @PathVariable String id) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo,
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -454,10 +455,10 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "유저가 저장 누른 목록 등록/해제", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/save/{scrapNo}/{id}")
+	@GetMapping(value = "/article/save")
 	public ResponseEntity<Map<String, String>> updateSave(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo,
-			@ApiParam(value = "String", required = true) @PathVariable String id) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo,
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -480,10 +481,10 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "유저가 좋아요 눌럿는지 여부 파악", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/islike/{scrapNo}/{id}")
+	@GetMapping(value = "/article/islike")
 	public ResponseEntity<Map<String, String>> isLike(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo,
-			@ApiParam(value = "String", required = true) @PathVariable String id) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo,
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -507,10 +508,10 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "유저가 싫어요 눌럿는지 여부 파악", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/isdislike/{scrapNo}/{id}")
+	@GetMapping(value = "/article/isdislike")
 	public ResponseEntity<Map<String, String>> isDisLike(
-			@ApiParam(value = "String", required = true) @PathVariable String scrapNo,
-			@ApiParam(value = "String", required = true) @PathVariable String id) {
+			@ApiParam(value = "String", required = true) @RequestParam String scrapNo,
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
