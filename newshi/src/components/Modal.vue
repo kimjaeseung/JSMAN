@@ -11,7 +11,6 @@
           Upload (Simple)
         </button>
       </header>
-
       <div v-if="tab == 1">
         <p>이미지 URL로 업로드</p>
         <label for="url">Image URL:</label>
@@ -36,7 +35,6 @@
           @click="insertImage"
           class="success"
           :title="validImage ? '' : 'Image URL needs to be valid'"
-          :disabled="!validImage"
         >
           Add Image
         </button>
@@ -57,6 +55,7 @@ export default {
   data() {
     return {
       imageSrc: '',
+      file: {},
       command: null,
       show: false,
       tab: 1,
@@ -69,10 +68,7 @@ export default {
   },
   computed: {
     validImage() {
-      return (
-        this.imageSrc.match(/unsplash/) !== null ||
-        this.imageSrc.match(/\.(jpeg|jpg|gif|png)$/) != null
-      );
+      return this.imageSrc.match(/\.(jpeg|jpg|gif|png)$/) != null;
     },
   },
   methods: {
@@ -82,12 +78,18 @@ export default {
       this.show = true;
     },
     vfileUploaded(file) {
-      this.imageSrc = file.dataURL;
+      console.log(file);
+      this.imageSrc = URL.createObjectURL(file);
+      console.log(this.imageSrc);
+      this.file = file;
     },
 
     fileChange(e) {
       console.log(e);
-      //   const file = this.$refs.file.files[0];
+      const file = this.$refs.file.files[0];
+      console.log(file);
+      this.imageSrc = URL.createObjectURL(file);
+      this.file = file;
       //   const uploadUrl = `https://httpbin.org/post`;
       //   let formData = new FormData();
 
@@ -114,6 +116,7 @@ export default {
       };
 
       this.$emit('onConfirm', data);
+      this.$emit('addFile', this.file);
       this.closeModal();
     },
 
@@ -137,6 +140,7 @@ export default {
   bottom: 0;
   right: 0;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 99999;
 }
 
 .modal-content {

@@ -5,12 +5,13 @@ import Main from '../views/Main.vue';
 import MyPage from '../views/MyPage.vue';
 import FindPw from '../views/FindPw.vue';
 import ChangePw from '../views/ChangePw.vue';
+import Feedback from '../views/Feedback.vue';
 import MyInfo from '../components/mypage/MyInfo';
-import Channel from "../views/Channel.vue";
-import Scrap from "../components/channel/Scrap.vue";
-import ScrapNews from "../components/channel/ScrapNews.vue";
-import ToScrap from "../components/channel/ToScrap.vue";
-
+import Channel from '../views/Channel.vue';
+import Scrap from '../components/channel/Scrap.vue';
+import ScrapNews from '../components/channel/ScrapNews.vue';
+import ToScrap from '../components/channel/ToScrap.vue';
+import ModifyMyinfo from '../components/mypage/ModifyMyinfo.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -37,45 +38,54 @@ const routes = [
     component: Main,
   },
   {
+    path: '/feedback',
+    name: 'Feedback',
+    component: Feedback,
+  },
+  {
     path: '/mypage',
     name: 'MyPage',
     component: MyPage,
     children: [
       {
-        path: "/",
-        name: "MyInfo",
-        component: MyInfo
-      }
-    ]
+        path: '/',
+        name: 'MyInfo',
+        component: MyInfo,
+      },
+      {
+        path: 'modify',
+        name: 'ModifyMyinfo',
+        component: ModifyMyinfo,
+      },
+    ],
   },
   {
-    path: "/channel/:id",
-    name: "Channel",
+    path: '/channel/:id',
+    name: 'Channel',
     component: Channel,
     children: [
       {
-        path: "",
-        name: "ToScrap",
-        component: ToScrap
+        path: '',
+        name: 'ToScrap',
+        component: ToScrap,
       },
       {
-        path: "main",
-        name: "Scrap",
+        path: 'main',
+        name: 'Scrap',
         component: Scrap,
-        props: true
+        props: true,
       },
       {
-        path: ":scrap_no",
-        name: "ScrapNews",
+        path: ':scrap_no',
+        name: 'ScrapNews',
         component: ScrapNews,
       },
       {
-        path: "modify/:scrap_no",
-        name: "ModifyScrap"
-      }
-    ]
+        path: 'modify/:scrap_no',
+        name: 'ModifyScrap',
+      },
+    ],
   },
-  
 ];
 
 const router = new VueRouter({
