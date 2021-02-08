@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newha.service.TagService;
@@ -22,8 +23,8 @@ public class TagController {
 	TagService service;
 
 	@ApiOperation(value = "태그 검색", notes = "태그 List 리턴", response = List.class)
-	@GetMapping(value = "/search/tag/{keyword}")
-	List<HashTag> searchTag(@ApiParam(value = "keyword", required = true)@PathVariable String keyword){
+	@GetMapping(value = "/search/tag")
+	List<HashTag> searchTag(@ApiParam(value = "keyword", required = true)@RequestParam String keyword){
 		return service.searchTag(keyword + "%");
 	}
 }
