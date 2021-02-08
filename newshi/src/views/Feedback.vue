@@ -35,7 +35,7 @@
 
 <script>
 import axios from 'axios';
-const API_FROM_AWS_API_GATEWAY = 'https://1asikq5ii4.execute-api.ap-northeast-2.amazonaws.com/default/newshifeedback';
+const API_FROM_AWS_API_GATEWAY = 'https://uferz9h0eg.execute-api.ap-northeast-2.amazonaws.com/default/newshifeedback';
 
 export default {
   name: 'Feedback',
@@ -52,11 +52,9 @@ export default {
         email: this.email,
         title: this.title,
         content: this.content,
-        }
-      ))
+      }), {})
       .then((res) => {
         console.log(res)
-        console.log(res.data)
         // this.mailingInProgress = false
         // this.responseText = 'Email sent succeeded!'
         // this.mailSent = true
