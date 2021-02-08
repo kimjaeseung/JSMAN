@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="editor">
-      <Modal ref="ytmodal" @onConfirm="addCommand" />
+      <Modal ref="ytmodal" @onConfirm="addCommand" @addFile="addImageFile" />
       <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
         <div class="menubar">
           <button
@@ -180,17 +180,8 @@
       <v-divider dark></v-divider>
       <editor-content class="editor__content" :editor="editor" />
     </div>
-    <span><h4>관심 목록</h4></span>
-    <div class="pa-4">
-      <v-chip-group v-model="tags" multiple active-class="yellow --text" column>
-        <v-chip v-for="tag in tagName" :key="tag">
-          {{ tag }}
-        </v-chip>
-      </v-chip-group>
-    </div>
     <v-row class="d-flex flex-row-reverse">
-      <v-btn v-if="!isSaveOnce" @click="save">저장</v-btn>
-      <v-btn v-else @click="save">수정</v-btn>
+      <v-btn @click="save">등록</v-btn>
     </v-row>
   </div>
 </template>
@@ -251,20 +242,9 @@ export default {
         ],
         content: ``,
       }),
-      tags: [],
-      tagName: [
-        '속보',
-        '정치',
-        '경제',
-        '사회',
-        '생활/문화',
-        '세계/국제',
-        'IT/과학',
-        '오피니언',
-      ],
-      isSaveOnce: false,
       linkUrl: null,
       linkMenuIsActive: false,
+      files: [],
     };
   },
   beforeDestroy() {
@@ -272,14 +252,7 @@ export default {
   },
   methods: {
     save() {
-      let fullTag = '';
-      for (let i = 0; i < this.tags.length; i++) {
-        fullTag = fullTag + '#' + this.tagName[this.tags[i]];
-      }
-      console.log(this.editor.getHTML());
-      console.log(fullTag);
-      this.$emit('saveData', this.editor.getHTML(), fullTag);
-      this.isSaveOnce = true;
+      this.$emit('saveData', this.editor.getHTML(), this.files);
     },
     showLinkMenu(attrs) {
       this.linkUrl = attrs.href;
@@ -309,6 +282,9 @@ export default {
       if (data.command !== null) {
         data.command(data.data);
       }
+    },
+    addImageFile(file) {
+      this.files.push(file);
     },
   },
 };
