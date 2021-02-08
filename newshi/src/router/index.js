@@ -10,6 +10,7 @@ import Channel from "../views/Channel.vue";
 import Scrap from "../components/channel/Scrap.vue";
 import ScrapNews from "../components/channel/ScrapNews.vue";
 import ToScrap from "../components/channel/ToScrap.vue";
+import ModifyMyinfo from "../components/mypage/ModifyMyinfo.vue"
 
 Vue.use(VueRouter);
 
@@ -45,7 +46,12 @@ const routes = [
         path: "/",
         name: "MyInfo",
         component: MyInfo
-      }
+      },
+      {
+        path: "modify",
+        name: "ModifyMyinfo",
+        component: ModifyMyinfo
+      },
     ]
   },
   {
