@@ -56,6 +56,7 @@ export default {
       ))
       .then((res) => {
         console.log(res)
+        console.log(res.data)
         // this.mailingInProgress = false
         // this.responseText = 'Email sent succeeded!'
         // this.mailSent = true
