@@ -20,13 +20,17 @@ function boardList(id, success, fail) {
     .catch(fail);
 }
 
-function boardInsert(board, success, fail) {
+function boardInsert(board, images, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
 
   instance
-    .get('/boardInsert', board)
+    .get('/boardInsert', board, {
+      params: {
+        id: localStorage.id,
+      }
+    })
     .then(success)
     .catch(fail);
 }
@@ -103,4 +107,4 @@ function boardCommentDelete(commentno, success, fail) {
 
 
 
-export { boardList, boardDelete, boardCommentList, boardCommentDelete, boardCommentInsert, boardCommentUpdate };
+export { boardList, boardInsert, boardDelete, boardCommentList, boardCommentDelete, boardCommentInsert, boardCommentUpdate };

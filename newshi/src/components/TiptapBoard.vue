@@ -180,6 +180,12 @@
       <v-divider dark></v-divider>
       <editor-content class="editor__content" :editor="editor" />
     </div>
+    <v-row>
+      <v-form>
+        <v-text-field v-model="title" placeholder="제목을 작성해주세요">
+        </v-text-field>
+      </v-form>
+    </v-row>
     <v-row class="d-flex flex-row-reverse">
       <v-btn @click="save">등록</v-btn>
     </v-row>
@@ -245,6 +251,7 @@ export default {
       linkUrl: null,
       linkMenuIsActive: false,
       files: [],
+      title: '',
     };
   },
   beforeDestroy() {
@@ -252,7 +259,7 @@ export default {
   },
   methods: {
     save() {
-      this.$emit('saveData', this.editor.getHTML(), this.files);
+      this.$emit('saveData', this.editor.getHTML(), this.files, this.title);
     },
     showLinkMenu(attrs) {
       this.linkUrl = attrs.href;
