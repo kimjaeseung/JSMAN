@@ -6,8 +6,7 @@
 
 <mapper namespace="com.newha.mapper.BoardMapper">
 	<insert id="boardInsert" parameterType="Board">
-		insert into user_board_post values(null,(select userNo from user where id = #{boardNo}),(select userNo from user where id = #{userNo}),
-		#{title},#{content},null,0,0) 
+		insert into user_board_post values(null,#{userNo},#{userNo},#{title},#{content},null,0,0) 
 	</insert>
 	
 	<insert id="boardCreate" parameterType="String">

@@ -42,10 +42,14 @@ public class BoardController {
 	@ApiOperation(value = "게시글 정보 insert", notes = "게시글 정보 insert 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/boardInsert")
 	public ResponseEntity<Map<String, String>> boardInsert(
-			@ApiParam(value = "Board", required = true) @RequestBody Board b) {
+			@ApiParam(value = "Board", required = true) @RequestBody Board b,
+			@ApiParam(value = "String", required = true) @RequestParam String id
+			) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
+			String userNo = Integer.toString(userservice.userNo(id));
+			b.setUserNo(userNo);
 			service.boardInsert(b);
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
@@ -126,10 +130,9 @@ public class BoardController {
 
 
 	@ApiOperation(value = "게시글", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
-	@GetMapping(value = "/boardDetail")
-	public ResponseEntity<List<Map<String, String>>> boardDetail(
+	@GetMapping(value = "/boardCommentList")
+	public ResponseEntity<List<Map<String, String>>> boardCommentList(
 			@ApiParam(value = "int", required = true) @RequestParam String boardPostNo) {
-		// list의 처음부분만 게시글의 정보이고 나머지 부분은 전부 댓글입니다.
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		HttpStatus status = null;
 		
@@ -158,21 +161,32 @@ public class BoardController {
 	
 	@ApiOperation(value = "게시글 댓글 insert", notes = "게시글 댓글 insert 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/boardCommentInsert")
-	public ResponseEntity<Map<String, String>> boardCommentInsert(
+	public ResponseEntity<List<Map<String, String>>> boardCommentInsert(
 			@ApiParam(value = "String", required = true) @RequestParam String boardPostNo,
 			@ApiParam(value = "String", required = true) @RequestParam String id,
 			@ApiParam(value = "String", required = true) @RequestParam String content) {
-		Map<String, String> map = new HashMap<>();
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+
 		HttpStatus status = null;
 		try {
 			service.boardCommentInsert(boardPostNo, id, content);
-			map.put("message", SUCCESS);
+			List<Integer> l = service.boardCommentList(boardPostNo);
+			for (int i = 0; i < l.size(); i++) {
+				String commentNo = Integer.toString(l.get(i));
+				BoardComment bc = service.boardComment(commentNo);
+				Map<String, String> temp = new HashMap<String, String>();
+				temp.put("BoardPostNo", bc.getBoardPostNo());
+				temp.put("CommentNo", bc.getCommentNo());
+				temp.put("Content", bc.getContent());
+				temp.put("Date", bc.getDate());
+				temp.put("UserNo", bc.getUserNo());
+				list.add(temp);
+			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
-			map.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<Map<String, String>>(map, status);
+		return new ResponseEntity<List<Map<String, String>>>(list, status);
 	}
 	
 	@ApiOperation(value = "댓글 삭제", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
