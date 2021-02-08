@@ -5,6 +5,7 @@
         <template v-slot:activator="{ on, attrs }">
           <v-avatar size="150px" v-bind="attrs" v-on="on">
             <v-img :src="member.thumbnail_path"></v-img>
+            <!-- <v-img :src="`${member.thumbnail_path}`" aspect-ratio="1"></v-img> -->
           </v-avatar>
         </template>
         <v-card>
@@ -73,11 +74,26 @@ export default {
   },
   created() {
     // 내 정보 불러오는 axios(임시)
-    this.member = {
-        name: '김재성',
-        id: 'kimjea23@naver.com',
-        thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-    };
+    // this.member.thumbnail_path = "http://images.khan.co.kr/article/2021/02/08/l_2021020802000444700074261.jpg";
+    // this.member.name = '로딩중';  
+    // this.member.id = '기달';
+    axios.get('http://localhost/sidebarUser/' + 'kimjea23@naver.com'
+    ).then((response) => {
+      console.log(response);
+      this.member.name = response.data.name;
+      // this.member.thumbnail_path = '../../../../../../tmp/' + response.data.thumbnail_path;
+      this.member.id = 'kimjea23@naver.com';
+      this.member.thumbnail_path = "http://images.khan.co.kr/article/2021/02/08/l_2021020802000444700074261.jpg";
+      console.log(this.member.thumbnail_path);
+      console.log(this.member.name)
+      this.$forceUpdate();
+    })
+
+    // this.member = {
+    //     name: '김재성',
+    //     id: 'kimjea23@naver.com',
+    //     thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+    // };
 
     // 내 hashtags 불러오는 axios(임시)
     this.hashtags = ['#속보', '#정치', '#경제', '#사회', '#문화'];
