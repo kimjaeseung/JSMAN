@@ -11,7 +11,6 @@
           Upload (Simple)
         </button>
       </header>
-
       <div v-if="tab == 1">
         <p>이미지 URL로 업로드</p>
         <label for="url">Image URL:</label>
