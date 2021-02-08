@@ -18,5 +18,7 @@ public interface BoardDAO {
 	public List<Integer> boardCommentList(String boardPostNo);
 	public BoardComment boardComment(String commentNo);
 	public String boardCommentCount(String temp);
+	public void boardCommentDelete(String commentNo);
+	public void boardCommentUpdate(BoardComment bc);
 
 }

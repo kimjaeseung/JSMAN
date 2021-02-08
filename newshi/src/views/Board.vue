@@ -52,7 +52,7 @@
 <script>
 import BoardInfo from '@/components/BoardInfo.vue';
 import { getInfo } from '@/api/user.js';
-import { boardList } from '@/api/board.js';
+import { boardList, boardDelete } from '@/api/board.js';
 
 export default {
   components: {
@@ -70,7 +70,21 @@ export default {
       this.$router.push('/addBoard');
     },
     removeBoard(index) {
-      this.list.splice(index, 1);
+      let board = this.list.splice(index, 1);
+      boardDelete(
+        board.boardPostNo,
+        (response) => {
+          if (response.data.message === 'success') {
+            alert('게시물 삭제에 성공했습니다.');
+          } else {
+            alert('게시물 삭제에 실패했습니다.');
+          }
+        },
+        (error) => {
+          console.error(error);
+          alert('게시물 삭제 중 에러가 발생했습니다.');
+        }
+      );
       console.log(this.list);
       console.log(index);
     },
