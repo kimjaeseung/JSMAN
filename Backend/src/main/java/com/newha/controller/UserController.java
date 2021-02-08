@@ -318,7 +318,7 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	//소셜로그인
+	// 소셜로그인
 	@ApiOperation(value = "소셜로그인", notes = "'success' 또는 'fail', token 리턴", response = Map.class)
 	@PostMapping(value = "/user/socialLogin")
 	public ResponseEntity<Map<String, Object>> socialLogin(@ApiParam(value = "id", required = true) @RequestBody User user) {
@@ -326,7 +326,6 @@ public class UserController {
 		HttpStatus status = null;
 		try {
 			service.insert(user);
-			boardservice.boardCreate(user.getId());
 			User loginUser = service.login(user);
 			if (loginUser != null) {
 				String token = jwtService.create("id", loginUser.getId(), "access-token");// key, data, subject
@@ -346,7 +345,7 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	
+
 	// 사람검색 
 	@ApiOperation(value = "유저 검색", notes = "유저 List 리턴", response = List.class)
 	@GetMapping(value = "/search/people")

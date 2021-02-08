@@ -47,9 +47,10 @@ public class BoardController {
 			) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		String userNo = Integer.toString(userservice.userNo(id));
-		b.setUserNo(userNo);
-		try {  
+
+		try {
+			String userNo = Integer.toString(userservice.userNo(id));
+			b.setUserNo(userNo);
 			service.boardInsert(b);
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
@@ -131,9 +132,8 @@ public class BoardController {
 
 	@ApiOperation(value = "게시글", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
 	@GetMapping(value = "/boardCommentList")
-	public ResponseEntity<List<Map<String, String>>> boardDetail(
+	public ResponseEntity<List<Map<String, String>>> boardCommentList(
 			@ApiParam(value = "int", required = true) @RequestParam String boardPostNo) {
-		// list의 처음부분만 게시글의 정보이고 나머지 부분은 전부 댓글입니다.
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		HttpStatus status = null;
 		
@@ -167,11 +167,11 @@ public class BoardController {
 			@ApiParam(value = "String", required = true) @RequestParam String id,
 			@ApiParam(value = "String", required = true) @RequestParam String content) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+
 		HttpStatus status = null;
 		try {
 			service.boardCommentInsert(boardPostNo, id, content);
 			List<Integer> l = service.boardCommentList(boardPostNo);
-
 			for (int i = 0; i < l.size(); i++) {
 				String commentNo = Integer.toString(l.get(i));
 				BoardComment bc = service.boardComment(commentNo);
