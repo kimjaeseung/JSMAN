@@ -277,6 +277,22 @@ export default {
         (response) => {
           if (response.data.message === 'success') {
             this.isDupEmailCheck = true;
+            emailValidTest(
+              id,
+              (response) => {
+                if (response.status >= 200 && response.status < 300) {
+                  console.log(response.data['confirm']);
+                  this.validNumCheck = response.data['confirm'];
+                } else {
+                  console.log(response);
+                }
+              },
+              (error) => {
+                console.log(error);
+                alert('이메일 인증 중 에러가 발생했습니다.');
+              }
+            );
+
             this.validNumCheck = response.data['validNum'];
             alert(
               '입력하신 아이디로 인증메일을 발송하였습니다. 인증번호를 입력해주세요.'
@@ -310,23 +326,6 @@ export default {
           alert('이메일 인증에 실패했습니다.' + this.emailValidCnt + '회');
         }
       }
-      emailValidTest(
-        this.validNum,
-        (response) => {
-          if (response.data.message === 'success') {
-            this.isEmailValid = true;
-            alert('이메일 인증이 완료되었습니다.');
-          } else {
-            this.isDupEmailCheck = false;
-            this.isEmailValid = false;
-            alert('이메일 인증에 실패했습니다. ');
-          }
-        },
-        (error) => {
-          console.error(error);
-          alert('이메일 인증에 오류가 발생했습니다.');
-        }
-      );
     },
     resendEmail() {
       let id = '';
@@ -378,7 +377,6 @@ export default {
       );
     },
     onJoin() {
-      console.log(this.formData);
       if (!this.isValid) {
         alert('모든 정보를 입력해주시기 바랍니다.');
         return;
@@ -392,9 +390,10 @@ export default {
         alert('이름 중복 검사를 해야합니다.');
         return;
       }
-      let fullTag = '';
+      // let fullTag = '';
       for (let i = 0; i < this.tags.length; i++) {
-        fullTag = fullTag + '#' + this.tagName[this.tags[i]];
+        // fullTag = fullTag + '#' + this.tagName[this.tags[i]];
+        this.tags[i] = this.tagName[this.tags[i]];
       }
       let info = {
         id: this.id,
