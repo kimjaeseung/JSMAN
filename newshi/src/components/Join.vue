@@ -1,9 +1,7 @@
 <template>
   <div>
     <v-card v-if="!isKakao">
-      <v-toolbar
-        color="orange lighten-4"
-      >
+      <v-toolbar color="orange lighten-4">
         <v-btn icon @click="closeDialog">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -213,7 +211,7 @@ export default {
     ValidationProvider,
   },
   props: {
-    isKaKao: Boolean,
+    isKakao: Boolean,
     user: Object,
   },
   data() {
@@ -240,9 +238,9 @@ export default {
         '오피니언',
       ],
       kakaoId: '',
+      emailValidCnt: 0,
     };
   },
-
   watch: {
     id: function() {
       this.checkForm();
@@ -269,7 +267,7 @@ export default {
       //     return;
       //   }
       let id = '';
-      if (this.isKaKao) {
+      if (this.isKakao) {
         id = this.kakaoId;
       } else {
         id = this.id;
@@ -297,6 +295,21 @@ export default {
       );
     },
     emailValidCheck() {
+      this.emailValidCnt += 1;
+      if (this.validNumCheck == this.validNum) {
+        this.isEmailValid = true;
+        alert('이메일 인증이 완료되었습니다.');
+      } else {
+        if (this.emailValidCnt > 5) {
+          this.isDupEmailCheck = false;
+          this.isEmailValid = false;
+          alert(
+            '이메일 인증에 실패했습니다. 새롭게 이메일 인증을 시도해주세요.'
+          );
+        } else {
+          alert('이메일 인증에 실패했습니다.' + this.emailValidCnt + '회');
+        }
+      }
       emailValidTest(
         this.validNum,
         (response) => {
@@ -317,7 +330,7 @@ export default {
     },
     resendEmail() {
       let id = '';
-      if (this.isKaKao) {
+      if (this.isKakao) {
         id = this.kakaoId;
       } else {
         id = this.id;
@@ -378,6 +391,10 @@ export default {
       } else if (!this.isDupNameCheck) {
         alert('이름 중복 검사를 해야합니다.');
         return;
+      }
+      let fullTag = '';
+      for (let i = 0; i < this.tags.length; i++) {
+        fullTag = fullTag + '#' + this.tagName[this.tags[i]];
       }
       let info = {
         id: this.id,

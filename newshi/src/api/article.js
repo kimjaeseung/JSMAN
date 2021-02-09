@@ -11,7 +11,7 @@ function saveArticle(news, success, fail) {
   );
 
   instance
-    .post('/article', JSON.stringify(news))
+    .post('/article', news)
     .then(success)
     .catch(fail);
 }

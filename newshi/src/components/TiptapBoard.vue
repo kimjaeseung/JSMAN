@@ -223,6 +223,9 @@ export default {
     EditorMenuBubble,
     Modal,
   },
+  props: {
+    board: Object,
+  },
   data() {
     return {
       editor: new Editor({
@@ -253,6 +256,12 @@ export default {
       files: [],
       title: '',
     };
+  },
+  created() {
+    if (this.board !== null) {
+      this.editor.setContent(this.board.content);
+      this.title = this.board.title;
+    }
   },
   beforeDestroy() {
     this.editor.destroy();

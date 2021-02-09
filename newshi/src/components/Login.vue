@@ -161,6 +161,7 @@ export default {
             name: result.user.displayName,
             thumbnail_path: result.user.photoURL,
             tag: null,
+            platform_type: 'Google',
           };
           socialLogin(
             user,
@@ -199,6 +200,7 @@ export default {
             name: kakao_account.profile.nickname,
             thumbnail_path: kakao_account.profile.profile_image_url,
             tags: null,
+            platform_type: 'Kakao',
           };
           if (info.id === undefined) {
             this.changeKakao(info);

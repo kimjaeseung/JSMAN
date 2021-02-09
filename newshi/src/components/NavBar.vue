@@ -26,11 +26,7 @@
         <template v-slot:activator="{ on: dialog, attrs }">
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
-              <v-btn
-                v-bind="attrs"
-                v-on="{ ...tooltip, ...dialog }"
-                icon
-              >
+              <v-btn v-bind="attrs" v-on="{ ...tooltip, ...dialog }" icon>
                 <v-icon>mdi-account</v-icon>
               </v-btn>
             </template>
@@ -153,7 +149,7 @@ export default {
         {
           icon: 'newspaper-variant-multiple-outline',
           title: '나중에 볼 기사',
-          router: '/save'
+          router: '/save',
         },
         { icon: 'newspaper-plus', title: '언론사 선택하기', router: '/press' },
         { icon: 'brightness-6', title: '다크모드', router: '' },
@@ -215,10 +211,10 @@ export default {
       this.$router.push('/mypage');
     },
     changeTheme() {
-        // true일 때 darkmode, false일 때 lightmode
-        this.$store.dispatch('getThemeMode', this.switchTheme)
-        this.$vuetify.theme.dark = this.switchTheme
-    }
+      // true일 때 darkmode, false일 때 lightmode
+      this.$store.dispatch('getThemeMode', this.switchTheme);
+      this.$vuetify.theme.dark = this.switchTheme;
+    },
   },
   watch: {
     search_word: function() {
@@ -240,11 +236,14 @@ export default {
     this.logged = this.$store.getters.loggedIn;
     this.member = this.$store.getters.userProfile;
     this.switchTheme = localThemeMode;
-    localThemeMode.toString() == 'true' ? this.$vuetify.theme.dark = true: this.$vuetify.theme.dark = false; // 시작하자마자 다크테마인지 아닌지 체크
+    if (localThemeMode == null) this.$vuetify.theme.dark = false;
+    else
+      localThemeMode.toString() == 'true'
+        ? (this.$vuetify.theme.dark = true)
+        : (this.$vuetify.theme.dark = false); // 시작하자마자 다크테마인지 아닌지 체크
     console.log(this.logged);
     console.log(this.member);
   },
-  
 };
 </script>
 
@@ -253,9 +252,9 @@ export default {
   display: inline;
 }
 .theme--dark.v-app-bar.v-toolbar.v-sheet {
-  background-color: #1E1E1E !important;
+  background-color: #1e1e1e !important;
 }
-.theme--dark.v-navigation-drawer{
+.theme--dark.v-navigation-drawer {
   background-color: #252525 !important;
 }
 .theme--light.v-app-bar.v-toolbar.v-sheet {
