@@ -69,7 +69,7 @@
         <v-btn width="183" height="45">
           <img
             class="kakao_btn"
-            src="@/assets/kakao_login_medium_narrow.png"
+            src="@/assets/images/kakao_login_medium_narrow.png"
             @click="loginWithKakao"
             alt="카카오 로그인"
           />

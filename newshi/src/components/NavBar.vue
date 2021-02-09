@@ -7,10 +7,10 @@
       <v-spacer />
       <a href="/">
       <div v-if="this.switchTheme == 'true'">
-        <v-img contain src="@/assets/logo_darkmode.png"></v-img>
+        <v-img contain src="@/assets/images/logo_darkmode.png"></v-img>
       </div>
       <div v-else>
-        <v-img contain src="@/assets/logo_lightmode.png"></v-img>
+        <v-img contain src="@/assets/images/logo_lightmode.png"></v-img>
       </div>
       </a>
       <v-spacer />
@@ -158,8 +158,8 @@ export default {
         { icon: 'newspaper-plus', title: '언론사 선택하기', router: '/press' },
         { icon: 'brightness-6', title: '다크모드', router: '' },
         { icon: 'email-open-outline', title: '피드백 보내기', router: '/feedback' },
-        { icon: 'comment-processing-outline', title: '댓글 운영 정책', router: '/commentpolicy' },
-        { icon: 'home', title: '홈페이지 바로가기', router: '/home' },
+        { icon: 'comment-processing-outline', title: '댓글 운영 정책', router: '/policy' },
+        { icon: 'home', title: '만든이들', router: '/whoweare' },
         { icon: 'information-outline', title: '버전 정보', router: '/version' },
       ],
       mounted_flag: false,
