@@ -13,6 +13,10 @@ import Scrap from '../components/channel/Scrap.vue';
 import ScrapNews from '../components/channel/ScrapNews.vue';
 import ToScrap from '../components/channel/ToScrap.vue';
 import ModifyMyinfo from '../components/mypage/ModifyMyinfo.vue';
+import Search from '../views/Search.vue';
+import NoSearch from '../components/search/NoSearch.vue';
+import SearchResult from '../components/search/SearchResult.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -32,6 +36,23 @@ const routes = [
     name: 'ChangePw',
     component: ChangePw,
     props: true,
+  },
+  {
+    path: '/search',
+    name: 'Search',
+    component: Search,
+    children: [
+      {
+        path: '',
+        name: 'NoSearch',
+        component: NoSearch,
+      },
+      {
+        path: ':mode/:search_word',
+        name: 'SearchResult',
+        component: SearchResult,
+      },
+    ],
   },
   {
     path: '/',
