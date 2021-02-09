@@ -3,7 +3,7 @@
       <v-container>
           <v-row>
               <v-col class="d-flex justify-center">
-                <v-card>
+                <v-card width="100%">
                     <v-card-title>비밀번호 변경</v-card-title>
                     <v-card-subtitle> 안전한 비밀번호로 내정보를 보호하세요. </v-card-subtitle>
                     <v-card-text>
@@ -34,6 +34,7 @@
                             outlined
                             type="password"
                             :error-messages="errors"
+                            :success="old_check"
                         ></v-text-field>
                         </ValidationProvider>
                         <ValidationProvider
@@ -52,7 +53,7 @@
                     </ValidationProvider>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn width=100% dark>확인</v-btn>
+                        <v-btn width=100% dark @click="passwordChangeSubmit()">확인</v-btn>
                     </v-card-actions>
                     <v-card-actions>
                         <v-btn width=100%>취소</v-btn>
@@ -69,6 +70,9 @@ import { ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
 
+var old_check = false;
+var new_check = false;
+
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });
@@ -76,18 +80,40 @@ extend('password', {
   message:
     'password should include lower-case, numeric digit, special chracter($@$!%*#?&).',
   validate: (value) => {
-    return /^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$@$!%*#?&]).*$/.test(value);
+    if(/^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$@$!%*#?&]).*$/.test(value)){
+      old_check = true;
+      return true;
+    } else {
+      old_check = false;
+    }
   },
 });
 extend('passwordConfirm', {
   params: ['target'],
   validate(value, { target }) {
-    return value === target;
+    if(value === target) {
+      new_check = true;
+      return true;
+    } else {
+      new_check = false;
+    }
   },
   message: 'Password confirmation does not match',
 });
 
 export default {
+  methods: {
+    passwordChangeSubmit() {
+      if(!old_check) {
+        alert('현재 비밀번호를 확인해주세요.');
+        return;
+      } else if(!new_check) {
+        alert('새 비밀번호를 확인해주세요.')
+        return;
+      }
+      
+    }
+  },
     components: {
     ValidationProvider,
     },
