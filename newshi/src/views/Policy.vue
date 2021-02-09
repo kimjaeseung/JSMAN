@@ -60,7 +60,7 @@
 
 <script>
 export default {
-  name: 'CommentPolicy',
+  name: 'Policy',
 }
 </script>
 

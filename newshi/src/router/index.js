@@ -7,6 +7,7 @@ import FindPw from '../views/FindPw.vue';
 import ChangePw from '../views/ChangePw.vue';
 import Feedback from '../views/Feedback.vue';
 import Policy from '../views/Policy.vue';
+import Whoweare from '../views/Whoweare.vue';
 import MyInfo from '../components/mypage/MyInfo';
 import Channel from '../views/Channel.vue';
 import Scrap from '../components/channel/Scrap.vue';
@@ -52,6 +53,11 @@ const routes = [
     path: '/policy',
     name: 'Policy',
     component: Policy,
+  },
+  {
+    path: '/whoweare',
+    name: 'Whoweare',
+    component: Whoweare,
   },
   {
     path: '/mypage',
