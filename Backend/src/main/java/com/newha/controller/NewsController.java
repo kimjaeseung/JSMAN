@@ -45,7 +45,7 @@ import io.swagger.annotations.ApiParam;
 
 @Api("UserController V1")
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8081")
 @EnableTransactionManagement
 public class NewsController {
 
