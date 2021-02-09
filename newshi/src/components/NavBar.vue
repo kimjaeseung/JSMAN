@@ -158,7 +158,7 @@ export default {
         { icon: 'newspaper-plus', title: '언론사 선택하기', router: '/press' },
         { icon: 'brightness-6', title: '다크모드', router: '' },
         { icon: 'email-open-outline', title: '피드백 보내기', router: '/feedback' },
-        { icon: 'comment-processing-outline', title: '댓글 운영 정책', router: '/commentpolicy' },
+        { icon: 'comment-processing-outline', title: '댓글 운영 정책', router: '/policy' },
         { icon: 'home', title: '홈페이지 바로가기', router: '/home' },
         { icon: 'information-outline', title: '버전 정보', router: '/version' },
       ],
