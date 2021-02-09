@@ -16,7 +16,7 @@ import org.jsoup.select.Elements;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.Sleeper;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,7 +45,7 @@ import io.swagger.annotations.ApiParam;
 
 @Api("UserController V1")
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8081")
 @EnableTransactionManagement
 public class NewsController {
 
@@ -62,9 +61,9 @@ public class NewsController {
 	// Properties 설정
 	public static String WEB_DRIVER_ID = "webdriver.chrome.driver";
 //  window chromedriver
-//	public static String WEB_DRIVER_PATH = System.getProperty("user.dir") + "\\chromedriver_window.exe";
+	public static String WEB_DRIVER_PATH = System.getProperty("user.dir") + "\\chromedriver_window.exe";
 //  aws 서버용 chromedriver
-	public static String WEB_DRIVER_PATH = System.getProperty("user.dir") + "\\chromedriver_linux.exe";
+//	public static String WEB_DRIVER_PATH = "/home/ubuntu/s04p12a307/Backend/chromedriver_linux";
 	
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
@@ -91,7 +90,11 @@ public class NewsController {
 				System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
 
 				// Selenium Driver SetUp
-				driver = new ChromeDriver();
+				ChromeOptions options = new ChromeOptions();
+				options.addArguments("--headless");
+				options.addArguments("--no-sandbox");
+				options.addArguments("--disable-dev-shm-usage");
+				driver = new ChromeDriver(options);
 				try {
 					// get page
 					driver.get(url);
@@ -181,14 +184,17 @@ public class NewsController {
 					service.insertHashTag(tag[j]);
 				}
 
-				for (int j = 0; j < tag.length; j++) {
+				for (int j = 1; j < tag.length; j++) {
 					String tagNo = service.selectHashTagByName(tag[j]).get(0).getTagNo();
+					System.out.println(list.get(i).getScrapNo() + "," + tagNo);
 					service.insertPostTag(new PostTag(list.get(i).getScrapNo(), tagNo));
 				}
 			}
 			status = HttpStatus.ACCEPTED;
+			map.put("message", SUCCESS);
 		} catch (IOException e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			map.put("message", FAIL);
 		}
 
 		return new ResponseEntity<Map<String, String>>(map, status);

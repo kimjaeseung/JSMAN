@@ -7,6 +7,7 @@ import FindPw from '../views/FindPw.vue';
 import ChangePw from '../views/ChangePw.vue';
 import Feedback from '../views/Feedback.vue';
 import Policy from '../views/Policy.vue';
+import Whoweare from '../views/Whoweare.vue';
 import MyInfo from '../components/mypage/MyInfo';
 import Channel from '../views/Channel.vue';
 import Scrap from '../components/channel/Scrap.vue';
@@ -16,6 +17,10 @@ import ModifyMyinfo from '../components/mypage/ModifyMyinfo.vue';
 import Search from '../views/Search.vue';
 import NoSearch from '../components/search/NoSearch.vue';
 import SearchResult from '../components/search/SearchResult.vue';
+import Board from '../views/Board.vue';
+import BoardDetail from '../views/BoardDetail.vue';
+import AddBoard from '../views/AddBoard.vue';
+import ModifyBoard from '../views/ModifyBoard.vue';
 
 Vue.use(VueRouter);
 
@@ -70,6 +75,11 @@ const routes = [
     component: Policy,
   },
   {
+    path: '/whoweare',
+    name: 'Whoweare',
+    component: Whoweare,
+  },
+  {
     path: '/mypage',
     name: 'MyPage',
     component: MyPage,
@@ -112,6 +122,28 @@ const routes = [
         name: 'ModifyScrap',
       },
     ],
+  },
+  {
+    path: '/board/:id',
+    name: 'Board',
+    component: Board,
+  },
+  {
+    path: '/addBoard',
+    name: 'AddBoard',
+    component: AddBoard,
+  },
+  {
+    path: '/modifyBoard',
+    name: 'ModifyBoard',
+    component: ModifyBoard,
+    props: true,
+  },
+  {
+    path: '/boardDetail',
+    name: 'BoardDetail',
+    component: BoardDetail,
+    props: true,
   },
 ];
 

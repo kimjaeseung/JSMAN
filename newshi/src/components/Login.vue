@@ -69,7 +69,7 @@
         <v-btn width="183" height="45">
           <img
             class="kakao_btn"
-            src="@/assets/kakao_login_medium_narrow.png"
+            src="@/assets/images/kakao_login_medium_narrow.png"
             @click="loginWithKakao"
             alt="카카오 로그인"
           />
@@ -161,6 +161,7 @@ export default {
             name: result.user.displayName,
             thumbnail_path: result.user.photoURL,
             tag: null,
+            platform_type: 'Google',
           };
           socialLogin(
             user,
@@ -199,6 +200,7 @@ export default {
             name: kakao_account.profile.nickname,
             thumbnail_path: kakao_account.profile.profile_image_url,
             tags: null,
+            platform_type: 'Kakao',
           };
           if (info.id === undefined) {
             this.changeKakao(info);

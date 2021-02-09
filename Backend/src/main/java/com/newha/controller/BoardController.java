@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiParam;
 
 @Api("BoardController V1")
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8081")
 public class BoardController {
 	@Autowired
 	private BoardService service;
