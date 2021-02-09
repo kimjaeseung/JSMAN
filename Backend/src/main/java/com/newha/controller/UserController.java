@@ -44,7 +44,7 @@ import io.swagger.annotations.ApiParam;
 
 @Api("UserController V1")
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8081")
 public class UserController {
 
 	@Autowired

@@ -1,4 +1,5 @@
 import { createInstance } from './index.js';
+// import 'url-search-params-polyfill';
 
 const instance = createInstance();
 // const config = {
@@ -52,13 +53,14 @@ function join(info, success, fail) {
     thumbnail_path: info.thumbnail_path,
     platform_type: null,
   };
-
-  const tags = info.tags;
+  const tag = info.tags;
+  // var params = new URLSearchParams();
+  // params.append('tag', tag);
 
   instance
-    .post('user/join', user, {
+    .post('join', user, {
       params: {
-        tags: tags,
+        tag: tag,
       },
     })
     .then(success)
@@ -71,7 +73,7 @@ function emailTest(id, success, fail) {
   );
 
   instance
-    .post('idcheck', {
+    .get('idcheck', {
       params: {
         id: id,
       },
@@ -86,7 +88,7 @@ function emailValidTest(id, success, fail) {
   );
 
   instance
-    .post('emailauth', {
+    .get('emailauth', {
       params: {
         id: id,
       },
@@ -101,7 +103,7 @@ function nameTest(name, success, fail) {
   );
 
   instance
-    .post('namecheck', {
+    .get('namecheck', {
       params: {
         name: name,
       },
