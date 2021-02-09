@@ -13,6 +13,11 @@ import Scrap from '../components/channel/Scrap.vue';
 import ScrapNews from '../components/channel/ScrapNews.vue';
 import ToScrap from '../components/channel/ToScrap.vue';
 import ModifyMyinfo from '../components/mypage/ModifyMyinfo.vue';
+import Board from '../views/Board.vue';
+import BoardDetail from '../views/BoardDetail.vue';
+import AddBoard from '../views/AddBoard.vue';
+import ModifyBoard from '../views/ModifyBoard.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -91,6 +96,28 @@ const routes = [
         name: 'ModifyScrap',
       },
     ],
+  },
+  {
+    path: '/board/:id',
+    name: 'Board',
+    component: Board,
+  },
+  {
+    path: '/addBoard',
+    name: 'AddBoard',
+    component: AddBoard,
+  },
+  {
+    path: '/modifyBoard',
+    name: 'ModifyBoard',
+    component: ModifyBoard,
+    props: true,
+  },
+  {
+    path: '/boardDetail',
+    name: 'BoardDetail',
+    component: BoardDetail,
+    props: true,
   },
 ];
 

@@ -1,15 +1,7 @@
 <template>
   <v-dialog v-model="addDialog" fullscreen>
     <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        color="#fcbf49"
-        fixed
-        bottom
-        right
-        fab
-        v-bind="attrs"
-        v-on="on"
-      >
+      <v-btn color="#fcbf49" fixed bottom right fab v-bind="attrs" v-on="on">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
     </template>
@@ -110,7 +102,8 @@ export default {
           url: this.post[i].url,
           summary: this.post[i].summary,
           tags: this.post[i].tags,
-          id: localStorage['id'],
+          // id: localStorage['id'],
+          id: 'chunawoos@hanmail.net',
           name: this.postName,
         };
         this.post.splice(i, 1, news);

@@ -18,25 +18,27 @@
       </v-row>
     </v-form>
     <v-divider></v-divider>
-    <BoardCommentDeatil
+    <BoardCommentDetail
       v-for="(comment, index) in commentList"
       :key="index"
       :comment="comment"
       :num="index"
       @delComment="removeComment"
       @updateComment="modifyComment"
-    ></BoardCommentDeatil>
+    ></BoardCommentDetail>
   </v-container>
 </template>
 
 <script>
-import { boardCommentList, boardCommentInsert } from '@/api/board.js';
-import BoardCommentDetail from '@/components/BoardCommentDeatil.vue';
+import {
+  boardCommentList,
+  boardCommentInsert,
+  boardCommentDelete,
+} from '@/api/board.js';
+import BoardCommentDetail from '@/components/BoardCommentDetail.vue';
 
 export default {
   components: {
-    boardCommentList,
-    boardCommentInsert,
     BoardCommentDetail,
   },
   props: {
@@ -52,7 +54,7 @@ export default {
   methods: {
     removeComment(index) {
       let comment = this.commentList.splice(index, 1);
-      boardDelete(
+      boardCommentDelete(
         comment.commentNo,
         (response) => {
           if (response.data.message === 'success') {

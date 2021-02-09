@@ -23,6 +23,8 @@
 <script>
 import BoardInfo from '@/components/BoardInfo.vue';
 import BoardComment from '@/components/BoardComment.vue';
+import { boardDelete } from '@/api/board.js';
+
 export default {
   components: {
     BoardInfo,
@@ -36,7 +38,7 @@ export default {
   methods: {
     removeBoard(index) {
       boardDelete(
-        board.boardPostNo,
+        this.board.boardPostNo,
         (response) => {
           if (response.data.message === 'success') {
             alert('게시물 삭제에 성공했습니다.');
