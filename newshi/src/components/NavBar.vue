@@ -6,12 +6,12 @@
       ></v-app-bar-nav-icon>
       <v-spacer />
       <a href="/">
-      <div v-if="this.switchTheme == 'true'">
-        <v-img contain src="@/assets/logo_darkmode.png"></v-img>
-      </div>
-      <div v-else>
-        <v-img contain src="@/assets/logo_lightmode.png"></v-img>
-      </div>
+        <div v-if="this.switchTheme == 'true'">
+          <v-img contain src="@/assets/logo_darkmode.png"></v-img>
+        </div>
+        <div v-else>
+          <v-img contain src="@/assets/logo_lightmode.png"></v-img>
+        </div>
       </a>
       <v-spacer />
       <v-icon @click="search_drawer = !search_drawer">mdi-magnify</v-icon>
@@ -26,11 +26,7 @@
         <template v-slot:activator="{ on: dialog, attrs }">
           <v-tooltip bottom>
             <template v-slot:activator="{ on: tooltip }">
-              <v-btn
-                v-bind="attrs"
-                v-on="{ ...tooltip, ...dialog }"
-                icon
-              >
+              <v-btn v-bind="attrs" v-on="{ ...tooltip, ...dialog }" icon>
                 <v-icon>mdi-account</v-icon>
               </v-btn>
             </template>
@@ -153,12 +149,20 @@ export default {
         {
           icon: 'newspaper-variant-multiple-outline',
           title: '나중에 볼 기사',
-          router: '/save'
+          router: '/save',
         },
         { icon: 'newspaper-plus', title: '언론사 선택하기', router: '/press' },
         { icon: 'brightness-6', title: '다크모드', router: '' },
-        { icon: 'email-open-outline', title: '피드백 보내기', router: '/feedback' },
-        { icon: 'comment-processing-outline', title: '댓글 운영 정책', router: '/commentpolicy' },
+        {
+          icon: 'email-open-outline',
+          title: '피드백 보내기',
+          router: '/feedback',
+        },
+        {
+          icon: 'comment-processing-outline',
+          title: '댓글 운영 정책',
+          router: '/commentpolicy',
+        },
         { icon: 'home', title: '홈페이지 바로가기', router: '/home' },
         { icon: 'information-outline', title: '버전 정보', router: '/version' },
       ],
@@ -215,10 +219,10 @@ export default {
       this.$router.push('/mypage');
     },
     changeTheme() {
-        // true일 때 darkmode, false일 때 lightmode
-        this.$store.dispatch('getThemeMode', this.switchTheme)
-        this.$vuetify.theme.dark = this.switchTheme
-    }
+      // true일 때 darkmode, false일 때 lightmode
+      this.$store.dispatch('getThemeMode', this.switchTheme);
+      this.$vuetify.theme.dark = this.switchTheme;
+    },
   },
   watch: {
     search_word: function() {
@@ -240,11 +244,14 @@ export default {
     this.logged = this.$store.getters.loggedIn;
     this.member = this.$store.getters.userProfile;
     this.switchTheme = localThemeMode;
-    localThemeMode.toString() == 'true' ? this.$vuetify.theme.dark = true: this.$vuetify.theme.dark = false; // 시작하자마자 다크테마인지 아닌지 체크
+    if (localThemeMode == null) this.$vuetify.theme.dark = false;
+    else
+      localThemeMode.toString() == 'true'
+        ? (this.$vuetify.theme.dark = true)
+        : (this.$vuetify.theme.dark = false); // 시작하자마자 다크테마인지 아닌지 체크
     console.log(this.logged);
     console.log(this.member);
   },
-  
 };
 </script>
 
@@ -253,9 +260,9 @@ export default {
   display: inline;
 }
 .theme--dark.v-app-bar.v-toolbar.v-sheet {
-  background-color: #1E1E1E !important;
+  background-color: #1e1e1e !important;
 }
-.theme--dark.v-navigation-drawer{
+.theme--dark.v-navigation-drawer {
   background-color: #252525 !important;
 }
 .theme--light.v-app-bar.v-toolbar.v-sheet {

@@ -14,10 +14,11 @@ function login(info, success, fail) {
     name: null,
     password: info.password,
     thumbnail_path: null,
+    platform_type: null,
   };
 
   instance
-    .post('user/login', JSON.stringify(user))
+    .post('user/login', user)
     .then(success)
     .catch(fail);
 }
@@ -31,10 +32,11 @@ function socialLogin(info, success, fail) {
     name: info.name,
     password: null,
     thumbnail_path: info.thumbnail_path,
+    platform_type: info.platform_type,
   };
 
   instance
-    .post('user/social', JSON.stringify(user))
+    .post('user/socialLogin', user)
     .then(success)
     .catch(fail);
 }
@@ -48,12 +50,13 @@ function join(info, success, fail) {
     name: info.name,
     password: info.password,
     thumbnail_path: info.thumbnail_path,
+    platform_type: null,
   };
 
   const tags = info.tags;
 
   instance
-    .post('user/join', JSON.stringify(user), {
+    .post('user/join', user, {
       params: {
         tags: tags,
       },
@@ -68,18 +71,26 @@ function emailTest(id, success, fail) {
   );
 
   instance
-    .post('user/emailCheck', JSON.stringify(id))
+    .post('idcheck', {
+      params: {
+        id: id,
+      },
+    })
     .then(success)
     .catch(fail);
 }
 
-function emailValidTest(num, success, fail) {
+function emailValidTest(id, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
 
   instance
-    .post('user/emailValidCheck', JSON.stringify(num))
+    .post('emailauth', {
+      params: {
+        id: id,
+      },
+    })
     .then(success)
     .catch(fail);
 }
@@ -90,7 +101,11 @@ function nameTest(name, success, fail) {
   );
 
   instance
-    .post('user/nameCheck', JSON.stringify(name))
+    .post('namecheck', {
+      params: {
+        name: name,
+      },
+    })
     .then(success)
     .catch(fail);
 }
