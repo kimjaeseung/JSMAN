@@ -1,6 +1,8 @@
 package com.newha.controller;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +25,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,8 +32,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.services.s3.AmazonS3;
 import com.newha.service.BoardService;
 import com.newha.service.JwtService;
+import com.newha.service.S3Service;
 import com.newha.service.UserService;
 import com.newha.vo.User;
 
@@ -58,7 +61,10 @@ public class UserController {
 	
 	@Autowired
 	private BoardService boardservice;
-
+	
+	@Autowired
+	private S3Service s3service;
+	
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
@@ -236,15 +242,17 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-
+	
 	@ApiOperation(value = "파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
 	@PostMapping("/upload")
 	public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file,
-			@RequestParam String id) {
+			@RequestParam String id) throws IllegalStateException, IOException {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		String userNo = String.valueOf(service.userNo(id));
-		service.thumbnailPath(userNo, file.getOriginalFilename());
+		String thumbnailPath = "https://newha.s3.us-east-2.amazonaws.com/"+file.getOriginalFilename();
+		service.thumbnailPath(userNo, thumbnailPath);
+
 		try (FileOutputStream fos = new FileOutputStream("c:/tmp/" + file.getOriginalFilename());
 				InputStream is = file.getInputStream();) {
 			int readCount = 0;
@@ -259,6 +267,11 @@ public class UserController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			throw new RuntimeException("file Save Error");
 		}
+		
+		File f = new File(file.getOriginalFilename());
+		file.transferTo(f);
+		s3service.uploadOnS3(file.getOriginalFilename(), f);
+		
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
