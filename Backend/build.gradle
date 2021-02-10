@@ -31,7 +31,6 @@ dependencies {
 	compile group: 'commons-io', name: 'commons-io', version: '2.6'
 	compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-tomcat', version: '2.3.3.RELEASE'
-
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.1.RELEASE'
 	
 }
