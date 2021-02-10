@@ -6,12 +6,12 @@
       ></v-app-bar-nav-icon>
       <v-spacer />
       <a href="/">
-      <div v-if="this.switchTheme == 'true'">
-        <v-img contain src="@/assets/images/logo_darkmode.png"></v-img>
-      </div>
-      <div v-else>
-        <v-img contain src="@/assets/images/logo_lightmode.png"></v-img>
-      </div>
+        <div v-if="this.switchTheme == 'true'">
+          <v-img contain src="@/assets/images/logo_darkmode.png"></v-img>
+        </div>
+        <div v-else>
+          <v-img contain src="@/assets/images/logo_lightmode.png"></v-img>
+        </div>
       </a>
       <v-spacer />
       <v-icon @click="search_drawer = !search_drawer">mdi-magnify</v-icon>
@@ -37,6 +37,7 @@
           v-if="isLogin"
           @closeDialog="closeDialog"
           @changeJoin="changeJoin"
+          @login="getLogged"
         ></Login>
         <Join
           v-else
@@ -61,7 +62,7 @@
           </v-list-item>
           <v-list-item>
             <v-list-item-title
-              ><v-btn @click="logout">로그아웃</v-btn></v-list-item-title
+              ><v-btn @click="loggedOut">로그아웃</v-btn></v-list-item-title
             >
           </v-list-item>
         </v-list>
@@ -153,8 +154,16 @@ export default {
         },
         { icon: 'newspaper-plus', title: '언론사 선택하기', router: '/press' },
         { icon: 'brightness-6', title: '다크모드', router: '' },
-        { icon: 'email-open-outline', title: '피드백 보내기', router: '/feedback' },
-        { icon: 'comment-processing-outline', title: '댓글 운영 정책', router: '/policy' },
+        {
+          icon: 'email-open-outline',
+          title: '피드백 보내기',
+          router: '/feedback',
+        },
+        {
+          icon: 'comment-processing-outline',
+          title: '댓글 운영 정책',
+          router: '/policy',
+        },
         { icon: 'home', title: '만든이들', router: '/whoweare' },
         { icon: 'information-outline', title: '버전 정보', router: '/version' },
       ],
@@ -191,7 +200,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions(['logout', 'getUserInfo']),
     closeDialog() {
       this.dialog = !this.dialog;
       this.isLogin = true;
@@ -215,6 +224,17 @@ export default {
       this.$store.dispatch('getThemeMode', this.switchTheme);
       this.$vuetify.theme.dark = this.switchTheme;
     },
+    getLogged() {
+      this.logged = true;
+      this.getUserInfo();
+      this.member = this.$store.getters.userProfile;
+      console.log(this.member);
+    },
+    loggedOut() {
+      this.logged = false;
+      this.logout();
+      this.member = {};
+    },
   },
   watch: {
     search_word: function() {
@@ -233,8 +253,20 @@ export default {
     },
   },
   created() {
-    this.logged = this.$store.getters.loggedIn;
-    this.member = this.$store.getters.userProfile;
+    if (
+      localStorage['access-token'] !== null ||
+      localStorage['access-token'] !== ''
+    ) {
+      this.logged = true;
+      this.member = this.$store.getters.userProfile;
+      if (this.member === null || this.member === '') {
+        this.getUserInfo();
+        this.member = this.$store.getters.userProfile;
+      }
+    } else {
+      this.logged = false;
+      this.member = {};
+    }
     this.switchTheme = localThemeMode;
     if (localThemeMode == null) this.$vuetify.theme.dark = false;
     else
