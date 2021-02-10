@@ -95,6 +95,11 @@ public class UserDAOImpl implements UserDAO {
 		return mapper.selectName(name);
 	}
 
+	@Override
+	public void socialInsert(User user) {
+		mapper.socialInsert(user);
+	}
+
 	
 
 }

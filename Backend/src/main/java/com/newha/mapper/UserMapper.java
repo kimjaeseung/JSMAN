@@ -27,5 +27,6 @@ public interface UserMapper {
 	public void subscribe(@Param("id")String id, @Param("id2")String id2);
 	public void subscdelete(@Param("id")String id, @Param("id2")String id2);
 	public int selectName(String name);
+	public void socialInsert(User user);
 
 }

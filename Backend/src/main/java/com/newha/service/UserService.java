@@ -27,5 +27,6 @@ public interface UserService {
 	public void subscribe(String id, String id2);
 	public void subscdelete(String id, String id2);
 	public int selectName(String name);
+	public void socialInsert(User user);
 
 }

@@ -38,6 +38,10 @@
 		insert into user values(null,#{name},#{password},null,#{id},#{platformType})
 	</insert>
 
+	<insert id="socialInsert" parameterType="User">
+		insert into user values(null,#{name},#{password},#{thumbnail_path},#{id},#{platformType})
+	</insert>
+
 	<delete id="delete" parameterType="string">
 		delete from user where id = #{id}
 	</delete>
