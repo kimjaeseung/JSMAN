@@ -20,12 +20,12 @@ const store = new Vuex.Store({
     },
     SET_THEME_MODE(state, themeMode) {
       state.themeMode = themeMode;
-    }
+    },
   },
   actions: {
-    getThemeMode(context, mode){
-      store.commit('SET_THEME_MODE', mode)
-      localStorage.setItem('themeMode', mode)
+    getThemeMode(context, mode) {
+      store.commit('SET_THEME_MODE', mode);
+      localStorage.setItem('themeMode', mode);
     },
     getUserInfo({ commit }) {
       if (localStorage['access-token'] && localStorage['access-token'] !== '') {

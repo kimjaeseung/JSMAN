@@ -390,17 +390,17 @@ export default {
         alert('이름 중복 검사를 해야합니다.');
         return;
       }
-      // let fullTag = '';
+      let fullTag = '';
       for (let i = 0; i < this.tags.length; i++) {
-        // fullTag = fullTag + '#' + this.tagName[this.tags[i]];
-        this.tags[i] = this.tagName[this.tags[i]];
+        fullTag = fullTag + '#' + this.tagName[this.tags[i]];
+        // this.tags[i] = this.tagName[this.tags[i]];
       }
       let info = {
         id: this.id,
         name: this.name,
         password: this.password,
         thumbnail_path: null,
-        tags: this.tags,
+        tags: fullTag,
       };
 
       join(
@@ -436,8 +436,8 @@ export default {
           if (response.data.message === 'success') {
             let token = response.data['access-token'];
             localStorage.setItem('access-token', token);
-            this.store.commit('SET_LOGGED', true);
-            this.$router.push('/');
+            localStorage.setItem('id', info.id);
+            this.login();
           } else {
             this.isLoginError = true;
           }
@@ -481,6 +481,9 @@ export default {
     },
     changeForm() {
       this.$emit('changeLogin');
+    },
+    login() {
+      this.$emit('login');
     },
   },
 };

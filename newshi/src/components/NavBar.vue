@@ -46,6 +46,7 @@
           @closeDialog="closeDialog"
           @changeLogin="changeLogin"
           @changeKakao="changeKakao"
+          @login="getLogged"
         ></Join>
       </v-dialog>
       <v-menu open-on-hover offset-y v-else>
@@ -229,11 +230,15 @@ export default {
       this.getUserInfo();
       this.member = this.$store.getters.userProfile;
       console.log(this.member);
+      this.dialog = !this.dialog;
+      this.isLogin = true;
+      this.$router.go(this.$router.currentRoute);
     },
     loggedOut() {
       this.logged = false;
       this.logout();
       this.member = {};
+      this.$router.go(this.$router.currentRoute);
     },
   },
   watch: {
@@ -254,18 +259,22 @@ export default {
   },
   created() {
     if (
-      localStorage['access-token'] !== null ||
-      localStorage['access-token'] !== ''
+      localStorage.getItem('access-token') === null ||
+      localStorage.getItem('access-token') === '' ||
+      localStorage['access-token'] === undefined
     ) {
+      this.logged = false;
+      this.member = {};
+    } else {
       this.logged = true;
       this.member = this.$store.getters.userProfile;
       if (this.member === null || this.member === '') {
         this.getUserInfo();
         this.member = this.$store.getters.userProfile;
       }
-    } else {
-      this.logged = false;
-      this.member = {};
+      console.log(typeof localStorage['access-token']);
+      console.log(this.logged);
+      console.log(this.member);
     }
     this.switchTheme = localThemeMode;
     if (localThemeMode == null) this.$vuetify.theme.dark = false;
