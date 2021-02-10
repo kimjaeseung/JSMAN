@@ -35,7 +35,7 @@ function socialLogin(info, success, fail) {
     thumbnail_path: info.thumbnail_path,
     platform_type: info.platform_type,
   };
-
+  console.log(user);
   instance
     .post('user/socialLogin', user)
     .then(success)
