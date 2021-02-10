@@ -254,10 +254,14 @@ public class UserController {
 			u.setUserNo(null);
 			
 			service.insert(u);
-
-			for (int i = 1; i < list.size(); i++) {
-				service.insertTag(u.getId(), (String)list.get(i).get("tag"));
+			
+			String tag[] = ((String) list.get(1).get("tag")).split("#");
+			for (int j = 1; j < tag.length; j++) {
+				service.insertTag(u.getId(), tag[j]);
 			}
+//			for (int i = 1; i < list.size(); i++) {
+//				service.insertTag(u.getId(), (String)list.get(1).get("tag"));
+//			}
 			boardservice.boardCreate(u.getId()); //회원가입과 동시에 개인 게시판 생성
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;

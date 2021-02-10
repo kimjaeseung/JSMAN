@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="addDialog" fullscreen>
+  <v-dialog v-model="addDialog" fullscreen v-if="isLogged">
     <template v-slot:activator="{ on, attrs }">
       <v-btn color="#fcbf49" fixed bottom right fab v-bind="attrs" v-on="on">
         <v-icon>mdi-pencil</v-icon>
@@ -102,8 +102,7 @@ export default {
           url: this.post[i].url,
           summary: this.post[i].summary,
           tags: this.post[i].tags,
-          // id: localStorage['id'],
-          id: 'chunawoos@hanmail.net',
+          id: localStorage['id'],
           name: this.postName,
         };
         this.post.splice(i, 1, news);
@@ -137,6 +136,17 @@ export default {
       };
       this.post.splice(index, 1, news);
       console.log(this.post[index]);
+    },
+  },
+  computed: {
+    isLogged() {
+      if (
+        localStorage['access-token'] === undefined ||
+        localStorage['access-token'] === null ||
+        localStorage['access-token'] === ''
+      )
+        return false;
+      else return true;
     },
   },
 };

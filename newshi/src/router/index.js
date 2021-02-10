@@ -24,6 +24,15 @@ import ModifyBoard from '../views/ModifyBoard.vue';
 
 Vue.use(VueRouter);
 
+const requireAuth = () => (to, from, next) => {
+  if (localStorage['access-token'] && localStorage['access-token'] !== '') {
+    console.log(localStorage['access-token']);
+    return next();
+  } else {
+    return next('/');
+  }
+};
+
 const routes = [
   {
     path: '/article/:newsNo',
@@ -83,6 +92,7 @@ const routes = [
     path: '/mypage',
     name: 'MyPage',
     component: MyPage,
+    beforeEnter: requireAuth(),
     children: [
       {
         path: '/',

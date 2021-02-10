@@ -137,7 +137,6 @@ export default {
             let token = response.data['access-token'];
             localStorage.setItem('access-token', token);
             localStorage.setItem('id', info.id);
-            this.$store.commit('SET_LOGGED', true);
             this.login();
           } else {
             this.isLoginError = true;
@@ -167,11 +166,13 @@ export default {
             (response) => {
               if (response.data.message === 'success') {
                 let token = response.data['access-token'];
+                console.log(token);
                 localStorage.setItem('access-token', token);
                 localStorage.setItem('id', user.id);
                 this.login();
               } else {
                 this.isLoginError = true;
+                alert('구글 로그인에 실패했습니다.');
               }
             },
             (error) => {
@@ -206,11 +207,13 @@ export default {
               (response) => {
                 if (response.data.message === 'success') {
                   let token = response.data['access-token'];
+                  console.log('token');
                   localStorage.setItem('access-token', token);
                   localStorage.setItem('id', info.id);
                   this.login();
                 } else {
                   this.isLoginError = true;
+                  alert('구글 로그인에 실패했습니다.');
                 }
               },
               (error) => {
