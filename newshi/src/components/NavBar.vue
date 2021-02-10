@@ -75,7 +75,7 @@
       ></v-autocomplete>
       <br />{{ search_word }}
     </v-navigation-drawer>
-    <v-navigation-drawer v-model="menu_drawer" absolute temporary>
+    <v-navigation-drawer v-model="menu_drawer" fixed temporary>
       <v-list>
         <v-list-item-group>
           <v-list-item v-if="logged">

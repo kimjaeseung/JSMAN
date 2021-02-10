@@ -89,7 +89,7 @@
           src: require('@/assets/images/5.jpg'),
           title: '천창민',
           role: '팀장, Front-End',
-          link: 'https://github.com/',
+          link: 'https://github.com/chunawoos',
           text: '무엇이든 물어보살!😊'
         },
         {
@@ -97,7 +97,7 @@
           src: require('@/assets/images/1.jpg'),
           title: '김재성',
           role: 'Front-End',
-          link: 'https://github.com/',
+          link: 'https://github.com/JS-2',
           text: '술 좋아하고, 롤 못합니다🎤',
         },
         {
