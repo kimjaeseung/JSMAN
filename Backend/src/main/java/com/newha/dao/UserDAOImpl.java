@@ -100,6 +100,26 @@ public class UserDAOImpl implements UserDAO {
 		mapper.socialInsert(user);
 	}
 
+	@Override
+	public void updatePassword(String id, String oldpassword, String newpassword) {
+		mapper.updatePassword(id, oldpassword, newpassword);
+	}
+
+	@Override
+	public void updateName(String id, String name) {
+		mapper.updateName(id, name);
+	}
+
+	@Override
+	public List<String> tagList(int userNo) {
+		return mapper.tagList(userNo);
+	}
+
+	@Override
+	public void tagDelete(int userNo) {
+		mapper.tagDelete(userNo);
+	}
+
 	
 
 }

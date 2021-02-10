@@ -29,5 +29,9 @@ public interface UserDAO {
 	public void subscdelete(String id, String id2);
 	public int selectName(String name);
 	public void socialInsert(User user);
+	public void updatePassword(String id, String oldpassword, String newpassword);
+	public void updateName(String id, String name);
+	public List<String> tagList(int userNo);
+	public void tagDelete(int userNo);
 
 }

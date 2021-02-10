@@ -52,7 +52,7 @@ public class BoardController {
 		HttpStatus status = null;
 		
 		Board b = new Board();
-		b.setBoardNo((String)list.get(0).get("boardNo"));
+		b.setBoardNo((String)list.get(0).get("boardNo")); 
 		b.setBoardPostNo((String)list.get(0).get("boardPostNo"));
 		b.setContent((String)list.get(0).get("content"));
 		b.setDate((String)list.get(0).get("date"));

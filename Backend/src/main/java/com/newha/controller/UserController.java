@@ -155,6 +155,54 @@ public class UserController {
 		return new ResponseEntity<ArrayList<Map<String, String>>>(list, status);
 	}
 	
+	@ApiOperation(value = "내 정보 태그 리스트", notes = "태그리스트", response = ArrayList.class)
+	@GetMapping(value = "/tagList") // 내가 구독한 큐레이터
+	public ResponseEntity<ArrayList<Map<String, String>>> tagList(
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
+		ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		int userNo = service.userNo(id);
+		HttpStatus status = null;
+		try {
+			List<String> l = service.tagList(userNo);
+			for (int i = 0; i < l.size(); i++) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("name", l.get(i));
+				list.add(map);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<ArrayList<Map<String, String>>>(list, status);
+	}
+	
+	@ApiOperation(value = "내 정보 태그 리스트 수정", notes = "태그리스트", response = ArrayList.class)
+	@GetMapping(value = "/tagListUpdate") // 내가 구독한 큐레이터
+	public ResponseEntity<ArrayList<Map<String, String>>> tagListUpdate(
+			@ApiParam(value = "String", required = true) @RequestParam String id,
+			@ApiParam(value = "List<Map<String,String>>", required = true) @RequestParam List<String> list
+			) {
+		ArrayList<Map<String, String>> list2 = new ArrayList<Map<String, String>>();
+		HttpStatus status = null;
+		try {
+			int userNo = service.userNo(id);
+			service.tagDelete(userNo);
+			for (int i = 0; i < list.size(); i++) {
+				service.insertTag(id, list.get(i));
+			}
+			List<String> l = service.tagList(userNo);
+			for (int i = 0; i < l.size(); i++) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("name", l.get(i));
+				list2.add(map);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<ArrayList<Map<String, String>>>(list2, status);
+	}
+
 	@ApiOperation(value = "큐레이터 구독", notes = "큐레이터 구독 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/subsc")
 	public ResponseEntity<Map<String, String>> insert(@ApiParam(value = "String", required = true) @RequestParam String id, 
@@ -191,12 +239,12 @@ public class UserController {
 	 
 	@ApiOperation(value = "회원가입", notes = "회원가입 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/join")
-	public ResponseEntity<Map<String, String>> insert(@RequestBody List<Map<String, Object>> list) {
+	public ResponseEntity<Map<String, String>> insert(@RequestBody List<Map<String, Object>> list){
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		User u = new User(); 
 		
-		 System.out.println(list.get(0).toString());
+		System.out.println(list.get(0).toString());
 		try { 
 			u.setId((String)list.get(0).get("id"));
 			u.setName((String)list.get(0).get("name"));
@@ -239,13 +287,14 @@ public class UserController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
-	@ApiOperation(value = "회원 정보 수정", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@PutMapping(value = "/update")
-	public ResponseEntity<Map<String, String>> update(@ApiParam(value = "User", required = true) @RequestBody User u) {
+	@ApiOperation(value = "회원 이름 수정", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@PutMapping(value = "/updateName")
+	public ResponseEntity<Map<String, String>> updateName(@ApiParam(value = "String", required = true) @RequestParam String id, 
+			@ApiParam(value = "String", required = true) @RequestParam String name) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			service.update(u);
+			service.updateName(id,name);
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -254,6 +303,27 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
+	
+	@ApiOperation(value = "회원 비밀번호 수정", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@PutMapping(value = "/updatePassword")
+	public ResponseEntity<Map<String, String>> updatePassword(
+			@ApiParam(value = "String", required = true) @RequestParam String id, 
+			@ApiParam(value = "String", required = true) @RequestParam String oldpassword,
+			@ApiParam(value = "String", required = true) @RequestParam String newpassword
+			) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			service.updatePassword(id, oldpassword, newpassword);
+			map.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
 	
 	@ApiOperation(value = "파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
 	@PostMapping("/upload")
@@ -342,7 +412,10 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			service.socialInsert(user);
+			int a = service.selectId(user.getId());
+			if(a==0) {
+				service.socialInsert(user);  
+			}
 			User loginUser = service.login(user);
 			if (loginUser != null) {
 				String token = jwtService.create("id", loginUser.getId(), "access-token");// key, data, subject
