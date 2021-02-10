@@ -47,14 +47,21 @@ public class BoardController {
 	@ApiOperation(value = "게시글 정보 insert", notes = "게시글 정보 insert 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/boardInsert")
 	public ResponseEntity<Map<String, String>> boardInsert(
-			@ApiParam(value = "Board", required = true) @RequestBody Board b,
-			@ApiParam(value = "String", required = true) @RequestParam String id
-			) {
+			@ApiParam(value = "Board", required = true) @RequestBody List<Map<String, Object>> list) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-
+		
+		Board b = new Board();
+		b.setBoardNo((String)list.get(0).get("boardNo"));
+		b.setBoardPostNo((String)list.get(0).get("boardPostNo"));
+		b.setContent((String)list.get(0).get("content"));
+		b.setDate((String)list.get(0).get("date"));
+		b.setIs_notice((String)list.get(0).get("is_notice"));
+		b.setTitle((String)list.get(0).get("title"));
+		b.setVisit_cnt((String)list.get(0).get("visit_cnt"));
+				
 		try {
-			String userNo = Integer.toString(userservice.userNo(id));
+			String userNo = Integer.toString(userservice.userNo((String)list.get(1).get("id")));
 			b.setUserNo(userNo);
 			service.boardInsert(b);
 			map.put("message", SUCCESS);
@@ -114,7 +121,6 @@ public class BoardController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
-
 	}
 
 	@ApiOperation(value = "게시판 삭제", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
