@@ -192,16 +192,16 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-	
+	 
 	@ApiOperation(value = "회원가입", notes = "회원가입 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/join")
 	public ResponseEntity<Map<String, String>> insert(@RequestBody List<Map<String, Object>> list) throws ParseException {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		User u = new User();
+		User u = new User(); 
 		
-		System.out.println(list.get(0).toString());
-		try {
+		 System.out.println(list.get(0).toString());
+		try { 
 			u.setId((String)list.get(0).get("id"));
 			u.setName((String)list.get(0).get("name"));
 			u.setPassword((String)list.get(0).get("password"));
