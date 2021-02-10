@@ -28,5 +28,9 @@ public interface UserMapper {
 	public void subscdelete(@Param("id")String id, @Param("id2")String id2);
 	public int selectName(String name);
 	public void socialInsert(User user);
+	public void updatePassword(@Param("id")String id, @Param("oldpassword")String oldpassword, @Param("newpassword")String newpassword);
+	public void updateName(@Param("id")String id, @Param("name")String name);
+	public List<String> tagList(int userNo);
+	public void tagDelete(int userNo);
 
 }

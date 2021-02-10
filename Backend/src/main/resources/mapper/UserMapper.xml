@@ -10,6 +10,10 @@
 		select followUserNo from follow where userNo = #{userNo};
 	</select>
 	
+	<select id="tagList" resultType="String">
+		select name from join_tag where userNo = #{userNo};
+	</select>
+	
 	<select id="selectUser" resultType="User">
 		select * from user where userNo = #{userNo}
 	</select>
@@ -46,6 +50,10 @@
 		delete from user where id = #{id}
 	</delete>
 	
+	<delete id="tagDelete" parameterType="int">
+		delete from join_tag where userNo = #{userNo}
+	</delete>
+	
 	<select id="selectOne" resultType="User">
 		select * from user where id = #{id} and password = #{password}
 	</select>
@@ -56,6 +64,14 @@
 
 	<update id="update" parameterType="string">
 		update user set password = #{password}, thumbnail_path = #{thumbnail_path} where id = #{id};
+	</update>
+	
+	<update id="updatePassword" parameterType="string">
+		update user set password = #{newpassword} where id = #{id} and password = #{oldpassword};
+	</update>
+	
+	<update id="updateName" parameterType="string">
+		update user set name = #{name} where id = #{id};
 	</update>
 	
 	<update id="thumbnailPath" parameterType="String">
