@@ -1,5 +1,6 @@
 package com.newha.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -72,6 +73,26 @@ public class BoardController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
+	
+	@ApiOperation(value = "s3에 파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
+	@PostMapping("/uploadFile")
+	public ResponseEntity<Map<String, String>> uploadFile(@RequestBody MultipartFile file) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null; 
+		try {
+			File f = new File(file.getOriginalFilename());
+			file.transferTo(f);
+			s3service.uploadOnS3(file.getOriginalFilename(), f);
+			status = HttpStatus.ACCEPTED;
+			map.put("message", SUCCESS); 
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+
+	
 
 	@ApiOperation(value = "게시판 리스트", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
 	@GetMapping(value = "/boardList")

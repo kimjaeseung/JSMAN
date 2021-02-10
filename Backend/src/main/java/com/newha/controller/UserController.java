@@ -129,7 +129,7 @@ public class UserController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Integer>>(map, status);
-	}
+	} 
 	
 	@ApiOperation(value = "내가 구독한 큐레이터", notes = "아이디 입력하면 구독한 큐레이터 thumbnail_path, name 리턴", response = ArrayList.class)
 	@GetMapping(value = "/subscribe") // 내가 구독한 큐레이터
@@ -184,8 +184,8 @@ public class UserController {
 			) {
 		ArrayList<Map<String, String>> list2 = new ArrayList<Map<String, String>>();
 		HttpStatus status = null;
-		try {
-			int userNo = service.userNo(id);
+		try { 
+			int userNo = service.userNo(id); 
 			service.tagDelete(userNo);
 			for (int i = 0; i < list.size(); i++) {
 				service.insertTag(id, list.get(i));
@@ -293,7 +293,7 @@ public class UserController {
 			@ApiParam(value = "String", required = true) @RequestParam String name) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		try {
+		try { 
 			service.updateName(id,name);
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
@@ -303,7 +303,7 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-	
+	 
 	@ApiOperation(value = "회원 비밀번호 수정", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PutMapping(value = "/updatePassword")
 	public ResponseEntity<Map<String, String>> updatePassword(
@@ -324,11 +324,9 @@ public class UserController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 	
-	
 	@ApiOperation(value = "파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
 	@PostMapping("/upload")
-	public ResponseEntity<Map<String, String>> upload(@RequestBody List<Map<String, Object>> list
-			) throws IllegalStateException, IOException {
+	public ResponseEntity<Map<String, String>> upload(@RequestBody List<Map<String, Object>> list) {
 		MultipartFile file = (MultipartFile) list.get(0);
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
