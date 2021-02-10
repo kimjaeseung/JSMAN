@@ -94,4 +94,9 @@ public class UserServiceImpl implements UserService {
 		return dao.selectName(name);
 	}
 
+	@Override
+	public void socialInsert(User user) {
+		dao.socialInsert(user);
+	}
+
 }

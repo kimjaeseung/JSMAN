@@ -346,7 +346,7 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			service.insert(user);
+			service.socialInsert(user);
 			User loginUser = service.login(user);
 			if (loginUser != null) {
 				String token = jwtService.create("id", loginUser.getId(), "access-token");// key, data, subject
