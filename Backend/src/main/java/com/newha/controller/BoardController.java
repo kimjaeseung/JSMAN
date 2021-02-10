@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.newha.service.BoardService;
+import com.newha.service.S3Service;
 import com.newha.service.UserService;
 import com.newha.vo.Board;
 import com.newha.vo.BoardComment;
@@ -28,13 +30,16 @@ import io.swagger.annotations.ApiParam;
 
 @Api("BoardController V1")
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:8081")
 public class BoardController {
 	@Autowired
 	private BoardService service;
 
 	@Autowired
 	private UserService userservice;
+	
+	@Autowired
+	private S3Service s3service;
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
