@@ -119,4 +119,9 @@ public class UserServiceImpl implements UserService {
 		dao.tagDelete(userNo);
 	}
 
+	@Override
+	public User socialLogin(User u) {
+		return dao.socialLogin(u);
+	}
+
 }

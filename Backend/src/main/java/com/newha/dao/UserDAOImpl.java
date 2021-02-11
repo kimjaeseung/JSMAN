@@ -120,6 +120,11 @@ public class UserDAOImpl implements UserDAO {
 		mapper.tagDelete(userNo);
 	}
 
+	@Override
+	public User socialLogin(User u) {
+		return mapper.socialLogin(u);
+	}
+
 	
 
 }
