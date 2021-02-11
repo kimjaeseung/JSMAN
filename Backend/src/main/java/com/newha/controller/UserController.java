@@ -414,7 +414,7 @@ public class UserController {
 			if(a==0) {
 				service.socialInsert(user);  
 			}
-			User loginUser = service.login(user);
+			User loginUser = service.socialLogin(user);
 			if (loginUser != null) {
 				String token = jwtService.create("id", loginUser.getId(), "access-token");// key, data, subject
 				logger.debug("로그인 토큰정보 : {}", token);

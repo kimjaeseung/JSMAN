@@ -91,9 +91,7 @@ public class BoardController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-
 	
-
 	@ApiOperation(value = "게시판 리스트", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
 	@GetMapping(value = "/boardList")
 	public ResponseEntity<List<Map<String, String>>> boardList(

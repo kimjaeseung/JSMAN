@@ -32,5 +32,6 @@ public interface UserService {
 	public void updateName(String id, String name);
 	public List<String> tagList(int userNo);
 	public void tagDelete(int userNo);
+	public User socialLogin(User u);
 
 }
