@@ -47,10 +47,10 @@
         <v-list style="text-align: left">
             <v-subheader>구독중인 큐레이터</v-subheader>
             <v-list-item v-for="(follower, index) in followers" :key="index">
-              <v-list-item-avatar>
+              <v-list-item-avatar @click="toChannel(follower.id)" style="cursor: pointer">
                 <v-img :src="follower.thumbnail_path"></v-img>
               </v-list-item-avatar>
-              <v-list-item-content>
+              <v-list-item-content @click="toChannel(follower.id)" style="cursor: pointer">
                 <v-list-item-title>{{follower.name}}</v-list-item-title>
                 <v-list-item-subtitle>{{follower.id}}</v-list-item-subtitle>
               </v-list-item-content>
@@ -79,12 +79,18 @@ export default {
   watch: {
     getMember: function(val) {
       this.member = val;
+    },
+    member: function() {
       this.getFollowers();
       this.getTagList();
-    },
+    }
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    toChannel(curator) {
+      console.log(curator + "채널로");
+      this.$router.push('channel/' + curator);
+    },
     fileUpload() {
       console.log(this.file);
       var frm = new FormData();
@@ -122,7 +128,6 @@ export default {
     ).then((response) => { 
       var hashtags = response.data;
       hashtags.forEach((hashtag) => {
-        // this.hashtags.append('#' + hashtag['name']);
         this.hashtags.push('#' + hashtag['name'])
       })
       })
@@ -139,6 +144,10 @@ export default {
   },
   created() {
     this.member = this.$store.getters.userProfile;
+    console.log(this.member);
+    if (this.member === null || this.member.id == undefined) {
+      this.getUserInfo();
+    }
     // 내 hashtags 불러오는 axios(임시)
     // this.hashtags = ['#속보', '#정치', '#경제', '#사회', '#문화'];
     
