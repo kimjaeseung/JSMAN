@@ -1,11 +1,20 @@
 <template>
+  <div>
   <NewsList 
     :news-infos="newsInfos"
   />
+  
+    <v-btn @click="test()">
+      버튼
+    </v-btn>
+  </div>
+  
 </template>
 
 <script>
 import NewsList from '../components/NewsList.vue';
+import axios from 'axios';
+const API_URL = 'http://localhost:8080';
 
 export default {
   name: "Main",
@@ -13,6 +22,15 @@ export default {
     NewsList, 
   },
   methods: {
+    test: function () {
+      axios.get(`${API_URL}`+'/article/post'+`?id=${1}`)
+      .then((res)=>{
+        console.log(res)
+      })
+      .error((err) => {
+        console.log(err)
+      })
+    }
   },
   data: function () {
     return {
