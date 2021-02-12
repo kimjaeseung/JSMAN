@@ -68,8 +68,23 @@
 
 <script>
 import axios from 'axios';
+import { mapActions } from 'vuex';
+
 export default {
+  computed: {
+    getMember() {
+      return this.$store.state.userProfile;
+    },
+  },
+  watch: {
+    getMember: function(val) {
+      this.member = val;
+      this.getFollowers();
+      this.getTagList();
+    },
+  },
   methods: {
+    ...mapActions(['logout', 'getUserInfo']),
     fileUpload() {
       console.log(this.file);
       var frm = new FormData();
@@ -83,7 +98,35 @@ export default {
         // 예외 처리 
         console.log(error);
       })
-      }
+    },
+    getFollowers() {
+      axios.get('http://localhost:8080/subscribe', 
+      { params: { id: this.member.id } },
+    ).then((response) => { 
+        // 응답 처리 
+        var followers = response.data;
+        followers.forEach(function(follower) {
+          if(follower.thumbnail_path == null) {
+            follower.thumbnail_path = require('@/assets/images/default_avatar.png');
+          }
+        })
+        this.followers = followers;
+      }) .catch((error) => { 
+        // 예외 처리 
+        console.log(error);
+      })
+    },
+    getTagList() {
+      axios.get('http://localhost:8080/tagList', 
+      { params: { id: this.member.id } },
+    ).then((response) => { 
+      var hashtags = response.data;
+      hashtags.forEach((hashtag) => {
+        // this.hashtags.append('#' + hashtag['name']);
+        this.hashtags.push('#' + hashtag['name'])
+      })
+      })
+    }
   },
   data() {
     return {
@@ -95,55 +138,10 @@ export default {
     }
   },
   created() {
-    // 내 정보 불러오는 axios(임시)
-    // this.member.thumbnail_path = "http://images.khan.co.kr/article/2021/02/08/l_2021020802000444700074261.jpg";
-    // this.member.name = '로딩중';  
-    // this.member.id = '기달';
-    // axios.get('http://localhost/sidebarUser/' + 'kimjea23@naver.com'
-    // ).then((response) => {
-    //   console.log(response);
-    //   this.member.name = response.data.name;
-    //   // this.member.thumbnail_path = '../../../../../../tmp/' + response.data.thumbnail_path;
-    //   this.member.id = 'kimjea23@naver.com';
-    //   this.member.thumbnail_path = "http://images.khan.co.kr/article/2021/02/08/l_2021020802000444700074261.jpg";
-    //   console.log(this.member.thumbnail_path);
-    //   console.log(this.member.name)
-    //   this.$forceUpdate();
-    // })
-    console.log("경로>>>>>" + require('@/assets/images/default_avatar.png'));
-    this.member = {
-        name: '김재성',
-        id: 'kimjea23@naver.com',
-        thumbnail_path: require('@/assets/images/default_avatar.png'),
-    };
-
+    this.member = this.$store.getters.userProfile;
     // 내 hashtags 불러오는 axios(임시)
-    this.hashtags = ['#속보', '#정치', '#경제', '#사회', '#문화'];
-    // this.hashtagcolors = ['blue', 'red', 'green', 'black', '#6464CD'];
-
-    // 큐레이터 불러오는 axios
-    axios.get('http://localhost:8080/subscribe', 
-      { params: { id: this.member.id } },
-    ).then((response) => { 
-        // 응답 처리 
-        var followers = response.data;
-        console.log(followers);
-        followers.forEach(function(follower) {
-          if(follower.thumbnail_path == null) {
-            follower.thumbnail_path = require('@/assets/images/default_avatar.png');
-          }
-        })
-        this.followers = followers;
-      }) .catch((error) => { 
-        // 예외 처리 
-        console.log(error);
-      })
-
-    // this.followers = [
-    //     { thumbnail_path: require('@/assets/images/default_avatar.png'), id: 'abcde@naver.com', name: '김싸피' },
-    //     { thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/2.jpg', id: 'fgdsgsdfg@naver.com', name: '이죄송' },
-    //     { thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/3.jpg', id: 'asdfkl@naver.com', name: '최바보' },
-    //   ];
+    // this.hashtags = ['#속보', '#정치', '#경제', '#사회', '#문화'];
+    
   },
 }
 </script>
