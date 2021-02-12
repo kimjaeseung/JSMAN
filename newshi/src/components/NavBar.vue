@@ -178,6 +178,9 @@ export default {
     };
   },
   computed: {
+    getMember() {
+      return this.$store.state.userProfile;
+    },
     isFull() {
       let check = false;
       switch (this.$vuetify.breakpoint.name) {
@@ -242,6 +245,9 @@ export default {
     },
   },
   watch: {
+    getMember: function(val) {
+      this.member = val;
+    },
     search_word: function() {
       console.log('검색어 변경');
 
@@ -268,13 +274,9 @@ export default {
     } else {
       this.logged = true;
       this.member = this.$store.getters.userProfile;
-      if (this.member === null || this.member === '') {
+      if (this.member === null || this.member.id == undefined) {
         this.getUserInfo();
-        this.member = this.$store.getters.userProfile;
       }
-      console.log(typeof localStorage['access-token']);
-      console.log(this.logged);
-      console.log(this.member);
     }
     this.switchTheme = localThemeMode;
     if (localThemeMode == null) this.$vuetify.theme.dark = false;
@@ -282,8 +284,6 @@ export default {
       localThemeMode.toString() == 'true'
         ? (this.$vuetify.theme.dark = true)
         : (this.$vuetify.theme.dark = false); // 시작하자마자 다크테마인지 아닌지 체크
-    console.log(this.logged);
-    console.log(this.member);
   },
 };
 </script>
