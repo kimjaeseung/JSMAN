@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <h1>뉴하 팀을 소개합니다.</h1>
+    <h2>뉴하 팀을 소개합니다🖐️</h2>
     <v-row>
       <v-col
         v-for="(item, i) in items"
@@ -89,7 +89,7 @@
           src: require('@/assets/images/5.jpg'),
           title: '천창민',
           role: '팀장, Front-End',
-          link: 'https://github.com/',
+          link: 'https://github.com/chunawoos',
           text: '무엇이든 물어보살!😊'
         },
         {
@@ -97,7 +97,7 @@
           src: require('@/assets/images/1.jpg'),
           title: '김재성',
           role: 'Front-End',
-          link: 'https://github.com/',
+          link: 'https://github.com/JS-2',
           text: '술 좋아하고, 롤 못합니다🎤',
         },
         {
@@ -105,7 +105,7 @@
           src: require('@/assets/images/2.jpg'),
           title: '김재승',
           role: 'Back-End',
-          link: 'https://github.com/',
+          link: 'https://github.com/kimjaeseung',
           text: `롤 다이아, 백준 실버4😢`,
         },
         {
@@ -113,7 +113,7 @@
           src: require('@/assets/images/3.jpg'),
           title: '백태훈',
           role: 'Back-End',
-          link: 'https://github.com/',
+          link: 'https://github.com/whiteburnout',
           text: '아이엠 태훈🌴'
         },
         {

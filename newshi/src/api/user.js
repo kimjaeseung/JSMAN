@@ -15,7 +15,7 @@ function login(info, success, fail) {
     name: null,
     password: info.password,
     thumbnail_path: null,
-    platform_type: null,
+    platformType: null,
   };
 
   instance
@@ -29,13 +29,13 @@ function socialLogin(info, success, fail) {
     'access-token'
   );
   const user = {
-    id: info.id,
     name: info.name,
     password: null,
     thumbnail_path: info.thumbnail_path,
-    platform_type: info.platform_type,
+    id: info.id,
+    platformType: info.platform_type,
   };
-
+  console.log(user);
   instance
     .post('user/socialLogin', user)
     .then(success)
@@ -46,23 +46,23 @@ function join(info, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
-  const user = {
-    id: info.id,
-    name: info.name,
-    password: info.password,
-    thumbnail_path: info.thumbnail_path,
-    platform_type: null,
-  };
-  const tag = info.tags;
   // var params = new URLSearchParams();
   // params.append('tag', tag);
-
+  const list = [
+    {
+      id: info.id,
+      name: info.name,
+      password: info.password,
+      thumbnail_path: info.thumbnail_path,
+      platform_type: null,
+    },
+    {
+      tag: info.tags,
+    },
+  ];
+  console.log(list);
   instance
-    .post('join', user, {
-      params: {
-        tag: tag,
-      },
-    })
+    .post('join', list)
     .then(success)
     .catch(fail);
 }
@@ -118,7 +118,11 @@ function getInfo(id, success, fail) {
   );
 
   instance
-    .post('user/getInfo', JSON.stringify(id))
+    .get('user', {
+      params: {
+        id: id,
+      },
+    })
     .then(success)
     .catch(fail);
 }

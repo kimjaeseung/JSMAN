@@ -137,7 +137,6 @@ export default {
             let token = response.data['access-token'];
             localStorage.setItem('access-token', token);
             localStorage.setItem('id', info.id);
-            this.$store.commit('SET_LOGGED', true);
             this.login();
           } else {
             this.isLoginError = true;
@@ -160,7 +159,6 @@ export default {
             id: result.user.email,
             name: result.user.displayName,
             thumbnail_path: result.user.photoURL,
-            tag: null,
             platform_type: 'Google',
           };
           socialLogin(
@@ -168,13 +166,13 @@ export default {
             (response) => {
               if (response.data.message === 'success') {
                 let token = response.data['access-token'];
+                console.log(token);
                 localStorage.setItem('access-token', token);
                 localStorage.setItem('id', user.id);
-                this.$store.commit('SET_LOGGED', true);
-                this.$store.commit('SET_USER', user);
                 this.login();
               } else {
                 this.isLoginError = true;
+                alert('구글 로그인에 실패했습니다.');
               }
             },
             (error) => {
@@ -199,28 +197,23 @@ export default {
             id: kakao_account.email,
             name: kakao_account.profile.nickname,
             thumbnail_path: kakao_account.profile.profile_image_url,
-            tags: null,
             platform_type: 'Kakao',
           };
           if (info.id === undefined) {
             this.changeKakao(info);
           } else {
-            this.$store.commit('SET_LOGGED', true);
-            this.$store.commit('SET_USER', info);
-            localStorage.setItem('id', info.id);
-            this.login();
             socialLogin(
               info,
               (response) => {
                 if (response.data.message === 'success') {
                   let token = response.data['access-token'];
+                  console.log('token');
                   localStorage.setItem('access-token', token);
                   localStorage.setItem('id', info.id);
-                  this.$store.commit('SET_LOGGED', true);
-                  this.$store.commit('SET_USER', info);
                   this.login();
                 } else {
                   this.isLoginError = true;
+                  alert('구글 로그인에 실패했습니다.');
                 }
               },
               (error) => {

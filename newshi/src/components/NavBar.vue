@@ -6,12 +6,12 @@
       ></v-app-bar-nav-icon>
       <v-spacer />
       <a href="/">
-      <div v-if="this.switchTheme == 'true'">
-        <v-img contain src="@/assets/images/logo_darkmode.png"></v-img>
-      </div>
-      <div v-else>
-        <v-img contain src="@/assets/images/logo_lightmode.png"></v-img>
-      </div>
+        <div v-if="this.switchTheme == 'true'">
+          <v-img contain src="@/assets/images/logo_darkmode.png"></v-img>
+        </div>
+        <div v-else>
+          <v-img contain src="@/assets/images/logo_lightmode.png"></v-img>
+        </div>
       </a>
       <v-spacer />
       <v-icon @click="search_drawer = !search_drawer">mdi-magnify</v-icon>
@@ -37,6 +37,7 @@
           v-if="isLogin"
           @closeDialog="closeDialog"
           @changeJoin="changeJoin"
+          @login="getLogged"
         ></Login>
         <Join
           v-else
@@ -45,6 +46,7 @@
           @closeDialog="closeDialog"
           @changeLogin="changeLogin"
           @changeKakao="changeKakao"
+          @login="getLogged"
         ></Join>
       </v-dialog>
       <v-menu open-on-hover offset-y v-else>
@@ -61,7 +63,7 @@
           </v-list-item>
           <v-list-item>
             <v-list-item-title
-              ><v-btn @click="logout">로그아웃</v-btn></v-list-item-title
+              ><v-btn @click="loggedOut">로그아웃</v-btn></v-list-item-title
             >
           </v-list-item>
         </v-list>
@@ -75,7 +77,7 @@
       ></v-autocomplete>
       <br />{{ search_word }}
     </v-navigation-drawer>
-    <v-navigation-drawer v-model="menu_drawer" absolute temporary>
+    <v-navigation-drawer v-model="menu_drawer" fixed temporary>
       <v-list>
         <v-list-item-group>
           <v-list-item v-if="logged">
@@ -153,8 +155,16 @@ export default {
         },
         { icon: 'newspaper-plus', title: '언론사 선택하기', router: '/press' },
         { icon: 'brightness-6', title: '다크모드', router: '' },
-        { icon: 'email-open-outline', title: '피드백 보내기', router: '/feedback' },
-        { icon: 'comment-processing-outline', title: '댓글 운영 정책', router: '/policy' },
+        {
+          icon: 'email-open-outline',
+          title: '피드백 보내기',
+          router: '/feedback',
+        },
+        {
+          icon: 'comment-processing-outline',
+          title: '댓글 운영 정책',
+          router: '/policy',
+        },
         { icon: 'home', title: '만든이들', router: '/whoweare' },
         { icon: 'information-outline', title: '버전 정보', router: '/version' },
       ],
@@ -168,6 +178,9 @@ export default {
     };
   },
   computed: {
+    getMember() {
+      return this.$store.state.userProfile;
+    },
     isFull() {
       let check = false;
       switch (this.$vuetify.breakpoint.name) {
@@ -191,7 +204,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['logout']),
+    ...mapActions(['logout', 'getUserInfo']),
     closeDialog() {
       this.dialog = !this.dialog;
       this.isLogin = true;
@@ -215,8 +228,26 @@ export default {
       this.$store.dispatch('getThemeMode', this.switchTheme);
       this.$vuetify.theme.dark = this.switchTheme;
     },
+    getLogged() {
+      this.logged = true;
+      this.getUserInfo();
+      this.member = this.$store.getters.userProfile;
+      console.log(this.member);
+      this.dialog = !this.dialog;
+      this.isLogin = true;
+      this.$router.go(this.$router.currentRoute);
+    },
+    loggedOut() {
+      this.logged = false;
+      this.logout();
+      this.member = {};
+      this.$router.go(this.$router.currentRoute);
+    },
   },
   watch: {
+    getMember: function(val) {
+      this.member = val;
+    },
     search_word: function() {
       console.log('검색어 변경');
 
@@ -233,16 +264,26 @@ export default {
     },
   },
   created() {
-    this.logged = this.$store.getters.loggedIn;
-    this.member = this.$store.getters.userProfile;
+    if (
+      localStorage.getItem('access-token') === null ||
+      localStorage.getItem('access-token') === '' ||
+      localStorage['access-token'] === undefined
+    ) {
+      this.logged = false;
+      this.member = {};
+    } else {
+      this.logged = true;
+      this.member = this.$store.getters.userProfile;
+      if (this.member === null || this.member.id == undefined) {
+        this.getUserInfo();
+      }
+    }
     this.switchTheme = localThemeMode;
     if (localThemeMode == null) this.$vuetify.theme.dark = false;
     else
       localThemeMode.toString() == 'true'
         ? (this.$vuetify.theme.dark = true)
         : (this.$vuetify.theme.dark = false); // 시작하자마자 다크테마인지 아닌지 체크
-    console.log(this.logged);
-    console.log(this.member);
   },
 };
 </script>

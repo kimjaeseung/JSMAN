@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Tiptap from '@/components/TiptapBoard.vue';
+import Tiptap from '@/components/Tiptap.vue';
 
 export default {
   name: 'NewsForm',

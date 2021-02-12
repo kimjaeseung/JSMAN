@@ -32,12 +32,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.newha.service.BoardService;
 import com.newha.service.JwtService;
 import com.newha.service.S3Service;
 import com.newha.service.UserService;
 import com.newha.vo.User;
+import com.newha.vo.UserScrapNews;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -129,7 +129,7 @@ public class UserController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Integer>>(map, status);
-	}
+	} 
 	
 	@ApiOperation(value = "내가 구독한 큐레이터", notes = "아이디 입력하면 구독한 큐레이터 thumbnail_path, name 리턴", response = ArrayList.class)
 	@GetMapping(value = "/subscribe") // 내가 구독한 큐레이터
@@ -155,6 +155,54 @@ public class UserController {
 		return new ResponseEntity<ArrayList<Map<String, String>>>(list, status);
 	}
 	
+	@ApiOperation(value = "내 정보 태그 리스트", notes = "태그리스트", response = ArrayList.class)
+	@GetMapping(value = "/tagList") // 내가 구독한 큐레이터
+	public ResponseEntity<ArrayList<Map<String, String>>> tagList(
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
+		ArrayList<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		int userNo = service.userNo(id);
+		HttpStatus status = null;
+		try {
+			List<String> l = service.tagList(userNo);
+			for (int i = 0; i < l.size(); i++) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("name", l.get(i));
+				list.add(map);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<ArrayList<Map<String, String>>>(list, status);
+	}
+	
+	@ApiOperation(value = "내 정보 태그 리스트 수정", notes = "태그리스트", response = ArrayList.class)
+	@GetMapping(value = "/tagListUpdate") // 내가 구독한 큐레이터
+	public ResponseEntity<ArrayList<Map<String, String>>> tagListUpdate(
+			@ApiParam(value = "String", required = true) @RequestParam String id,
+			@ApiParam(value = "List<Map<String,String>>", required = true) @RequestParam List<String> list
+			) {
+		ArrayList<Map<String, String>> list2 = new ArrayList<Map<String, String>>();
+		HttpStatus status = null;
+		try { 
+			int userNo = service.userNo(id); 
+			service.tagDelete(userNo);
+			for (int i = 0; i < list.size(); i++) {
+				service.insertTag(id, list.get(i));
+			}
+			List<String> l = service.tagList(userNo);
+			for (int i = 0; i < l.size(); i++) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("name", l.get(i));
+				list2.add(map);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<ArrayList<Map<String, String>>>(list2, status);
+	}
+
 	@ApiOperation(value = "큐레이터 구독", notes = "큐레이터 구독 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/subsc")
 	public ResponseEntity<Map<String, String>> insert(@ApiParam(value = "String", required = true) @RequestParam String id, 
@@ -188,27 +236,43 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-	
+	 
 	@ApiOperation(value = "회원가입", notes = "회원가입 성공 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/join")
-	public ResponseEntity<Map<String, String>> insert(@ApiParam(value = "User", required = true) @RequestBody User u,
-			@ApiParam(value = "tag List", required = true) @RequestParam List<String> tag) {
+	public ResponseEntity<Map<String, String>> insert(@RequestBody List<Map<String, Object>> list){
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		try {
+		User u = new User(); 
+		
+		System.out.println(list.get(0).toString());
+		try { 
+			u.setId((String)list.get(0).get("id"));
+			u.setName((String)list.get(0).get("name"));
+			u.setPassword((String)list.get(0).get("password"));
+			u.setPlatformType((String)list.get(0).get("platformType"));
+			u.setThumbnail_path((String)list.get(0).get("thumbnail_path"));
+			u.setUserNo(null);
+			
 			service.insert(u);
-			for (int i = 0; i < tag.size(); i++) {
-				service.insertTag(u.getId(), tag.get(i));
+			
+			String tag[] = ((String) list.get(1).get("tag")).split("#");
+			for (int j = 1; j < tag.length; j++) {
+				service.insertTag(u.getId(), tag[j]);
 			}
+//			for (int i = 1; i < list.size(); i++) {
+//				service.insertTag(u.getId(), (String)list.get(1).get("tag"));
+//			}
+			boardservice.boardCreate(u.getId()); //회원가입과 동시에 개인 게시판 생성
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		boardservice.boardCreate(u.getId()); //회원가입과 동시에 개인 게시판 생성
+		
+		
 		return new ResponseEntity<Map<String, String>>(map, status);
-	}	
+	}
 	
 	@ApiOperation(value = "회원 탈퇴", notes = "탈퇴 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@DeleteMapping(value = "/delete")
@@ -216,7 +280,7 @@ public class UserController {
 			@ApiParam(value = "id", required = true) @RequestParam String id) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		try {
+		try { 
 			service.delete(id);
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
@@ -227,13 +291,34 @@ public class UserController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
-	@ApiOperation(value = "회원 정보 수정", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@PutMapping(value = "/update")
-	public ResponseEntity<Map<String, String>> update(@ApiParam(value = "User", required = true) @RequestBody User u) {
+	@ApiOperation(value = "회원 이름 수정", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@PutMapping(value = "/updateName")
+	public ResponseEntity<Map<String, String>> updateName(@ApiParam(value = "String", required = true) @RequestParam String id, 
+			@ApiParam(value = "String", required = true) @RequestParam String name) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try { 
+			service.updateName(id,name);
+			map.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	 
+	@ApiOperation(value = "회원 비밀번호 수정", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@PutMapping(value = "/updatePassword")
+	public ResponseEntity<Map<String, String>> updatePassword(
+			@ApiParam(value = "String", required = true) @RequestParam String id, 
+			@ApiParam(value = "String", required = true) @RequestParam String oldpassword,
+			@ApiParam(value = "String", required = true) @RequestParam String newpassword
+			) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			service.update(u);
+			service.updatePassword(id, oldpassword, newpassword);
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -245,33 +330,24 @@ public class UserController {
 	
 	@ApiOperation(value = "파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
 	@PostMapping("/upload")
-	public ResponseEntity<Map<String, String>> upload(@RequestParam("file") MultipartFile file,
-			@RequestParam String id) throws IllegalStateException, IOException {
+	public ResponseEntity<Map<String, String>> upload(@RequestBody List<Map<String, Object>> list) {
+		MultipartFile file = (MultipartFile) list.get(0);
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		String userNo = String.valueOf(service.userNo(id));
+		String userNo = String.valueOf(service.userNo((String)list.get(1).get("id")));
 		String thumbnailPath = "https://newha.s3.us-east-2.amazonaws.com/"+file.getOriginalFilename();
-		service.thumbnailPath(userNo, thumbnailPath);
 
-		try (FileOutputStream fos = new FileOutputStream("c:/tmp/" + file.getOriginalFilename());
-				InputStream is = file.getInputStream();) {
-			int readCount = 0;
+		try {
+			service.thumbnailPath(userNo, thumbnailPath);
+			File f = new File(file.getOriginalFilename());
+			file.transferTo(f);
+			s3service.uploadOnS3(file.getOriginalFilename(), f);
 			status = HttpStatus.ACCEPTED;
 			map.put("message", SUCCESS); 
-			byte[] buffer = new byte[1024];
-			while ((readCount = is.read(buffer)) != -1) {
-				fos.write(buffer, 0, readCount);
-			}
-		} catch (Exception ex) {
+		} catch (Exception e) {
 			map.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			throw new RuntimeException("file Save Error");
 		}
-		
-		File f = new File(file.getOriginalFilename());
-		file.transferTo(f);
-		s3service.uploadOnS3(file.getOriginalFilename(), f);
-		
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
@@ -338,8 +414,11 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			service.insert(user);
-			User loginUser = service.login(user);
+			int a = service.selectId(user.getId());
+			if(a==0) {
+				service.socialInsert(user);  
+			}
+			User loginUser = service.socialLogin(user);
 			if (loginUser != null) {
 				String token = jwtService.create("id", loginUser.getId(), "access-token");// key, data, subject
 				logger.debug("로그인 토큰정보 : {}", token);
