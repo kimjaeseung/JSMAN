@@ -61,6 +61,23 @@
 		select * from user_scrap_news where postNo = #{postNo};
 	</select>
 	
+	<select id="selectUserScrapNewsByTagName" parameterType="String" resultType="UserScrapNews">
+		select * from user_scrap_news where scrapNo in (select scrapNo from post_tag where tagNo in (
+					   select tagNo from hashtag where name = #{tagName})) order by newsNo;
+	</select>
+	
+	<select id="selectUserScrapNewsByUserNo" parameterType="String" resultType="UserScrapNews">
+		select * from user_scrap_news where userNo = #{userNo};
+	</select>
+	
+	<select id="selectNewsByScrapNo" parameterType="String" resultType="News">
+		select * from news where newsNo = (select newsNo from user_scrap_news where scrapNo = #{scrapNo});
+	</select>
+	
+	<select id="selectNewsByUserNo" parameterType="String" resultType="News">
+		select * from news where newsNo in (select newsNo from user_scrap_news where userNo = #{userNo});
+	</select>
+	
 	<select id="selectHashTagByName" parameterType="String" resultType="HashTag">
 		select * from hashtag where name = #{name};
 	</select>
@@ -75,6 +92,20 @@
 	
 	<select id="selectDisLikeNews" parameterType="UserGoodNews" resultType="UserGoodNews">
 		select * from user_good_news where userNo = #{userNo} and scrapNo = #{scrapNo};
+	</select>
+	
+	<select id="selectUserGoodNewsByUserNo" parameterType="String" resultType="UserGoodNews">
+		select * from user_good_news where userNo = #{userNo};
+	</select>
+	
+	<select id="selectNewImageByNewsNo" parameterType="String" resultType="NewsImage">
+		select * from news_image where newsNo = #{newsNo};
+	</select>
+	
+	<select id="selectNewsByTagName" parameterType="String" resultType="News">
+		select * from news where newsNo in (select newsNo from user_scrap_news where scrapNo in (
+				select scrapNo from post_tag where tagNo in (
+				select tagNo from hashtag where name = #{tagName})));
 	</select>
 	
 	<delete id="deletePost" parameterType="string">
