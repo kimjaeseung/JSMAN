@@ -161,4 +161,39 @@ public class NewsDAOImpl implements NewsDAO {
 	public UserGoodNews selectDisLikeNews(UserGoodNews userGoodNews) {
 		return mapper.selectDisLikeNews(userGoodNews);
 	}
+	
+	@Override
+	public List<UserGoodNews> selectUserGoodNewsByUserNo(String userNo) {
+		return mapper.selectUserGoodNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public News selectNewsByScrapNo(String scrapNo) {
+		return mapper.selectNewsByScrapNo(scrapNo);
+	}
+	
+	@Override
+	public List<NewsImage> selectNewImageByNewsNo(String newsNo) {
+		return mapper.selectNewImageByNewsNo(newsNo);
+	}
+	
+	@Override
+	public List<News> selectNewsByTagName(String tagName) {
+		return mapper.selectNewsByTagName(tagName);
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName) {
+		return mapper.selectUserScrapNewsByTagName(tagName);
+	}
+	
+	@Override
+	public List<News> selectNewsByUserNo(String userNo) {
+		return mapper.selectNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo) {
+		return mapper.selectUserScrapNewsByUserNo(userNo);
+	}
 }

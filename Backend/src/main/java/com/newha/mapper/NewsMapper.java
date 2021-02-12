@@ -25,17 +25,22 @@ public interface NewsMapper {
 	public List<Post> selectPostById(String id);
 	public User selectUserById(String id);
 	public List<UserScrapNews> selectUserScrapNewsByPostNo(String postNo);
+	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName);
+	public News selectNewsByScrapNo(String scrapNo);
 	public List<HashTag> selectHashTagByName(String name);
 	public UserGoodNews selectLikeNews(UserGoodNews userGoodNews);
 	public UserGoodNews selectDisLikeNews(UserGoodNews userGoodNews);
+	public List<UserGoodNews> selectUserGoodNewsByUserNo(String userNo);
+	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo);
+	public List<NewsImage> selectNewImageByNewsNo(String newsNo);
+	public List<News> selectNewsByTagName(String tagName);
+	public List<News> selectNewsByUserNo(String userNo);
 	public int deletePost(String postNo);
 	public int deleteScrap(String scarpNo);
 	public int updatePost(Post post);
 	public int updateScrap(UserScrapNews scrap);
-
 	public List<String> selectUserScrapNews(String userNo);
 	public News selectNews(String newsNo);
-
 	public int increaseLike(String scrapNo);
 	public int increaseDisLike(String scrapNo);
 	public int decreaseLike(String scrapNo);

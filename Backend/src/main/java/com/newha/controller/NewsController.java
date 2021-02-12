@@ -304,7 +304,188 @@ public class NewsController {
 		}
 		return new ResponseEntity<List<UserScrapNews>>(list, status);
 	}
-
+	
+	@ApiOperation(value = "포스트 뉴스 목록", notes = "해당 포스트에 포함된 기사 목록을 반환(이미지까지 모두 포함)", response = List.class)
+	@GetMapping(value = "/article/scraplist")
+	public ResponseEntity<List<Map<String, String[]>>> getNews(
+			@ApiParam(value = "String", required = true) @RequestParam String postNo) {
+		HttpStatus status = null;
+		List<UserScrapNews> list = new ArrayList<UserScrapNews>();
+		List<Map<String, String[]>> result = new ArrayList<Map<String,String[]>>();
+		try {
+			list = service.selectUserScrapNewsByPostNo(postNo);
+			for (UserScrapNews userScrapNews : list) {
+				Map<String, String[]> m = new HashMap<String, String[]>();
+				News temp = service.selectNews(userScrapNews.getNewsNo());
+				List<NewsImage> images = service.selectNewImageByNewsNo(userScrapNews.getNewsNo());
+				
+				m.put("newsNo", new String[] {temp.getNewsNo()});
+				m.put("title", new String[] {temp.getTitle()});
+				m.put("subtitle", new String[] {temp.getSubtitle()});
+				m.put("content", new String[] {temp.getContent()});
+				m.put("image_path", new String[] {temp.getImage_path()});
+				m.put("url", new String[] {temp.getUrl()});
+				m.put("article_date", new String[] {temp.getArticle_bot_summary()});
+				m.put("article_bot_summary", new String[] {temp.getArticle_bot_summary()});
+				m.put("article_image_catpion", new String[] {temp.getArticle_image_caption()});
+				m.put("company", new String[] {temp.getCompany()});
+				m.put("like_cnt", new String[] {userScrapNews.getLike_cnt()});
+				m.put("dislike_cnt", new String[] {userScrapNews.getDislike_cnt()});
+				
+				if(images != null) {
+					String newsImages[] = new String[images.size()];
+					String caption[] = new String[images.size()];
+					int cnt = 0;
+					for (NewsImage image : images) {
+						newsImages[cnt] = image.getNews_image();
+						caption[cnt++] = image.getImage_caption();
+					}
+					m.put("new_image", newsImages);
+					m.put("image_caption", caption);
+				}
+				else {
+					m.put("new_image", null);
+					m.put("image_caption", null);
+				}
+				result.add(m);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<Map<String, String[]>>>(result, status);
+	}
+	
+//	@ApiOperation(value = "태그로 기사 리스트 검색", notes = "태그로 검색된 기사 리스트 반환", response = List.class)
+//	@GetMapping(value = "/article/newsByTag")
+//	public ResponseEntity<List<News>> getNewsByTag(
+//			@ApiParam(value = "String", required = true) @RequestParam String tagName) {
+//		HttpStatus status = null;
+//		List<News> list = new ArrayList<News>();
+//		try {
+//			list = service.selectNewsByTagName(tagName);
+//			status = HttpStatus.ACCEPTED;
+//		} catch (Exception e) {
+//			status = HttpStatus.INTERNAL_SERVER_ERROR;
+//		}
+//		return new ResponseEntity<List<News>>(list, status);
+//	}
+	
+	@ApiOperation(value = "태그로 기사 리스트 검색", notes = "태그로 검색된 기사 리스트 반환", response = List.class)
+	@GetMapping(value = "/article/newsByTag")
+	public ResponseEntity<List<Map<String, String[]>>> getNewsByTag(
+			@ApiParam(value = "String", required = true) @RequestParam String tagName) {
+		HttpStatus status = null;
+		List<News> list = new ArrayList<News>();
+		List<UserScrapNews> scrap = new ArrayList<UserScrapNews>();
+		List<Map<String, String[]>> result = new ArrayList<Map<String,String[]>>();
+		try {
+			list = service.selectNewsByTagName(tagName);
+			scrap = service.selectUserScrapNewsByTagName(tagName);
+			for (News news : list) {
+				Map<String, String[]> m = new HashMap<String, String[]>();
+				m.put("newsNo", new String[] {news.getNewsNo()});
+				m.put("title", new String[] {news.getTitle()});
+				m.put("subtitle", new String[] {news.getSubtitle()});
+				m.put("content", new String[] {news.getContent()});
+				m.put("image_path", new String[] {news.getImage_path()});
+				m.put("url", new String[] {news.getUrl()});
+				m.put("article_date", new String[] {news.getArticle_date()});
+				m.put("article_bot_summary", new String[] {news.getArticle_bot_summary()});
+				m.put("article_image_caption", new String[] {news.getArticle_image_caption()});
+				m.put("company", new String[] {news.getCompany()});
+				
+				ArrayList<String> temp1 = new ArrayList<String>();
+				ArrayList<String> temp2 = new ArrayList<String>();
+				for (UserScrapNews ucn : scrap) {
+					String newsNo = ucn.getNewsNo();
+					if(news.getNewsNo().equals(newsNo)) {
+						temp1.add(ucn.getLike_cnt());
+						temp2.add(ucn.getDislike_cnt());
+					}
+				}
+				String [] like = new String[temp1.size()];
+				String [] dislike = new String[temp2.size()];
+				int cnt = 0;
+				for (String s : temp1) {
+					like[cnt++] = s;
+				}
+				cnt = 0;
+				for (String s : temp2) {
+					dislike[cnt++] = s;
+				}
+				
+				m.put("like_cnt", like);
+				m.put("dislike_cnt", dislike);
+				result.add(m);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<Map<String, String[]>>>(result, status);
+	}
+	
+	@ApiOperation(value = "큐레이터 아이디로 기사리스트 받아오기", notes = "기사 리스트 반환", response = List.class)
+	@GetMapping(value = "/article/newsById")
+	public ResponseEntity<List<Map<String, String[]>>> getNewsById(
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
+		HttpStatus status = null;
+		List<News> list = new ArrayList<News>();
+		List<UserScrapNews> scrap = new ArrayList<UserScrapNews>();
+		List<Map<String, String[]>> result = new ArrayList<Map<String,String[]>>();
+		try {
+			String userNo = service.selectUserById(id).getUserNo();
+			list = service.selectNewsByUserNo(userNo);
+			scrap = service.selectUserScrapNewsByUserNo(userNo);
+			
+			for (News news : list) {
+				Map<String, String[]> m = new HashMap<String, String[]>();
+				m.put("newsNo", new String[] {news.getNewsNo()});
+				m.put("title", new String[] {news.getTitle()});
+				m.put("subtitle", new String[] {news.getSubtitle()});
+				m.put("content", new String[] {news.getContent()});
+				m.put("image_path", new String[] {news.getImage_path()});
+				m.put("url", new String[] {news.getUrl()});
+				m.put("article_date", new String[] {news.getArticle_date()});
+				m.put("article_bot_summary", new String[] {news.getArticle_bot_summary()});
+				m.put("article_image_caption", new String[] {news.getArticle_image_caption()});
+				m.put("company", new String[] {news.getCompany()});
+				
+				ArrayList<String> temp1 = new ArrayList<String>();
+				ArrayList<String> temp2 = new ArrayList<String>();
+				
+				for (UserScrapNews ucn : scrap) {
+					String newsNo = ucn.getNewsNo();
+					if(news.getNewsNo().equals(newsNo)) {
+						temp1.add(ucn.getLike_cnt());
+						temp2.add(ucn.getDislike_cnt());
+					}
+				}
+				
+				String [] like = new String[temp1.size()];
+				String [] dislike = new String[temp2.size()];
+				int cnt = 0;
+				for (String s : temp1) {
+					like[cnt++] = s;
+				}
+				cnt = 0;
+				for (String s : temp2) {
+					dislike[cnt++] = s;
+				}
+				
+				m.put("like_cnt", like);
+				m.put("dislike_cnt", dislike);
+				result.add(m);
+			}
+			
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<Map<String, String[]>>>(result, status);
+	}
+	
 	@ApiOperation(value = "내가 구독한 큐레이터의 최신 스크랩 목록", notes = "내가 구독한 큐레이터의 최신 스크랩 목록을 반환", response = List.class)
 	@GetMapping(value = "/article/curatorscrap")
 	public ResponseEntity<List<Map<String, String>>> getCuratorScrap(
@@ -514,7 +695,7 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "유저가 싫어요 눌럿는지 여부 파악", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/isdislike")
+	@GetMapping(value = "/article/savelist")
 	public ResponseEntity<Map<String, String>> isDisLike(
 			@ApiParam(value = "String", required = true) @RequestParam String scrapNo,
 			@ApiParam(value = "String", required = true) @RequestParam String id) {
@@ -540,4 +721,27 @@ public class NewsController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
+	
+	@ApiOperation(value = "저장한 기사리스트", notes = "저장한 기사 리스트를 반환", response = List.class)
+	@GetMapping(value = "/article/isdislike")
+	public ResponseEntity<List<News>> saveList(
+			@ApiParam(value = "String", required = true) @RequestParam String id) {
+		ArrayList<News> result = new ArrayList<News>();
+		HttpStatus status = null;
+		try {
+			String userNo = service.selectUserById(id).getUserNo();
+			
+			List<UserGoodNews> list = service.selectUserGoodNewsByUserNo(userNo);
+			for (UserGoodNews news : list) {
+				if(news.getIs_save().equals("1")) {
+					result.add(service.selectNewsByScrapNo(news.getScrapNo()));
+				}
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<News>>(result, status);
+	}
 }

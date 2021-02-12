@@ -161,4 +161,39 @@ public class NewsServiceImpl implements NewsService {
 	public UserGoodNews selectDisLikeNews(UserGoodNews userGoodNews) {
 		return dao.selectDisLikeNews(userGoodNews);
 	}
+	
+	@Override
+	public List<UserGoodNews> selectUserGoodNewsByUserNo(String userNo) {
+		return dao.selectUserGoodNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public News selectNewsByScrapNo(String scrapNo) {
+		return dao.selectNewsByScrapNo(scrapNo);
+	}
+	
+	@Override
+	public List<NewsImage> selectNewImageByNewsNo(String newsNo) {
+		return dao.selectNewImageByNewsNo(newsNo);
+	}
+	
+	@Override
+	public List<News> selectNewsByTagName(String tagName) {
+		return dao.selectNewsByTagName(tagName);
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName) {
+		return dao.selectUserScrapNewsByTagName(tagName);
+	}
+	
+	@Override
+	public List<News> selectNewsByUserNo(String userNo) {
+		return dao.selectNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo) {
+		return dao.selectUserScrapNewsByUserNo(userNo);
+	}
 }
