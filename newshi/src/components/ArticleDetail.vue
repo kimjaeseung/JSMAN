@@ -23,6 +23,14 @@
           <v-icon medium v-else color="#ff9800">mdi-bookmark</v-icon>
         </v-btn>
       </div>
+      <div class="news-info d-flex justify-content-start">
+        <v-btn icon
+        @click="tts">
+          <v-icon>
+            mdi-play
+          </v-icon>
+        </v-btn>
+      </div>
     </header>
     <!-- main image -->
     <template>
@@ -139,16 +147,52 @@ export default {
     'newsInfo',
   ],
   methods: {
-      swipe (direction) {
-        this.swipeDirection = direction
-      },
-      save () {
+    tts() {
+      let voices = [];
+      function setVoiceList() {
+        voices = window.speechSynthesis.getVoices();
+      }
+      setVoiceList();
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+          window.speechSynthesis.onvoiceschanged = setVoiceList;
+        }
+        function speech(txt) {
+          if(!window.speechSynthesis) {
+            alert("음성 재생을 지원하지 않는 브라우저입니다. 크롬, 파이어폭스 등의 최신 브라우저를 이용하세요");
+            return;
+          }
+        const lang = 'ko-KR';
+        let utterThis = new SpeechSynthesisUtterance(txt);
+        utterThis.onend = function () {
+          console.log('end');
+        };
+        utterThis.onerror = function(event) {
+          console.log('error', event);
+        };
+      for(let i = 0; i < voices.length ; i++) {
+        if(voices[i].lang.indexOf(lang) >= 0 || voices[i].lang.indexOf(lang.replace('-', '_')) >= 0) {
+          utterThis.voice = voices[i];
+          }
+        }
+
+        utterThis.lang = lang;
+        utterThis.pitch = 1;
+        utterThis.rate = 1; //속도
+        window.speechSynthesis.speak(utterThis);
+      }
+      let t = this.news.content;
+      speech(t);
+    },
+    swipe (direction) {
+      this.swipeDirection = direction
+    },
+    save () {
       this.saved = !this.saved;
     },
-      like () {
+    like () {
       this.liked = !this.liked;
     },
-      dislike () {
+    dislike () {
       this.disliked = !this.disliked;
     },
   },
@@ -159,6 +203,9 @@ export default {
       saved: false,
       liked: false,
       disliked: false,
+      email: 'hi',
+      title: 'hello',
+      content: 'content',
     }
   },
 }
