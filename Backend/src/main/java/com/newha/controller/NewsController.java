@@ -36,6 +36,7 @@ import com.newha.vo.News;
 import com.newha.vo.NewsImage;
 import com.newha.vo.Post;
 import com.newha.vo.PostTag;
+import com.newha.vo.User;
 import com.newha.vo.UserGoodNews;
 import com.newha.vo.UserScrapNews;
 
@@ -497,15 +498,25 @@ public class NewsController {
 			int userNo = userservice.userNo(id);
 			list2 = userservice.follow(userNo);
 			for (int i = 0; i < list2.size(); i++) {
-				System.out.println("내가구독한 큐레이터 userNo : "+list2.get(i));
+				User u = userservice.selectUser(list2.get(i));
+				Map<String, String> map2 = new HashMap<String, String>();
+				map2.put("name", u.getName());
+				map2.put("avatar", u.getThumbnail_path());
+				newsList.add(map2);
 				List<String> list = service.selectUserScrapNews(Integer.toString(list2.get(i)));
-				System.out.println("내가 구독한 큐레이터의 user_scrap_news:" + list.get(0));
 				for (int j = 0; j < list.size(); j++) {
 					Map<String, String> map = new HashMap<String, String>();
-					News temp = service.selectNews(list.get(i));
+					News temp = service.selectNews(list.get(j));
 					map.put("title", temp.getTitle());
 					map.put("newsNo", temp.getNewsNo());
-					map.put("image_path", temp.getImage_path());
+					map.put("image_path", temp.getArticle_bot_summary());
+					map.put("article_date", temp.getArticle_date());
+					map.put("news_image_caption", temp.getArticle_image_caption());
+					map.put("company", temp.getCompany());
+					map.put("content", temp.getContent());
+					map.put("subtitle", temp.getSubtitle());
+					map.put("url", temp.getUrl());
+					
 					newsList.add(map);
 				}
 			}
