@@ -491,20 +491,23 @@ public class NewsController {
 	public ResponseEntity<List<Map<String, String>>> getCuratorScrap(
 			@ApiParam(value = "String", required = true) @RequestParam String id) {
 		HttpStatus status = null;
-		List<String> list = new ArrayList<String>();
+		ArrayList<Integer> list2 = new ArrayList<Integer>();
 		List<Map<String, String>> newsList = new ArrayList<Map<String, String>>();
-
 		try {
-			String userNo = Integer.toString(userservice.userNo(id));
-			list = service.selectUserScrapNews(userNo); // userNo를 이용해서 list에 newsNo를 받아온다. scrapNo를 기준으로 내림차순(desc)
-														// 해줬기에 가장 나중에 만들어진(최신의) 기사를 우선적으로 가져온다.
-			for (int i = 0; i < list.size(); i++) {
-				Map<String, String> map = new HashMap<String, String>();
-				News temp = service.selectNews(list.get(i));
-				map.put("title", temp.getTitle());
-				map.put("newsNo", temp.getNewsNo());
-				map.put("image_path", temp.getImage_path());
-				newsList.add(map);
+			int userNo = userservice.userNo(id);
+			list2 = userservice.follow(userNo);
+			for (int i = 0; i < list2.size(); i++) {
+				System.out.println("내가구독한 큐레이터 userNo : "+list2.get(i));
+				List<String> list = service.selectUserScrapNews(Integer.toString(list2.get(i)));
+				System.out.println("내가 구독한 큐레이터의 user_scrap_news:" + list.get(0));
+				for (int j = 0; j < list.size(); j++) {
+					Map<String, String> map = new HashMap<String, String>();
+					News temp = service.selectNews(list.get(i));
+					map.put("title", temp.getTitle());
+					map.put("newsNo", temp.getNewsNo());
+					map.put("image_path", temp.getImage_path());
+					newsList.add(map);
+				}
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {

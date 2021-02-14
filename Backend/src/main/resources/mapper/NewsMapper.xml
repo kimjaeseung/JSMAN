@@ -124,12 +124,12 @@
 		update user_scrap_news set curator_summary = #{curator_summary} where scrapNo = #{scrapNo}
 	</update>
 	
-	<select id="selectUserScrapNews" parameterType="String" resultType="UserScrapNews">
+	<select id="selectUserScrapNews" parameterType="String" resultType="String">
 		select newsNo from user_scrap_news where userNo = #{userNo} order by scrapNo desc;
 	</select>
 	
 	<select id="selectNews" parameterType="String" resultType="News">
-		select * from News where newsNo = #{newsNo};
+		select * from news where newsNo = #{newsNo};
 	</select>
 
 	<update id="increaseLike" parameterType="String">
