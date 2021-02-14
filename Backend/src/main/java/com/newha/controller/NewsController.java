@@ -501,7 +501,8 @@ public class NewsController {
 					News temp = service.selectNews(list.get(j));
 					map.put("title", temp.getTitle());
 					map.put("newsNo", temp.getNewsNo());
-					map.put("image_path", temp.getArticle_bot_summary());
+					map.put("image_path", temp.getImage_path());
+					map.put("article_bot_summary", temp.getArticle_bot_summary());
 					map.put("article_date", temp.getArticle_date());
 					map.put("news_image_caption", temp.getArticle_image_caption());
 					map.put("company", temp.getCompany());

@@ -27,18 +27,19 @@
       >
       <p class="mt-2">{{ newsItem.name }} 님의 추천 </p>
       <hr>
+      <!-- {{ newsItem }} -->
         <v-list>
           <template v-for="(newsInfo, i) in newsItem.newsLists">
             <v-list-item
               :key="newsInfo+i"
-              @click="move(newsInfo.newsNo)"
+              @click="move(newsInfo)"
             >
                 <v-list-item-avatar rounded >
-                  <v-img :src="newsInfo.thumbnail" centered></v-img>
+                  <v-img :src="newsInfo.image_path" centered></v-img>
                 </v-list-item-avatar>
                 <v-list-item-content>
                     <v-list-item-title v-html="newsInfo.title"></v-list-item-title>
-                    <v-list-item-title v-html="newsInfo.subtitle"></v-list-item-title>
+                    <v-list-item-title v-html="newsInfo.company"></v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
           </template>
@@ -55,9 +56,8 @@ export default {
     'newsInfos'
   ],
   methods: {
-    move(newsNo){
-      // this.$router.push(`/article/${newsNo}`)
-      this.$router.push({name: 'Article', params: {newsNo: newsNo} })
+    move(newsInfo){
+      this.$router.push({name: 'Article', params: {newsNo: newsInfo.newsNo, newsInfo2: newsInfo} })
     },
   },
   data: function () {
@@ -65,6 +65,8 @@ export default {
         tab: null,
         newsItems: this.newsInfos,
       }
+  },
+  created: function () {
   }
 }
 </script>

@@ -9,8 +9,7 @@
         {{ news.article_date }}
       </div>
       <div class="news-info d-flex justify-content-start">
-        <div>신문사</div>
-        <div>기자명</div>
+        <div>{{ news.company }}</div>
         <div>
           <a :href="news.url">원본보기</a>
         </div>
@@ -61,21 +60,11 @@
           <p>{{ news.article_bot_summary }}</p>
         </div>
         <div class="text-center my-2">
-          <span class="my-auto">기사 본문</span>
-            <v-btn
-              icon
-              @click="news.show = !news.show"
-            >
-              <v-icon>{{ news.show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-            </v-btn>
+          <h3 class="my-auto">기사 본문</h3>
         </div>
-        <v-expand-transition>
-        <div v-show="news.show">
-          <div class="article-content">
-            <p>{{ news.content }}</p>
-          </div>
+        <div class="article-content">
+          <p>{{ news.content }}</p>
         </div>
-        </v-expand-transition>
         <div class="news-body-text hidden">
           <div class="article-bot-summary">
             <h3 class="text-center">큐레이터의 오피니언</h3>
@@ -164,7 +153,6 @@ export default {
         const lang = 'ko-KR';
         let utterThis = new SpeechSynthesisUtterance(txt);
         utterThis.onend = function () {
-          console.log('end');
         };
         utterThis.onerror = function(event) {
           console.log('error', event);
@@ -174,7 +162,6 @@ export default {
           utterThis.voice = voices[i];
           }
         }
-
         utterThis.lang = lang;
         utterThis.pitch = 1;
         utterThis.rate = 1; //속도
