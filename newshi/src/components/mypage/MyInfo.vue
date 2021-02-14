@@ -86,7 +86,7 @@
                 <v-list-item-title>{{follower.name}}</v-list-item-title>
                 <v-list-item-subtitle>{{follower.id}}</v-list-item-subtitle>
               </v-list-item-content>
-              <v-list-item-action><v-btn class="error">삭제</v-btn></v-list-item-action>
+              <v-list-item-action><v-btn class="error" @click="unfollow(follower.id)">삭제</v-btn></v-list-item-action>
             </v-list-item>
         </v-list>
       </v-card>
@@ -138,6 +138,16 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    unfollow(id) {
+      var frm = new FormData();
+      frm.append("id", this.member.id);
+      frm.append("id2", id);
+      console.log(id);
+      axios.post('http://localhost:8080/subscdelete', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+      .then(() => {
+        this.$router.go(this.$router.currentRoute);
+      })
+    },
     modifyTags(){
       var params = new URLSearchParams();
       params.append("id", this.member.id);
