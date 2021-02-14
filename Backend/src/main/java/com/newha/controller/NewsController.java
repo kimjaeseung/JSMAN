@@ -492,18 +492,10 @@ public class NewsController {
 	public ResponseEntity<List<Map<String, String>>> getCuratorScrap(
 			@ApiParam(value = "String", required = true) @RequestParam String id) {
 		HttpStatus status = null;
-		ArrayList<Integer> list2 = new ArrayList<Integer>();
 		List<Map<String, String>> newsList = new ArrayList<Map<String, String>>();
 		try {
 			int userNo = userservice.userNo(id);
-			list2 = userservice.follow(userNo);
-			for (int i = 0; i < list2.size(); i++) {
-				User u = userservice.selectUser(list2.get(i));
-				Map<String, String> map2 = new HashMap<String, String>();
-				map2.put("name", u.getName());
-				map2.put("avatar", u.getThumbnail_path());
-				newsList.add(map2);
-				List<String> list = service.selectUserScrapNews(Integer.toString(list2.get(i)));
+				List<String> list = service.selectUserScrapNews(Integer.toString(userNo));
 				for (int j = 0; j < list.size(); j++) {
 					Map<String, String> map = new HashMap<String, String>();
 					News temp = service.selectNews(list.get(j));
@@ -516,10 +508,8 @@ public class NewsController {
 					map.put("content", temp.getContent());
 					map.put("subtitle", temp.getSubtitle());
 					map.put("url", temp.getUrl());
-					
 					newsList.add(map);
 				}
-			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
