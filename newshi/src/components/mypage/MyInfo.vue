@@ -3,6 +3,33 @@
       <v-card>
         <v-row>
           <v-col>
+            <v-card-actions class="d-flex justify-start">
+              <v-dialog v-model="dialog2" width="unset">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" v-on="on">해쉬태그 수정</v-btn>
+                </template>
+              <v-card >
+                <v-card-title>해쉬태그 수정</v-card-title>
+                <v-card-actions>
+                <v-chip-group
+                  v-model="tags"
+                  active-class="yellow --text"
+                  column
+                  multiple
+                >
+                  <v-chip border large v-for="tag in tagName" :key="tag">
+                    {{ tag }}
+                  </v-chip>
+                </v-chip-group>
+                </v-card-actions>
+                <v-card-actions>
+                  <v-btn @click="modifyTags">수정</v-btn><v-btn @click="dialog2=flase">취소</v-btn>
+                </v-card-actions>
+              </v-card>
+              </v-dialog>
+            </v-card-actions>
+          </v-col>
+          <v-col>
             <v-card-actions class="d-flex justify-end">
             <v-btn class="mr-3"> 비밀번호 수정 </v-btn>
             </v-card-actions>
@@ -11,16 +38,21 @@
         <v-row>
           <v-col>
             <div class="d-flex justify-center">
-              <v-dialog v-model="dialog" width="500">
+              <v-dialog v-model="dialog">
                 <template v-slot:activator="{ on, attrs }">
                   <v-avatar size="150px" v-bind="attrs" v-on="on">
-                    <v-img :src="member.thumbnail_path"></v-img>
-                    <!-- <v-img :src="`${member.thumbnail_path}`" aspect-ratio="1"></v-img> -->
+                    <v-img :src="require('@/assets/images/default_avatar.png')"></v-img>
                   </v-avatar>
                 </template>
-              <v-card-title>파일 업로드</v-card-title>
-              <v-file-input v-model="file"></v-file-input>
-              <v-btn @click="fileUpload">전송하기!</v-btn>
+              <v-card>
+                <v-card-title>파일 업로드</v-card-title>
+                <v-card-actions>
+                <v-file-input v-model="file"></v-file-input>
+                </v-card-actions>
+                <v-card-actions>
+                <v-btn @click="fileUpload">전송하기!</v-btn>
+                </v-card-actions>
+              </v-card>
               </v-dialog>
       </div>
       <div class="d-flex justify-center mt-3" >
@@ -32,7 +64,7 @@
           <v-col></v-col>
           <v-col class="d-flex justify-center" cols="8">
             <div>
-              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:150%" color="#646464">{{hashtag}}</v-btn>
+              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:150%" color="#646464">#{{hashtag}}</v-btn>
             </div>
           </v-col>
           <v-col></v-col>
@@ -70,6 +102,25 @@
 import axios from 'axios';
 import { mapActions } from 'vuex';
 
+const tag_dict = {
+        '속보': 0,
+        '정치': 1,
+        '경제': 2,
+        '사회': 3,
+        '생활/문화': 4,
+        '세계/국제': 5,
+        'IT/과학': 6,
+        '오피니언': 7,
+        0: '속보',
+        1: '정치',
+        2: '경제',
+        3: '사회',
+        4: '생활/문화',
+        5: '세계/국제',
+        6: 'IT/과학',
+        7: '오피니언',
+}
+
 export default {
   computed: {
     getMember() {
@@ -87,6 +138,22 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    modifyTags(){
+      var params = new URLSearchParams();
+      params.append("id", this.member.id);
+      this.tags.forEach(function(tag) {
+        params.append("list",tag_dict[tag]);
+      })
+      console.log(this.member.id);
+      axios.get('http://localhost:8080/tagListUpdate', 
+      { params: params},
+    ).then(() => { 
+      this.$router.go(this.$router.currentRoute);
+      }) .catch((error) => { 
+        // 예외 처리 
+        console.log(error);
+      })
+    },
     toChannel(curator) {
       console.log(curator + "채널로");
       this.$router.push('channel/' + curator);
@@ -128,9 +195,12 @@ export default {
     ).then((response) => { 
       var hashtags = response.data;
       hashtags.forEach((hashtag) => {
-        this.hashtags.push('#' + hashtag['name'])
+        this.hashtags.push(hashtag['name'])
+        this.tags.push(tag_dict[hashtag['name']]);
       })
       })
+      
+      console.log(this.hashtags);
     }
   },
   data() {
@@ -140,14 +210,22 @@ export default {
       followers: [],
       file: [],
       dialog: false,
+      dialog2: false,
+      tagName: [
+        '속보',
+        '정치',
+        '경제',
+        '사회',
+        '생활/문화',
+        '세계/국제',
+        'IT/과학',
+        '오피니언',
+      ],
+      tags:[],
     }
   },
   created() {
     this.member = this.$store.getters.userProfile;
-    console.log(this.member);
-    if (this.member === null || this.member.id == undefined) {
-      this.getUserInfo();
-    }
     // 내 hashtags 불러오는 axios(임시)
     // this.hashtags = ['#속보', '#정치', '#경제', '#사회', '#문화'];
     
