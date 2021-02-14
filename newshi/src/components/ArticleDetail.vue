@@ -22,13 +22,36 @@
           <v-icon medium v-else color="#ff9800">mdi-bookmark</v-icon>
         </v-btn>
       </div>
-      <div class="news-info d-flex justify-content-start">
-        <v-btn icon
-        @click="tts">
-          <v-icon>
-            mdi-play
-          </v-icon>
-        </v-btn>
+      <div class="d-flex justify-content-start">
+        <v-row
+          align="center"
+          justify="space-around"
+          class="my-2"
+        >
+          <v-btn 
+            @click="tts"
+            v-if="this.play === false"
+            outlined
+          >
+            <v-icon
+            >
+              mdi-play
+            </v-icon>
+            Play
+          </v-btn>
+          <v-btn 
+            out
+            @click="tts"
+            v-else
+            color="#ff9800"
+          >
+            <v-icon
+            >
+              mdi-stop
+            </v-icon>
+            Stop
+          </v-btn>
+        </v-row>
       </div>
     </header>
     <!-- main image -->
@@ -137,6 +160,7 @@ export default {
   ],
   methods: {
     tts() {
+      this.play = !this.play;
       let voices = [];
       function setVoiceList() {
         voices = window.speechSynthesis.getVoices();
@@ -145,7 +169,7 @@ export default {
         if (window.speechSynthesis.onvoiceschanged !== undefined) {
           window.speechSynthesis.onvoiceschanged = setVoiceList;
         }
-        function speech(txt) {
+        function speech(txt, play) {
           if(!window.speechSynthesis) {
             alert("음성 재생을 지원하지 않는 브라우저입니다. 크롬, 파이어폭스 등의 최신 브라우저를 이용하세요");
             return;
@@ -165,10 +189,14 @@ export default {
         utterThis.lang = lang;
         utterThis.pitch = 1;
         utterThis.rate = 1; //속도
-        window.speechSynthesis.speak(utterThis);
+        if (play === true) {
+          window.speechSynthesis.speak(utterThis);
+        } else {
+          window.speechSynthesis.cancel();
+        }
       }
       let t = this.news.content;
-      speech(t);
+      speech(t, this.play);
     },
     swipe (direction) {
       this.swipeDirection = direction
@@ -190,9 +218,7 @@ export default {
       saved: false,
       liked: false,
       disliked: false,
-      email: 'hi',
-      title: 'hello',
-      content: 'content',
+      play: false,
     }
   },
 }
