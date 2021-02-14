@@ -50,7 +50,7 @@ export default {
   color: #999;
 }
 .news-title {
-  margin-top: 30px;
+  /* margin-top: 30px; */
   font-size: 35px;
   font-weight: 900;
 }

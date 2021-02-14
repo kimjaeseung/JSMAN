@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <nav-bar></nav-bar>
-    <br /><br /><br />
+    <br /><br />
     <router-view></router-view>
     <AddNews></AddNews>
   </v-app>
