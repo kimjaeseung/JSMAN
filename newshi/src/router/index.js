@@ -6,6 +6,7 @@ import MyPage from '../views/MyPage.vue';
 import FindPw from '../views/FindPw.vue';
 import ChangePw from '../views/ChangePw.vue';
 import Feedback from '../views/Feedback.vue';
+import Save from '../views/Save.vue';
 import Policy from '../views/Policy.vue';
 import Whoweare from '../views/Whoweare.vue';
 import MyInfo from '../components/mypage/MyInfo';
@@ -77,6 +78,11 @@ const routes = [
     path: '/feedback',
     name: 'Feedback',
     component: Feedback,
+  },
+  {
+    path: '/save',
+    name: 'Save',
+    component: Save,
   },
   {
     path: '/policy',

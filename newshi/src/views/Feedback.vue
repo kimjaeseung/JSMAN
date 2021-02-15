@@ -25,9 +25,9 @@
       <br />
       <v-btn
         :disabled="!valid"
-        color="#ff9800"
+        color="rgb(252, 191, 73)"
         @click="submit"
-        >전송하기</v-btn
+        >피드백 보내기</v-btn
       >
     </v-form> 
   </div>
