@@ -27,7 +27,6 @@
       >
       <p class="mt-2">{{ newsItem.name }} 님의 추천 </p>
       <hr>
-      <!-- {{ newsItem }} -->
         <v-list>
           <template v-for="(newsInfo, i) in newsItem.newsLists">
             <v-list-item
@@ -39,7 +38,7 @@
                 </v-list-item-avatar>
                 <v-list-item-content>
                     <v-list-item-title v-html="newsInfo.title"></v-list-item-title>
-                    <v-list-item-title v-html="newsInfo.company"></v-list-item-title>
+                    <v-list-item-subtitle v-html="newsInfo.company"></v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
           </template>

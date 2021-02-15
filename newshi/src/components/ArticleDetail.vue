@@ -18,7 +18,7 @@
           @click="save()"
           icon
         >
-          <v-icon medium v-if="this.saved === false">mdi-bookmark</v-icon>
+          <v-icon medium v-if="this.saved !== true">mdi-bookmark</v-icon>
           <v-icon medium v-else color="#ff9800">mdi-bookmark</v-icon>
         </v-btn>
       </div>
@@ -152,6 +152,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+const API_URL = 'http://localhost:8080';
+const id = localStorage.getItem('id');
 
 export default {
   name: "ArticleDetail",
@@ -203,13 +206,88 @@ export default {
     },
     save () {
       this.saved = !this.saved;
+      const scrapNo = this.newsInfo.scrapNo;
+      axios.get(`${API_URL}`+'/article/save'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+      .then((res)=> {
+        if (res.data.message == 'success' && this.saved == true) {
+          console.log(res.data.message)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+    saveCheck() {
+      const newsNo = this.newsInfo.newsNo;
+      axios.get(`${API_URL}`+'/article/isdislike'+`?id=${id}`)
+      .then((res)=> {
+        let data = res.data;
+        data.forEach(element => {
+          if (element.newsNo === newsNo) {
+            this.saved = true;
+            console.log(newsNo, this.saved)
+          }
+        });
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     like () {
       this.liked = !this.liked;
+      const scrapNo = this.newsInfo.scrapNo;
+      axios.get(`${API_URL}`+'/article/like'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+      .then((res)=> {
+        if (res.data.message == 'success' && this.liked == true) {
+          console.log('like', res.data.message)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
     dislike () {
       this.disliked = !this.disliked;
+      const scrapNo = this.newsInfo.scrapNo;
+      axios.get(`${API_URL}`+'/article/dislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+      .then((res)=> {
+        if (res.data.message == 'success' && this.disliked == true) {
+          console.log('dislike', res.data.message)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
     },
+    likeCheck() {
+      const scrapNo = this.newsInfo.scrapNo;
+      axios.get(`${API_URL}`+'/article/islike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+      .then((res)=> {
+        if (res.data.message === 'success') {
+          this.liked = true;
+        } else {
+          this.liked = false;
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+      axios.get(`${API_URL}`+'/article/savelist'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+      .then((res)=> {
+        if (res.data.message === 'success') {
+          this.disliked = true;
+        } else {
+          this.disliked = false;
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
+  },
+  created: function () {
+    this.saveCheck(); // saved 상태체크
+    this.likeCheck(); // liked/disliked 상태 체크
   },
   data: function () {
     return {
