@@ -149,11 +149,10 @@ export default {
       search_word: '',
       menus: [
         {
-          icon: 'newspaper-variant-multiple-outline',
+          icon: 'bookmark-outline',
           title: '나중에 볼 기사',
           router: '/save',
         },
-        { icon: 'newspaper-plus', title: '언론사 선택하기', router: '/press' },
         { icon: 'brightness-6', title: '다크모드', router: '' },
         {
           icon: 'email-open-outline',
@@ -165,7 +164,7 @@ export default {
           title: '댓글 운영 정책',
           router: '/policy',
         },
-        { icon: 'home', title: '만든이들', router: '/whoweare' },
+        { icon: 'home-outline', title: '만든이들', router: '/whoweare' },
         { icon: 'information-outline', title: '버전 정보', router: '/version' },
       ],
       mounted_flag: false,
