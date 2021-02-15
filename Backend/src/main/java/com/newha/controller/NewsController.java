@@ -767,6 +767,7 @@ public class NewsController {
 					temp.put("article_image_caption", n.getArticle_image_caption());
 					temp.put("company", n.getCompany());
 					temp.put("scrapNo", scrapNo);
+					temp.put("curator_summary",service.selectUserScrapNewsByScrapNo(scrapNo).getCurator_summary());
 					result.add(temp);
 				}
 			}

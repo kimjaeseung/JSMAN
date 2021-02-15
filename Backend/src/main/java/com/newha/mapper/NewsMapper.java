@@ -28,12 +28,13 @@ public interface NewsMapper {
 	public User selectUserById(String id);
 	public List<UserScrapNews> selectUserScrapNewsByPostNo(String postNo);
 	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName);
+	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo);
+	public UserScrapNews selectUserScrapNewsByScrapNo(String scrapNo);
 	public News selectNewsByScrapNo(String scrapNo);
 	public List<HashTag> selectHashTagByName(String name);
 	public UserGoodNews selectLikeNews(UserGoodNews userGoodNews);
 	public UserGoodNews selectDisLikeNews(UserGoodNews userGoodNews);
 	public List<UserGoodNews> selectUserGoodNewsByUserNo(String userNo);
-	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo);
 	public List<NewsImage> selectNewImageByNewsNo(String newsNo);
 	public List<News> selectNewsByTagName(String tagName);
 	public List<News> selectNewsByUserNo(String userNo);

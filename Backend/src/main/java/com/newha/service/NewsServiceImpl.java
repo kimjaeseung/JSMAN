@@ -206,4 +206,9 @@ public class NewsServiceImpl implements NewsService {
 	public List<Post> selectPostByLikeName(String name) {
 		return dao.selectPostByLikeName(name);
 	}
+	
+	@Override
+	public UserScrapNews selectUserScrapNewsByScrapNo(String scrapNo) {
+		return dao.selectUserScrapNewsByScrapNo(scrapNo);
+	}
 }

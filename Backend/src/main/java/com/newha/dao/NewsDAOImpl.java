@@ -206,4 +206,9 @@ public class NewsDAOImpl implements NewsDAO {
 	public List<Post> selectPostByLikeName(String name) {
 		return mapper.selectPostByLikeName(name);
 	}
+	
+	@Override
+	public UserScrapNews selectUserScrapNewsByScrapNo(String scrapNo) {
+		return mapper.selectUserScrapNewsByScrapNo(scrapNo);
+	}
 }
