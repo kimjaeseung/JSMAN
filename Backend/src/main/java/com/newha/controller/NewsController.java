@@ -358,6 +358,7 @@ public class NewsController {
 				m.put("like_cnt", new String[] {userScrapNews.getLike_cnt()});
 				m.put("dislike_cnt", new String[] {userScrapNews.getDislike_cnt()});
 				m.put("curator_summary", new String[] {userScrapNews.getCurator_summary()});
+				m.put("scrapNo", new String[] {userScrapNews.getScrapNo()});
 				
 				if(images != null) {
 					String newsImages[] = new String[images.size()];
