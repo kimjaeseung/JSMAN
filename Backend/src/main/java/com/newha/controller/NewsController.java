@@ -778,4 +778,57 @@ public class NewsController {
 		}
 		return new ResponseEntity<List<Map<String, String>>>(result, status);
 	}
+	
+	@ApiOperation(value = "최신 기사리스트(비로그인)", notes = "최신 기사 리스트와 해당 기사의 scrap 배열로 반환", response = List.class)
+	@GetMapping(value = "/article")
+	public ResponseEntity<List<Map<String, String[]>>> saveList() {
+		ArrayList<Map<String, String[]>> result = new ArrayList<Map<String, String[]>>();
+		HttpStatus status = null;
+		try {
+			
+			List<News> list = service.selectAllNews();
+			for (News news : list) {
+				Map<String, String[]> temp = new HashMap<String, String[]>();
+				temp.put("newsNo", new String[] {news.getNewsNo()});
+				temp.put("title", new String[] {news.getTitle()});
+				temp.put("company", new String[] {news.getCompany()});
+				
+				List<UserScrapNews> scrapList = service.selectUserScrapNewsByNewsNo(news.getNewsNo());
+				String [] scrapNo = new String[scrapList.size()];
+				String [] userNo = new String[scrapList.size()];
+				String [] postNo = new String[scrapList.size()];
+				String [] newsNo = new String[scrapList.size()];
+				String [] date = new String[scrapList.size()];
+				String [] curator_summary = new String[scrapList.size()];
+				String [] like_cnt = new String[scrapList.size()];
+				String [] dislike_cnt = new String[scrapList.size()];
+				int cnt = 0;
+				for (UserScrapNews ucn : scrapList) {
+					scrapNo[cnt] = ucn.getScrapNo();
+					userNo[cnt] = ucn.getUserNo();
+					postNo[cnt] = ucn.getPostNo();
+					newsNo[cnt] = ucn.getNewsNo();
+					date[cnt] = ucn.getDate();
+					curator_summary[cnt] = ucn.getCurator_summary();
+					like_cnt[cnt] = ucn.getLike_cnt();
+					dislike_cnt[cnt] = ucn.getDislike_cnt();
+					cnt++;
+ 				}
+				temp.put("scrapNo", scrapNo);
+				temp.put("userNo", userNo);
+				temp.put("postNo", postNo);
+				temp.put("newsNo", newsNo);
+				temp.put("date", date);
+				temp.put("curator_summary", curator_summary);
+				temp.put("like_cnt", like_cnt);
+				temp.put("dislike_cnt", dislike_cnt);
+				result.add(temp);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<Map<String, String[]>>>(result, status);
+	}
 }

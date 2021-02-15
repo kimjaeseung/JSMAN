@@ -29,8 +29,10 @@ public interface NewsDAO {
 	public List<UserScrapNews> selectUserScrapNewsByPostNo(String postNo);
 	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName);
 	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo);
+	public List<UserScrapNews> selectUserScrapNewsByNewsNo(String newsNo);
 	public UserScrapNews selectUserScrapNewsByScrapNo(String scrapNo);
 	public News selectNewsByScrapNo(String scrapNo);
+	public List<News> selectAllNews();
 	public List<HashTag> selectHashTagByName(String name);
 	public UserGoodNews selectLikeNews(UserGoodNews userGoodNews);
 	public UserGoodNews selectDisLikeNews(UserGoodNews userGoodNews);

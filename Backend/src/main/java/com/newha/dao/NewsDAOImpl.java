@@ -211,4 +211,14 @@ public class NewsDAOImpl implements NewsDAO {
 	public UserScrapNews selectUserScrapNewsByScrapNo(String scrapNo) {
 		return mapper.selectUserScrapNewsByScrapNo(scrapNo);
 	}
+	
+	@Override
+	public List<News> selectAllNews() {
+		return mapper.selectAllNews();
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByNewsNo(String newsNo) {
+		return mapper.selectUserScrapNewsByNewsNo(newsNo);
+	}
 }

@@ -87,12 +87,20 @@
 		select * from user_scrap_news where scrapNo = #{scrapNo};
 	</select>
 	
+	<select id="selectUserScrapNewsByNewsNo" parameterType="String" resultType="UserScrapNews">
+		select * from user_scrap_news where newsNo = #{newsNo} order by like_cnt desc limit 30;
+	</select>
+	
 	<select id="selectNewsByScrapNo" parameterType="String" resultType="News">
 		select * from news where newsNo = (select newsNo from user_scrap_news where scrapNo = #{scrapNo});
 	</select>
 	
 	<select id="selectNewsByUserNo" parameterType="String" resultType="News">
 		select * from news where newsNo in (select newsNo from user_scrap_news where userNo = #{userNo});
+	</select>
+	
+	<select id="selectAllNews" resultType="News">
+		select * from news order by newsNo desc;
 	</select>
 	
 	<select id="selectHashTagByName" parameterType="String" resultType="HashTag">
