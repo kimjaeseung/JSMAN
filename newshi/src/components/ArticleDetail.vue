@@ -92,7 +92,7 @@
         <div class="news-body-text hidden">
           <div class="article-bot-summary">
             <h3 class="text-center">큐레이터의 오피니언</h3>
-            <p>{{ news.article_bot_summary }}</p>
+            <p>{{ news.curator_summary }}</p>
           </div>
           <div class="d-flex my-2">
             <div class="mx-auto">
@@ -122,7 +122,7 @@
       <div class="news-body-text">
         <div class="article-bot-summary">
           <p class="text-center">큐레이터의 오피니언</p>
-          <p>{{ news.article_bot_summary }}</p>
+          <p>{{ news.curator_summary }}</p>
         </div>
         <div class="d-flex">
           <div class="mx-auto">

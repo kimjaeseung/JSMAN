@@ -1,6 +1,7 @@
 <template>
   <v-container>
-  <h2>나중에 볼 기사</h2>
+  <h3>내일 볼 기사</h3>
+  <h5>이제 더 이상 미루지 말자...</h5>
     <v-list>
       <template v-for="(newsInfo, i) in newsItems">
         <v-list-item
