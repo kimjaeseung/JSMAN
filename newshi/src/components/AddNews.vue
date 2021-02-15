@@ -113,7 +113,7 @@ export default {
         (response) => {
           if (response.data.message === 'success') {
             alert('포스트 생성에 성공하셨습니다.');
-            let no = response.data['postNo'];
+            let no = response.data.postNo;
             this.$router.push({ name: 'Link', params: { postNo: no } });
           } else {
             alert('포스트 생성에 실패하셨습니다.');
