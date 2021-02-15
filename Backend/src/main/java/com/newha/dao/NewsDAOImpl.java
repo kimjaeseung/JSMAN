@@ -103,7 +103,7 @@ public class NewsDAOImpl implements NewsDAO {
 	}
 
 	@Override
-	public List<String> selectUserScrapNews(String userNo) {
+	public List<UserScrapNews> selectUserScrapNews(String userNo) {
 		return mapper.selectUserScrapNews(userNo);
 	}
 
