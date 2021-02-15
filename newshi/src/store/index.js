@@ -37,11 +37,19 @@ const store = new Vuex.Store({
               commit('SET_USER', user);
             } else {
               this.isLoginError = true;
+
+              localStorage.clear();
+              commit('SET_USER', null);
+              this.$router.go(this.$router.currentRoute);
             }
           },
           (error) => {
             console.error(error);
-            alert('회원정보를 가져오지 못했습니다.');
+            alert('로그인 유지기간이 만료되었습니다. 다시 로그인해주세요');
+
+            localStorage.clear();
+            commit('SET_USER', null);
+            this.$router.go(this.$router.currentRoute);
           }
         );
       }

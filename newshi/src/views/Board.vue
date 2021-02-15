@@ -42,6 +42,7 @@
           :key="index"
           :board="board"
           :num="index"
+          :member="member"
           @delBoard="removeBoard"
         ></BoardInfo>
       </v-col>
@@ -67,6 +68,7 @@ export default {
       isMyPage: false,
       list: [],
       hasList: false,
+      curator: '',
     };
   },
   methods: {
@@ -94,20 +96,24 @@ export default {
     },
   },
   created() {
-    let curator = this.$route.params.id;
+    this.curator = this.$route.params.id;
     //유저 정보 받아오는 axios
     getInfo(
-      curator,
+      this.curator,
       (response) => {
         if (response.data.message === 'success') {
           this.member = response.data.userInfo;
 
           if (this.member.id === localStorage['id']) {
+            console.log(this.member.id);
+            console.log(localStorage['id']);
             this.isMyPage = true;
+          } else {
+            this.isMyPage = false;
           }
         } else {
           alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
-          this.$router.push(`/channel/${curator}`);
+          this.$router.push(`/channel/${this.curator}`);
         }
       },
       (error) => {
@@ -117,7 +123,7 @@ export default {
     );
 
     boardList(
-      curator,
+      this.curator,
       (response) => {
         if (response.status >= 200 && response.status < 300) {
           if (response.data[0].message === '게시글이 없습니다.') {

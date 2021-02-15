@@ -38,13 +38,13 @@ const requireAuth = () => (to, from, next) => {
 
 const routes = [
   {
-    path: "/404",
-    name: "notFound",
+    path: '/404',
+    name: 'notFound',
     component: NotFound,
   },
   {
     path: '*',
-    redirect: "/404"
+    redirect: '/404',
   },
   {
     path: '/article/:newsNo',
@@ -154,11 +154,13 @@ const routes = [
     path: '/addBoard',
     name: 'AddBoard',
     component: AddBoard,
+    beforeEnter: requireAuth(),
   },
   {
     path: '/modifyBoard',
     name: 'ModifyBoard',
     component: ModifyBoard,
+    beforeEnter: requireAuth(),
     props: true,
   },
   {
@@ -171,6 +173,7 @@ const routes = [
     path: '/link',
     name: 'Link',
     component: Link,
+    beforeEnter: requireAuth(),
     props: true,
   },
 ];
