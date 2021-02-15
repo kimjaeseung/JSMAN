@@ -103,7 +103,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public List<String> selectUserScrapNews(String userNo) {
+	public List<UserScrapNews> selectUserScrapNews(String userNo) {
 		return dao.selectUserScrapNews(userNo);
 	}
 

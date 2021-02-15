@@ -494,11 +494,13 @@ public class NewsController {
 		HttpStatus status = null;
 		List<Map<String, String>> newsList = new ArrayList<Map<String, String>>();
 		try {
+			
 			int userNo = userservice.userNo(id);
-				List<String> list = service.selectUserScrapNews(Integer.toString(userNo));
+				List<UserScrapNews> list = service.selectUserScrapNews(Integer.toString(userNo));
 				for (int j = 0; j < list.size(); j++) {
 					Map<String, String> map = new HashMap<String, String>();
-					News temp = service.selectNews(list.get(j));
+					News temp = service.selectNews(list.get(j).getNewsNo());
+					map.put("scrapNo", list.get(j).getScrapNo());
 					map.put("title", temp.getTitle());
 					map.put("newsNo", temp.getNewsNo());
 					map.put("image_path", temp.getArticle_bot_summary());
