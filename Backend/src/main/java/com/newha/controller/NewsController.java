@@ -31,12 +31,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newha.service.NewsService;
-import com.newha.service.UserService;
 import com.newha.vo.News;
 import com.newha.vo.NewsImage;
 import com.newha.vo.Post;
 import com.newha.vo.PostTag;
-import com.newha.vo.User;
 import com.newha.vo.UserGoodNews;
 import com.newha.vo.UserScrapNews;
 
@@ -52,9 +50,6 @@ public class NewsController {
 
 	@Autowired
 	NewsService service;
-
-	@Autowired
-	UserService userservice;
 
 	// WebDriver 설정
 	private WebDriver driver;
@@ -388,21 +383,6 @@ public class NewsController {
 		return new ResponseEntity<List<Map<String, String[]>>>(result, status);
 	}
 	
-//	@ApiOperation(value = "태그로 기사 리스트 검색", notes = "태그로 검색된 기사 리스트 반환", response = List.class)
-//	@GetMapping(value = "/article/newsByTag")
-//	public ResponseEntity<List<News>> getNewsByTag(
-//			@ApiParam(value = "String", required = true) @RequestParam String tagName) {
-//		HttpStatus status = null;
-//		List<News> list = new ArrayList<News>();
-//		try {
-//			list = service.selectNewsByTagName(tagName);
-//			status = HttpStatus.ACCEPTED;
-//		} catch (Exception e) {
-//			status = HttpStatus.INTERNAL_SERVER_ERROR;
-//		}
-//		return new ResponseEntity<List<News>>(list, status);
-//	}
-	
 	@ApiOperation(value = "태그로 기사 리스트 검색", notes = "태그로 검색된 기사 리스트 반환", response = List.class)
 	@GetMapping(value = "/article/newsByTag")
 	public ResponseEntity<List<Map<String, String[]>>> getNewsByTag(
@@ -525,13 +505,13 @@ public class NewsController {
 		HttpStatus status = null;
 		List<Map<String, String>> newsList = new ArrayList<Map<String, String>>();
 		try {
-			
-			int userNo = userservice.userNo(id);
-				List<UserScrapNews> list = service.selectUserScrapNews(Integer.toString(userNo));
+				String userNo = service.selectUserById(id).getUserNo();;
+				List<UserScrapNews> list = service.selectUserScrapNews(userNo);
 				for (int j = 0; j < list.size(); j++) {
 					Map<String, String> map = new HashMap<String, String>();
 					News temp = service.selectNews(list.get(j).getNewsNo());
 					map.put("scrapNo", list.get(j).getScrapNo());
+					map.put("curator_summary", list.get(j).getCurator_summary());
 					map.put("title", temp.getTitle());
 					map.put("newsNo", temp.getNewsNo());
 					map.put("image_path", temp.getImage_path());
