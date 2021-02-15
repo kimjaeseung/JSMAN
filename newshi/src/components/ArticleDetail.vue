@@ -22,6 +22,7 @@
           <v-icon medium v-else color="#ff9800">mdi-bookmark</v-icon>
         </v-btn>
       </div>
+      <!-- TTS Play icon -->
       <div class="d-flex justify-content-start">
         <v-row
           align="center"
@@ -91,7 +92,7 @@
         <div class="news-body-text hidden">
           <div class="article-bot-summary">
             <h3 class="text-center">큐레이터의 오피니언</h3>
-            <p>{{ news.article_bot_summary }}</p>
+            <p>{{ news.curator_summary }}</p>
           </div>
           <div class="d-flex my-2">
             <div class="mx-auto">
@@ -121,7 +122,7 @@
       <div class="news-body-text">
         <div class="article-bot-summary">
           <p class="text-center">큐레이터의 오피니언</p>
-          <p>{{ news.article_bot_summary }}</p>
+          <p>{{ news.curator_summary }}</p>
         </div>
         <div class="d-flex">
           <div class="mx-auto">
@@ -219,7 +220,7 @@ export default {
     },
     saveCheck() {
       const newsNo = this.newsInfo.newsNo;
-      axios.get(`${API_URL}`+'/article/isdislike'+`?id=${id}`)
+      axios.get(`${API_URL}`+'/article/savelist'+`?id=${id}`)
       .then((res)=> {
         let data = res.data;
         data.forEach(element => {
@@ -272,7 +273,7 @@ export default {
       .catch((err) => {
         console.log(err)
       })
-      axios.get(`${API_URL}`+'/article/savelist'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+      axios.get(`${API_URL}`+'/article/isdislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
       .then((res)=> {
         if (res.data.message === 'success') {
           this.disliked = true;

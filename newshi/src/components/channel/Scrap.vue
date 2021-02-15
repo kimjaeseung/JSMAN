@@ -15,17 +15,17 @@
                     </v-row>
                     <v-row v-if="isMyPage==true">
                       <v-col class="d-flex justify-center align-center">
-                        <v-dialog width="500">
+                        <v-dialog :retain-focus="false" width="500" v-model="dialog">
                           <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on">
+                            <v-btn v-bind="attrs" v-on="on" @click="modifyBtn(scrap.name, scrap.postNo)">
                              수정하기
                             </v-btn>
                           </template>
                           <v-card>
-                            <input type="text" v-model="scrap.name" style="font-size:30px; width:100%; text-align:center">
+                            <input type="text" v-model="modify_title" style="font-size:30px; width:100%; text-align:center">
                             <v-card-actions>
                               <v-spacer></v-spacer>
-                              <v-btn color="primary" @click="modify(scrap.name)">
+                              <v-btn color="primary" @click="modify()">
                                 수정
                               </v-btn>
                               <v-btn color="primary" @click="refreshPage">
@@ -52,6 +52,25 @@
 import axios from 'axios';
 
 export default {
+  computed: {
+    getMember() {
+      return this.$store.state.userProfile;
+    },
+  },
+  watch: {
+    getMember: function(val) {
+      this.member = val;
+      if(this.member.id == this.$route.params.id){
+        this.isMyPage = true;
+      }
+    },
+    member: function() {
+      if(this.member.id == this.$route.params.id){
+        this.isMyPage = true;
+        console.log("isMyPage");
+      }
+    }
+  },
     props: {
       propsIsMyPage: {
         type: Boolean
@@ -63,20 +82,29 @@ export default {
           scraps: [],
           dialog: false,
           flag: false,
+          member: {},
+          modify_title: '',
+          modify_postNo: 0,
         }
     },
     methods: {
       showNews(scrap_no) {
-        this.$router.push('./' + scrap_no);
+        this.$router.push('./' + this.member.id + '/' + scrap_no);
       },
-      modify(scrap_title) {
-        //여기에 수정 api
-        //이후 refreshPage
-        console.log(scrap_title);
-        this.refreshPage();
+      modifyBtn(name, postNo) {
+        this.modify_title = name;
+        this.modify_postNo = postNo;
+        this.dialog=true;
+      },
+      modify() {
+        console.log(this.modify_postNo);
+        axios.put('http://localhost:8080/article/post', { id: this.$route.params.id, name: this.modify_title, postNo: this.modify_postNo})
+        .then(() => {
+          this.$router.go(this.$router.currentRoute);
+        });
       },
       refreshPage() {
-        this.$router.push({name:'ToScrap'});
+        this.dialog=false;
       },
       getPostList() {
         axios.get('http://localhost:8080/article/post', 
@@ -95,9 +123,10 @@ export default {
       }
     },
     created() {
-      console.log("Scrap propsIsMyPage>>>" + this.propsIsMyPage);
-      this.isMyPage = this.propsIsMyPage;
+      this.member = this.$store.getters.userProfile;
         //스크랩 받아오는 axios
+      //큐레이터 정보 받아오기..
+      
       this.getPostList();
         // this.forceUpdate()
       // this.scraps = [

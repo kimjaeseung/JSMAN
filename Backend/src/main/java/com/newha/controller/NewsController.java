@@ -31,12 +31,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.newha.service.NewsService;
-import com.newha.service.UserService;
 import com.newha.vo.News;
 import com.newha.vo.NewsImage;
 import com.newha.vo.Post;
 import com.newha.vo.PostTag;
-import com.newha.vo.User;
 import com.newha.vo.UserGoodNews;
 import com.newha.vo.UserScrapNews;
 
@@ -52,9 +50,6 @@ public class NewsController {
 
 	@Autowired
 	NewsService service;
-
-	@Autowired
-	UserService userservice;
 
 	// WebDriver 설정
 	private WebDriver driver;
@@ -363,6 +358,7 @@ public class NewsController {
 				m.put("like_cnt", new String[] {userScrapNews.getLike_cnt()});
 				m.put("dislike_cnt", new String[] {userScrapNews.getDislike_cnt()});
 				m.put("curator_summary", new String[] {userScrapNews.getCurator_summary()});
+				m.put("scrapNo", new String[] {userScrapNews.getScrapNo()});
 				
 				if(images != null) {
 					String newsImages[] = new String[images.size()];
@@ -387,21 +383,6 @@ public class NewsController {
 		}
 		return new ResponseEntity<List<Map<String, String[]>>>(result, status);
 	}
-	
-//	@ApiOperation(value = "태그로 기사 리스트 검색", notes = "태그로 검색된 기사 리스트 반환", response = List.class)
-//	@GetMapping(value = "/article/newsByTag")
-//	public ResponseEntity<List<News>> getNewsByTag(
-//			@ApiParam(value = "String", required = true) @RequestParam String tagName) {
-//		HttpStatus status = null;
-//		List<News> list = new ArrayList<News>();
-//		try {
-//			list = service.selectNewsByTagName(tagName);
-//			status = HttpStatus.ACCEPTED;
-//		} catch (Exception e) {
-//			status = HttpStatus.INTERNAL_SERVER_ERROR;
-//		}
-//		return new ResponseEntity<List<News>>(list, status);
-//	}
 	
 	@ApiOperation(value = "태그로 기사 리스트 검색", notes = "태그로 검색된 기사 리스트 반환", response = List.class)
 	@GetMapping(value = "/article/newsByTag")
@@ -525,13 +506,13 @@ public class NewsController {
 		HttpStatus status = null;
 		List<Map<String, String>> newsList = new ArrayList<Map<String, String>>();
 		try {
-			
-			int userNo = userservice.userNo(id);
-				List<UserScrapNews> list = service.selectUserScrapNews(Integer.toString(userNo));
+				String userNo = service.selectUserById(id).getUserNo();;
+				List<UserScrapNews> list = service.selectUserScrapNews(userNo);
 				for (int j = 0; j < list.size(); j++) {
 					Map<String, String> map = new HashMap<String, String>();
 					News temp = service.selectNews(list.get(j).getNewsNo());
 					map.put("scrapNo", list.get(j).getScrapNo());
+					map.put("curator_summary", list.get(j).getCurator_summary());
 					map.put("title", temp.getTitle());
 					map.put("newsNo", temp.getNewsNo());
 					map.put("image_path", temp.getImage_path());
@@ -762,17 +743,32 @@ public class NewsController {
 	
 	@ApiOperation(value = "저장한 기사리스트", notes = "저장한 기사 리스트를 반환", response = List.class)
 	@GetMapping(value = "/article/savelist")
-	public ResponseEntity<List<News>> saveList(
+	public ResponseEntity<List<Map<String, String>>> saveList(
 			@ApiParam(value = "String", required = true) @RequestParam String id) {
-		ArrayList<News> result = new ArrayList<News>();
+		ArrayList<Map<String, String>> result = new ArrayList<Map<String, String>>();
 		HttpStatus status = null;
 		try {
 			String userNo = service.selectUserById(id).getUserNo();
 			
 			List<UserGoodNews> list = service.selectUserGoodNewsByUserNo(userNo);
 			for (UserGoodNews news : list) {
+				Map<String, String> temp = new HashMap<String, String>();
 				if(news.getIs_save().equals("1")) {
-					result.add(service.selectNewsByScrapNo(news.getScrapNo()));
+					String scrapNo = news.getScrapNo();
+					News n = service.selectNewsByScrapNo(scrapNo);
+					temp.put("newsNo", n.getNewsNo());
+					temp.put("title", n.getTitle());
+					temp.put("subtitle", n.getSubtitle());
+					temp.put("content", n.getContent());
+					temp.put("image_path", n.getImage_path());
+					temp.put("url", n.getUrl());
+					temp.put("article_date", n.getArticle_date());
+					temp.put("article_bot_summary", n.getArticle_bot_summary());
+					temp.put("article_image_caption", n.getArticle_image_caption());
+					temp.put("company", n.getCompany());
+					temp.put("scrapNo", scrapNo);
+					temp.put("curator_summary",service.selectUserScrapNewsByScrapNo(scrapNo).getCurator_summary());
+					result.add(temp);
 				}
 			}
 			status = HttpStatus.ACCEPTED;
@@ -780,6 +776,59 @@ public class NewsController {
 			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<List<News>>(result, status);
+		return new ResponseEntity<List<Map<String, String>>>(result, status);
+	}
+	
+	@ApiOperation(value = "최신 기사리스트(비로그인)", notes = "최신 기사 리스트와 해당 기사의 scrap 배열로 반환", response = List.class)
+	@GetMapping(value = "/article")
+	public ResponseEntity<List<Map<String, String[]>>> saveList() {
+		ArrayList<Map<String, String[]>> result = new ArrayList<Map<String, String[]>>();
+		HttpStatus status = null;
+		try {
+			
+			List<News> list = service.selectAllNews();
+			for (News news : list) {
+				Map<String, String[]> temp = new HashMap<String, String[]>();
+				temp.put("newsNo", new String[] {news.getNewsNo()});
+				temp.put("title", new String[] {news.getTitle()});
+				temp.put("company", new String[] {news.getCompany()});
+				
+				List<UserScrapNews> scrapList = service.selectUserScrapNewsByNewsNo(news.getNewsNo());
+				String [] scrapNo = new String[scrapList.size()];
+				String [] userNo = new String[scrapList.size()];
+				String [] postNo = new String[scrapList.size()];
+				String [] newsNo = new String[scrapList.size()];
+				String [] date = new String[scrapList.size()];
+				String [] curator_summary = new String[scrapList.size()];
+				String [] like_cnt = new String[scrapList.size()];
+				String [] dislike_cnt = new String[scrapList.size()];
+				int cnt = 0;
+				for (UserScrapNews ucn : scrapList) {
+					scrapNo[cnt] = ucn.getScrapNo();
+					userNo[cnt] = ucn.getUserNo();
+					postNo[cnt] = ucn.getPostNo();
+					newsNo[cnt] = ucn.getNewsNo();
+					date[cnt] = ucn.getDate();
+					curator_summary[cnt] = ucn.getCurator_summary();
+					like_cnt[cnt] = ucn.getLike_cnt();
+					dislike_cnt[cnt] = ucn.getDislike_cnt();
+					cnt++;
+ 				}
+				temp.put("scrapNo", scrapNo);
+				temp.put("userNo", userNo);
+				temp.put("postNo", postNo);
+				temp.put("newsNo", newsNo);
+				temp.put("date", date);
+				temp.put("curator_summary", curator_summary);
+				temp.put("like_cnt", like_cnt);
+				temp.put("dislike_cnt", dislike_cnt);
+				result.add(temp);
+			}
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<Map<String, String[]>>>(result, status);
 	}
 }

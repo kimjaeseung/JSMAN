@@ -13,7 +13,7 @@ import MyInfo from '../components/mypage/MyInfo';
 import Channel from '../views/Channel.vue';
 import Scrap from '../components/channel/Scrap.vue';
 import ScrapNews from '../components/channel/ScrapNews.vue';
-import ToScrap from '../components/channel/ToScrap.vue';
+// import ToScrap from '../components/channel/ToScrap.vue';
 import ModifyMyinfo from '../components/mypage/ModifyMyinfo.vue';
 import Search from '../views/Search.vue';
 import NoSearch from '../components/search/NoSearch.vue';
@@ -23,6 +23,7 @@ import BoardDetail from '../views/BoardDetail.vue';
 import AddBoard from '../views/AddBoard.vue';
 import ModifyBoard from '../views/ModifyBoard.vue';
 import Link from '../views/Link.vue';
+import NotFound from '../views/404.vue';
 
 Vue.use(VueRouter);
 
@@ -36,6 +37,15 @@ const requireAuth = () => (to, from, next) => {
 };
 
 const routes = [
+  {
+    path: "/404",
+    name: "notFound",
+    component: NotFound,
+  },
+  {
+    path: '*',
+    redirect: "/404"
+  },
   {
     path: '/article/:newsNo',
     name: 'Article',
@@ -119,12 +129,7 @@ const routes = [
     component: Channel,
     children: [
       {
-        path: '',
-        name: 'ToScrap',
-        component: ToScrap,
-      },
-      {
-        path: 'main',
+        path: '/',
         name: 'Scrap',
         component: Scrap,
         props: true,

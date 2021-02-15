@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <v-toolbar
-        flat
-        dense
+      flat
+      dense
     >
       <v-tabs v-model="tab" center-active >
         <v-tabs-slider color="transparent"></v-tabs-slider>
@@ -33,13 +33,13 @@
               :key="newsInfo+i"
               @click="move(newsInfo)"
             >
-                <v-list-item-avatar rounded >
-                  <v-img :src="newsInfo.image_path" centered></v-img>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                    <v-list-item-title v-html="newsInfo.title"></v-list-item-title>
-                    <v-list-item-subtitle v-html="newsInfo.company"></v-list-item-subtitle>
-                </v-list-item-content>
+              <v-list-item-avatar rounded >
+                <v-img :src="newsInfo.image_path" centered></v-img>
+              </v-list-item-avatar>
+              <v-list-item-content>
+                  <v-list-item-title v-html="newsInfo.title"></v-list-item-title>
+                  <v-list-item-subtitle v-html="newsInfo.company"></v-list-item-subtitle>
+              </v-list-item-content>
             </v-list-item>
           </template>
         </v-list>
