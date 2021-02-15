@@ -11,11 +11,14 @@
       </v-col>
     </v-row>
     <v-divider></v-divider>
-    <v-row
+    <v-row no-gutters
       ><h3>댓글 {{ board.boardCommentCount }}</h3></v-row
     >
     <v-row no-gutters>
-      <BoardComment :boardPostNo="board.boardPostNo"></BoardComment>
+      <BoardComment
+        :boardPostNo="board.boardPostNo"
+        :member="member"
+      ></BoardComment>
     </v-row>
   </v-container>
 </template>

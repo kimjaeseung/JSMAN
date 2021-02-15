@@ -11,4 +11,11 @@ function createInstance() {
   return instance;
 }
 
-export { createInstance };
+function createFileInstance() {
+  const instance = axios.create({
+    baseURL: API_BASE_URL,
+  });
+  return instance;
+}
+
+export { createInstance, createFileInstance };

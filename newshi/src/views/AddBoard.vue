@@ -13,18 +13,19 @@ export default {
     Tiptap,
   },
   methods: {
-    addBoard(content, images, title) {
-      var frm = new FormData();
-      frm.append('title', title);
-      frm.append('content', content);
+    addBoard(content, title) {
+      const data = {
+        content: content,
+        title: title,
+      };
+      const id = localStorage['id'];
       boardInsert(
-        frm,
-        images,
+        data,
+        id,
         (response) => {
           if (response.data.message === 'success') {
             alert('게시판 작성에 성공했습니다.');
-            let id = localStorage['id'];
-            this.$router.push({ name: 'Board', params: { id: id } });
+            this.$router.push(`/board/${id}`);
           } else {
             alert('게시판 작성에 실패했습니다.');
           }

@@ -135,6 +135,29 @@ export default {
   },
   created() {
     //userNo를 통해 유저정보를 받아와야합니다.
+    // getInfo(
+    //   this.curator,
+    //   (response) => {
+    //     if (response.data.message === 'success') {
+    //       this.member = response.data.userInfo;
+
+    //       if (this.member.id === localStorage['id']) {
+    //         console.log(this.member.id);
+    //         console.log(localStorage['id']);
+    //         this.isMyPage = true;
+    //       } else {
+    //         this.isMyPage = false;
+    //       }
+    //     } else {
+    //       alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
+    //       this.$router.push(`/channel/${this.curator}`);
+    //     }
+    //   },
+    //   (error) => {
+    //     console.error(error);
+    //     alert('큐레이터의 데이터를 받아오는 중 에러가 발생했습니다.');
+    //   }
+    // );
     this.alterComment = this.comment.content;
   },
 };

@@ -114,7 +114,15 @@ export default {
           if (response.data.message === 'success') {
             alert('포스트 생성에 성공하셨습니다.');
             let no = response.data.postNo;
-            this.$router.push({ name: 'Link', params: { postNo: no } });
+            this.addDialog = false;
+            this.$router.push({
+              name: 'Link',
+              params: {
+                postNo: no,
+                postName: this.postName,
+                tags: this.post[0].tags,
+              },
+            });
           } else {
             alert('포스트 생성에 실패하셨습니다.');
           }

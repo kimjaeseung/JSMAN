@@ -2,24 +2,25 @@
   <v-hover v-slot="{ hover }">
     <v-card>
       <v-card-title>
-        <v-list two-line>
+        <v-list>
           <template>
             <v-list-item-avatar>
               <v-img :src="member.thumbnail_path" :alt="member.name"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title
-                ><a
-                  style="color: black;text-decoration:none"
-                  @click="goChannel"
-                  >{{ member.id }}</a
-                >
-                <a
-                  style="color: black;text-decoration:none"
-                  @click="boardDetail"
-                  >업로드 : {{ board.date }}</a
-                ></v-list-item-title
-              >
+                ><span>
+                  <a class="title" @click="goChannel">{{ member.name }}</a>
+                </span>
+                <span>
+                  <a
+                    style="color: black;text-decoration:none"
+                    class="date"
+                    @click="boardDetail"
+                    >업로드 : {{ time }}</a
+                  >
+                </span>
+              </v-list-item-title>
               <v-list-item-subtitle>{{ board.title }}</v-list-item-subtitle>
             </v-list-item-content>
             <v-divider></v-divider>
@@ -49,14 +50,16 @@
           </template>
         </v-list>
       </v-card-title>
-      <v-card-text>
-        {{ content.front }}
-      </v-card-text>
-      <a v-show="!isDetail" @click="isDetail = !isDetail">자세히 보기</a>
+      <v-card-text v-html="content.front"> </v-card-text>
+      <a v-show="!isDetail && !isEmpty" @click="isDetail = !isDetail"
+        >자세히 보기</a
+      >
       <v-card-text v-if="isDetail">
         {{ content.behind }}
       </v-card-text>
-      <a v-show="isDetail" @click="isDetail = !isDetail">간략히 보기</a>
+      <a v-show="isDetail & !isEmpty" @click="isDetail = !isDetail"
+        >간략히 보기</a
+      >
       <v-card-actions>
         <v-btn @click="boardDetail">
           <v-btn icon @click="boardDetail"
@@ -84,6 +87,8 @@ export default {
         behind: '',
       },
       isMyPage: false,
+      isEmpty: false,
+      time: '',
     };
   },
   methods: {
@@ -125,11 +130,20 @@ export default {
         this.board.content.length
       );
     }
+    if (this.content.behind === '') {
+      this.isEmpty = true;
+    }
     if (this.member.id === localStorage['id']) {
       this.isMyPage = true;
     }
+    this.time = this.$moment(this.board.date).fromNow();
   },
 };
 </script>
 
-<style></style>
+<style>
+/* .title {
+  color: black;
+  text-decoration: none;
+} */
+</style>

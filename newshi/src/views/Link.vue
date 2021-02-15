@@ -3,17 +3,21 @@
     <v-row class="justify-center align-center" no-gutters>
       <v-banner two-line>
         <template v-slot:actions>
-          {{ url }}
-          <v-btn text color="deep-purple accent-4" @click="copyUrl">
-            <v-icon>
-              mdi-content-copy
-            </v-icon>
-            복사하기
-          </v-btn>
-          <v-btn text color="deep-purple accent-4" @click="kakaoCopy">
-            <v-img src="@/assets/images/kakaolink_btn_small.png"></v-img>
-            카카오톡 공유
-          </v-btn>
+          <v-row>
+            {{ url }}
+          </v-row>
+          <v-row>
+            <v-btn text color="deep-purple accent-4" @click="copyUrl">
+              <v-icon>
+                mdi-content-copy
+              </v-icon>
+              복사하기
+            </v-btn>
+            <v-btn text color="deep-purple accent-4" @click="kakaoCopy">
+              <v-img src="@/assets/images/kakaolink_btn_small.png"></v-img>
+              카카오톡 공유
+            </v-btn>
+          </v-row>
         </template>
       </v-banner>
     </v-row>
@@ -31,7 +35,9 @@
 <script>
 export default {
   props: {
-    postNo: Number,
+    postNo: String,
+    postName: String,
+    tags: String,
   },
   data() {
     return {
@@ -41,16 +47,25 @@ export default {
   },
   methods: {
     copyUrl() {
-      this.$copyText(this.url);
-      alert('주소를 복사했습니다.');
+      this.$copyText(this.url).then(
+        function(e) {
+          alert('복사 되었습니다.');
+          console.log(e);
+        },
+        function(e) {
+          alert('복사에 실패했습니다.');
+          console.log(e);
+        }
+      );
     },
     kakaoCopy() {
-      let desc = prompt('설명을 작성해주세요.', `${this.id} 포스트입니다.`);
+      // let desc = prompt('설명을 작성해주세요.', `${this.id} 포스트입니다.`);
+      // console.log(desc);
       window.Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
           title: this.postName,
-          description: desc,
+          description: this.tags,
           imageUrl: 'https://newha.s3.us-east-2.amazonaws.com/logo.jpg',
           link: {
             webUrl: this.url,
@@ -67,14 +82,14 @@ export default {
         ],
       });
     },
-    gomain() {
+    goMain() {
       this.$router.push('/');
     },
   },
   created() {
     this.id = localStorage['id'];
     this.url = `http://localhost:8081/${this.id}/${this.postNo}`;
-    // this.url = `http://i4a307.p.ssafy.io/${id}/${postNo}`;
+    // this.url = `http://i4a307.p.ssafy.io/${this.id}/${this.postNo}`;
   },
 };
 </script>
