@@ -23,6 +23,7 @@ import BoardDetail from '../views/BoardDetail.vue';
 import AddBoard from '../views/AddBoard.vue';
 import ModifyBoard from '../views/ModifyBoard.vue';
 import Link from '../views/Link.vue';
+import NotFound from '../views/404.vue';
 
 Vue.use(VueRouter);
 
@@ -36,6 +37,15 @@ const requireAuth = () => (to, from, next) => {
 };
 
 const routes = [
+  {
+    path: "/404",
+    name: "notFound",
+    component: NotFound,
+  },
+  {
+    path: '*',
+    redirect: "/404"
+  },
   {
     path: '/article/:newsNo',
     name: 'Article',
