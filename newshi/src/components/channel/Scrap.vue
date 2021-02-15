@@ -15,9 +15,9 @@
                     </v-row>
                     <v-row v-if="isMyPage==true">
                       <v-col class="d-flex justify-center align-center">
-                        <v-dialog width="500" v-model="dialog">
+                        <v-dialog :retain-focus="false" width="500" v-model="dialog">
                           <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" @click="modifyBtn(scrap.name)">
+                            <v-btn v-bind="attrs" v-on="on" @click="modifyBtn(scrap.name, scrap.postNo)">
                              수정하기
                             </v-btn>
                           </template>
@@ -84,18 +84,24 @@ export default {
           flag: false,
           member: {},
           modify_title: '',
+          modify_postNo: 0,
         }
     },
     methods: {
       showNews(scrap_no) {
         this.$router.push('./' + this.member.id + '/' + scrap_no);
       },
-      modifyBtn(name) {
+      modifyBtn(name, postNo) {
         this.modify_title = name;
+        this.modify_postNo = postNo;
+        this.dialog=true;
       },
       modify() {
-        console.log(this.modify_title);
-        this.refreshPage();
+        console.log(this.modify_postNo);
+        axios.put('http://localhost:8080/article/post', { id: this.$route.params.id, name: this.modify_title, postNo: this.modify_postNo})
+        .then(() => {
+          this.$router.go(this.$router.currentRoute);
+        });
       },
       refreshPage() {
         this.dialog=false;
