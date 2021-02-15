@@ -46,7 +46,7 @@ export default {
     },
     kakaoCopy() {
       let desc = prompt('설명을 작성해주세요.', `${this.id} 포스트입니다.`);
-      Kakao.Link.sendDefault({
+      window.Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
           title: this.postName,
@@ -73,7 +73,7 @@ export default {
   },
   created() {
     this.id = localStorage['id'];
-    this.url = `http://localhost:8081/${id}/${postNo}`;
+    this.url = `http://localhost:8081/${this.id}/${this.postNo}`;
     // this.url = `http://i4a307.p.ssafy.io/${id}/${postNo}`;
   },
 };
