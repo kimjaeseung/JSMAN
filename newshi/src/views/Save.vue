@@ -34,7 +34,7 @@ export default {
   },
   methods: {
     getSaveList: function () {
-      axios.get(`${API_URL}`+'/article/isdislike'+`?id=${id}`)
+      axios.get(`${API_URL}`+'/article/savelist'+`?id=${id}`)
       .then((res)=> {
         this.newsItems = res.data;
       })
