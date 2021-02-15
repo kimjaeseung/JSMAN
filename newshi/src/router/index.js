@@ -6,6 +6,7 @@ import MyPage from '../views/MyPage.vue';
 import FindPw from '../views/FindPw.vue';
 import ChangePw from '../views/ChangePw.vue';
 import Feedback from '../views/Feedback.vue';
+import Save from '../views/Save.vue';
 import Policy from '../views/Policy.vue';
 import Whoweare from '../views/Whoweare.vue';
 import MyInfo from '../components/mypage/MyInfo';
@@ -21,6 +22,7 @@ import Board from '../views/Board.vue';
 import BoardDetail from '../views/BoardDetail.vue';
 import AddBoard from '../views/AddBoard.vue';
 import ModifyBoard from '../views/ModifyBoard.vue';
+import Link from '../views/Link.vue';
 
 Vue.use(VueRouter);
 
@@ -77,6 +79,11 @@ const routes = [
     path: '/feedback',
     name: 'Feedback',
     component: Feedback,
+  },
+  {
+    path: '/save',
+    name: 'Save',
+    component: Save,
   },
   {
     path: '/policy',
@@ -153,6 +160,12 @@ const routes = [
     path: '/boardDetail',
     name: 'BoardDetail',
     component: BoardDetail,
+    props: true,
+  },
+  {
+    path: '/link',
+    name: 'Link',
+    component: Link,
     props: true,
   },
 ];

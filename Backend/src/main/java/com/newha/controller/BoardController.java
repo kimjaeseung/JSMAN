@@ -101,9 +101,15 @@ public class BoardController {
 		HttpStatus status = null;
 		try {
 			List<Integer> l = service.boardListNo(userNo);
+			if(l.size() == 0) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("message", "게시글이 없습니다.");
+				list.add(map);
+			}
 			for (int i = 0; i < l.size(); i++) {
 				String temp = Integer.toString(l.get(i));
 				Map<String, String> map = new HashMap<String, String>();
+
 				Board board = service.selectBoard(temp);
 				String boardCommentCount = service.boardCommentCount(temp);
 				map.put("boardPostNo", board.getBoardPostNo());
@@ -113,7 +119,6 @@ public class BoardController {
 				map.put("userNo", board.getUserNo());
 				map.put("content", board.getContent());
 				map.put("is_notice", board.getIs_notice());
-				
 				map.put("boardCommentCount", boardCommentCount); // 댓글 갯수
 				
 				list.add(map);
