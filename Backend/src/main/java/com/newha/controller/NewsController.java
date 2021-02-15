@@ -356,12 +356,13 @@ public class NewsController {
 				m.put("content", new String[] {temp.getContent()});
 				m.put("image_path", new String[] {temp.getImage_path()});
 				m.put("url", new String[] {temp.getUrl()});
-				m.put("article_date", new String[] {temp.getArticle_bot_summary()});
+				m.put("article_date", new String[] {temp.getArticle_date()});
 				m.put("article_bot_summary", new String[] {temp.getArticle_bot_summary()});
 				m.put("article_image_catpion", new String[] {temp.getArticle_image_caption()});
 				m.put("company", new String[] {temp.getCompany()});
 				m.put("like_cnt", new String[] {userScrapNews.getLike_cnt()});
 				m.put("dislike_cnt", new String[] {userScrapNews.getDislike_cnt()});
+				m.put("curator_summary", new String[] {userScrapNews.getCurator_summary()});
 				
 				if(images != null) {
 					String newsImages[] = new String[images.size()];
