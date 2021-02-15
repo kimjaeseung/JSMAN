@@ -58,12 +58,14 @@
         <v-list>
           <v-list-item>
             <v-list-item-title
-              ><v-btn @click="myPage">마이페이지</v-btn></v-list-item-title
+              ><v-btn text @click="myPage">마이페이지</v-btn></v-list-item-title
             >
           </v-list-item>
           <v-list-item>
             <v-list-item-title
-              ><v-btn @click="loggedOut">로그아웃</v-btn></v-list-item-title
+              ><v-btn text @click="loggedOut"
+                >로그아웃</v-btn
+              ></v-list-item-title
             >
           </v-list-item>
         </v-list>
