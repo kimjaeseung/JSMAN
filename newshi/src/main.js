@@ -6,6 +6,10 @@ import vuetify from './plugins/vuetify';
 import { ValidationProvider, extend } from 'vee-validate';
 import firebase from 'firebase';
 import './styles/tiptap/main.scss';
+import VueClipboard from 'vue-clipboard2';
+
+VueClipboard.config.autoSetContainer = true; // add this line
+Vue.use(VueClipboard);
 
 // Initialize Firebase
 firebase.initializeApp({

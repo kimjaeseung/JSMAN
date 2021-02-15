@@ -279,12 +279,12 @@ export default {
             this.isDupEmailCheck = true;
             emailValidTest(
               id,
-              (response) => {
-                if (response.status >= 200 && response.status < 300) {
-                  console.log(response.data['confirm']);
-                  this.validNumCheck = response.data['confirm'];
+              (resp) => {
+                if (resp.status >= 200 && resp.status < 300) {
+                  console.log(resp.data['confirm']);
+                  this.validNumCheck = resp.data['confirm'];
                 } else {
-                  console.log(response);
+                  console.log(resp);
                 }
               },
               (error) => {

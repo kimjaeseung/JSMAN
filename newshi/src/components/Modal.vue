@@ -47,6 +47,7 @@
 <script>
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
+import { uploadImage } from '@/api/board.js';
 
 export default {
   components: {
@@ -55,7 +56,6 @@ export default {
   data() {
     return {
       imageSrc: '',
-      file: {},
       command: null,
       show: false,
       tab: 1,
@@ -79,31 +79,45 @@ export default {
     },
     vfileUploaded(file) {
       console.log(file);
-      this.imageSrc = URL.createObjectURL(file);
-      console.log(this.imageSrc);
-      this.file = file;
+      const fileName = file.name;
+      uploadImage(
+        file,
+        (response) => {
+          if (response.data.message === 'success') {
+            this.imageSrc =
+              'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
+            console.log(this.imageSrc);
+          } else {
+            alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
+          }
+        },
+        (error) => {
+          console.error(error);
+          alert('큐레이터의 데이터를 받아오는 중 에러가 발생했습니다.');
+        }
+      );
     },
 
     fileChange(e) {
       console.log(e);
       const file = this.$refs.file.files[0];
-      console.log(file);
-      this.imageSrc = URL.createObjectURL(file);
-      this.file = file;
-      //   const uploadUrl = `https://httpbin.org/post`;
-      //   let formData = new FormData();
-
-      //   formData.append('file', this.file);
-
-      //   console.log('Uploading...');
-
-      //   axios.post(uploadUrl).then((data) => {
-      //     // Take the URL/Base64 from `data` returned from server
-      //     alert('Your image has been uploaded to the server');
-      //     alert('NOTE THIS IS A DUMMY DEMO, THERE IS NO BACKEND');
-
-      //     this.imageSrc = 'https://source.unsplash.com/random/400x100';
-      //   });
+      const fileName = file.name;
+      uploadImage(
+        file,
+        (response) => {
+          if (response.data.message === 'success') {
+            this.imageSrc =
+              'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
+            console.log(this.imageSrc);
+          } else {
+            alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
+          }
+        },
+        (error) => {
+          console.error(error);
+          alert('큐레이터의 데이터를 받아오는 중 에러가 발생했습니다.');
+        }
+      );
     },
     insertImage() {
       const data = {
@@ -116,7 +130,6 @@ export default {
       };
 
       this.$emit('onConfirm', data);
-      this.$emit('addFile', this.file);
       this.closeModal();
     },
 
