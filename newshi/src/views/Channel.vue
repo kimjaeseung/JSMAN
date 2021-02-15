@@ -113,7 +113,9 @@ export default {
     },
     },
   created() {
-    this.member = this.$store.getters.userProfile;
+    if(this.$store.getters.userProfile.id != undefined) {
+      this.member = this.$store.getters.userProfile;
+    }
       // 내 정보랑 같은지 체크해서
       // 하위 컴포넌트에 전달
       // this.showScrap();

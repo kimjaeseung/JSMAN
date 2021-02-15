@@ -123,7 +123,9 @@ export default {
       }
     },
     created() {
+      if(this.$store.getters.userProfile.id != undefined) {
       this.member = this.$store.getters.userProfile;
+    }
         //스크랩 받아오는 axios
       //큐레이터 정보 받아오기..
       
