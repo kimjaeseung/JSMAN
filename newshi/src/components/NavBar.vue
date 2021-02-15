@@ -51,7 +51,7 @@
       </v-dialog>
       <v-menu open-on-hover offset-y v-else>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn color="black" dark v-bind="attrs" v-on="on" icon>
+          <v-btn v-bind="attrs" v-on="on" icon>
             <v-icon>mdi-account</v-icon>
           </v-btn>
         </template>
