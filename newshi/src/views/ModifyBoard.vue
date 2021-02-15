@@ -8,13 +8,9 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title
-              ><a
-                style="color: black;text-decoration:none"
-                @click="goChannel"
-                >{{ member.id }}</a
-              >
-              <a style="color: black;text-decoration:none" @click="boardDetail"
-                >업로드 : {{ board.date }}</a
+              ><a style="color: black;text-decoration:none">{{ member.id }}</a>
+              <a style="color: black;text-decoration:none"
+                >업로드 : {{ time }}</a
               ></v-list-item-title
             >
           </v-list-item-content>
@@ -39,6 +35,11 @@ export default {
     board: Object,
     member: Object,
   },
+  data() {
+    return {
+      time: '',
+    };
+  },
   methods: {
     updateBoard(content, files, title) {
       let modifiedBoard = {
@@ -50,13 +51,14 @@ export default {
         content: content,
         is_notice: this.board.is_notice,
       };
+      console.log(modifiedBoard);
       boardUpdate(
         modifiedBoard,
         (response) => {
           if (response.data.message === 'success') {
             alert('게시판 수정에 성공했습니다.');
             let id = localStorage['id'];
-            this.$router.push({ name: 'Board', params: { id: id } });
+            this.$router.push(`/board/${id}`);
           } else {
             alert('게시판 수정에 실패했습니다.');
           }
@@ -67,6 +69,9 @@ export default {
         }
       );
     },
+  },
+  created() {
+    this.time = this.$moment(this.board.date).fromNow();
   },
 };
 </script>

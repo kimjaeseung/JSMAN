@@ -8,6 +8,13 @@ import firebase from 'firebase';
 import './styles/tiptap/main.scss';
 import VueClipboard from 'vue-clipboard2';
 
+const moment = require('moment');
+require('moment/locale/ko');
+
+Vue.use(require('vue-moment'), {
+  moment,
+});
+
 VueClipboard.config.autoSetContainer = true; // add this line
 Vue.use(VueClipboard);
 

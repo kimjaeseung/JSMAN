@@ -53,6 +53,7 @@ function boardInsert(board, id, success, fail) {
       id: id,
     },
   ];
+  console.log(list);
   // [
   //   {
   //     "title": "새로운 큐레이터",
@@ -68,17 +69,15 @@ function boardInsert(board, id, success, fail) {
     .catch(fail);
 }
 
-function boardUpdate(board, images, success, fail) {
+function boardUpdate(b, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
 
+  console.log(b);
+
   instance
-    .get('/boardInsert', board, {
-      params: {
-        images: images,
-      },
-    })
+    .put('/boardUpdate', b)
     .then(success)
     .catch(fail);
 }
@@ -104,7 +103,11 @@ function boardCommentList(boardPostNo, success, fail) {
   );
 
   instance
-    .get('/boardDetail/${boardPostNo}', {})
+    .get('/boardCommentList', {
+      params: {
+        boardPostNo: boardPostNo,
+      },
+    })
     .then(success)
     .catch(fail);
 }
@@ -113,6 +116,8 @@ function boardCommentInsert(comment, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
+
+  console.log(comment);
 
   instance
     .post('/boardCommentInsert', {

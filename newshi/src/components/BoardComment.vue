@@ -12,7 +12,7 @@
           <v-img :src="member.thumbnail_path"></v-img>
         </v-avatar>
       </v-text-field>
-      <v-row v-show="isFocus">
+      <v-row no-gutters v-show="isFocus">
         <v-btn @click="cancel">취소</v-btn>
         <v-btn @click="addComment">작성</v-btn>
       </v-row>
@@ -42,7 +42,8 @@ export default {
     BoardCommentDetail,
   },
   props: {
-    boardPostNo: Number,
+    boardPostNo: String,
+    member: Object,
   },
   data() {
     return {
@@ -82,10 +83,12 @@ export default {
         id: localStorage['id'],
         content: this.newComment,
       };
+      console.log(comm);
       boardCommentInsert(
         comm,
         (response) => {
-          if (response.data.message === 'success') {
+          if (response.status >= 200 && response.status < 300) {
+            console.log(response.data);
             let newComm = {
               BoardPostNo: response.data['BoardPostNo'],
               CommentNo: response.data['CommentNo'],
@@ -113,7 +116,7 @@ export default {
     boardCommentList(
       this.boardPostNo,
       (response) => {
-        if (response.data.message === 'success') {
+        if (response.status >= 200 && response.status < 300) {
           this.commentList = response.data;
         } else {
           alert('댓글을 가져오는데 실패하였습니다.');
