@@ -762,17 +762,31 @@ public class NewsController {
 	
 	@ApiOperation(value = "저장한 기사리스트", notes = "저장한 기사 리스트를 반환", response = List.class)
 	@GetMapping(value = "/article/savelist")
-	public ResponseEntity<List<News>> saveList(
+	public ResponseEntity<List<Map<String, String>>> saveList(
 			@ApiParam(value = "String", required = true) @RequestParam String id) {
-		ArrayList<News> result = new ArrayList<News>();
+		ArrayList<Map<String, String>> result = new ArrayList<Map<String, String>>();
 		HttpStatus status = null;
 		try {
 			String userNo = service.selectUserById(id).getUserNo();
 			
 			List<UserGoodNews> list = service.selectUserGoodNewsByUserNo(userNo);
 			for (UserGoodNews news : list) {
+				Map<String, String> temp = new HashMap<String, String>();
 				if(news.getIs_save().equals("1")) {
-					result.add(service.selectNewsByScrapNo(news.getScrapNo()));
+					String scrapNo = news.getScrapNo();
+					News n = service.selectNewsByScrapNo(scrapNo);
+					temp.put("newsNo", n.getNewsNo());
+					temp.put("title", n.getTitle());
+					temp.put("subtitle", n.getSubtitle());
+					temp.put("content", n.getContent());
+					temp.put("image_path", n.getImage_path());
+					temp.put("url", n.getUrl());
+					temp.put("article_date", n.getArticle_date());
+					temp.put("article_bot_summary", n.getArticle_bot_summary());
+					temp.put("article_image_caption", n.getArticle_image_caption());
+					temp.put("company", n.getCompany());
+					temp.put("scrapNo", scrapNo);
+					result.add(temp);
 				}
 			}
 			status = HttpStatus.ACCEPTED;
@@ -780,6 +794,6 @@ public class NewsController {
 			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<List<News>>(result, status);
+		return new ResponseEntity<List<Map<String, String>>>(result, status);
 	}
 }
