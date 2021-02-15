@@ -95,7 +95,7 @@ export default {
     getInfo(
       curator,
       (response) => {
-        if (response.data.message === 'success') {
+        if (response.staus === 'success') {
           this.member = response.data.userInfo;
         } else {
           alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
@@ -106,7 +106,7 @@ export default {
         alert('큐레이터의 데이터를 받아오는 중 에러가 발생했습니다.');
       }
     );
-    if (this.member.id === localStorage.id) {
+    if (this.member.id === localStorage['id']) {
       this.isMyPage = true;
     }
 
