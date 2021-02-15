@@ -13,7 +13,7 @@ import MyInfo from '../components/mypage/MyInfo';
 import Channel from '../views/Channel.vue';
 import Scrap from '../components/channel/Scrap.vue';
 import ScrapNews from '../components/channel/ScrapNews.vue';
-import ToScrap from '../components/channel/ToScrap.vue';
+// import ToScrap from '../components/channel/ToScrap.vue';
 import ModifyMyinfo from '../components/mypage/ModifyMyinfo.vue';
 import Search from '../views/Search.vue';
 import NoSearch from '../components/search/NoSearch.vue';
@@ -119,12 +119,7 @@ const routes = [
     component: Channel,
     children: [
       {
-        path: '',
-        name: 'ToScrap',
-        component: ToScrap,
-      },
-      {
-        path: 'main',
+        path: '/',
         name: 'Scrap',
         component: Scrap,
         props: true,

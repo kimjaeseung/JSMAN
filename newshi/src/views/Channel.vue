@@ -4,14 +4,14 @@
       <v-row no-gutters>
         <v-col class="d-flex justify-center align-center" cols=3>
           <v-avatar size="100px">
-            <v-img :src="member.thumbnail_path"></v-img>
+            <v-img :src="curator.thumbnail_path"></v-img>
           </v-avatar>
         </v-col>
         <v-col cols="9">
           <v-container fill-height class="d-flex align-center ml-1">
             <v-row >
               <v-col>
-                <div><h2>{{member.name}}</h2></div>
+                <div><h2>{{curator.name}}</h2></div>
                 <div>구독자 없음</div>
               </v-col>
             </v-row>
@@ -37,7 +37,7 @@
       <v-row no-gutters>
         <v-col>
           <v-card height="600px" style="overflow-y: scroll">
-            <router-view @callScrap="showScrap"></router-view>
+            <router-view :key="$route.fullPath"></router-view>
           </v-card>
         </v-col>
       </v-row>
@@ -70,6 +70,7 @@ export default {
           member: {},
           isMyPage: false,
           isSubs: false,
+          curator: {},
         }
     },
     methods: {
@@ -116,6 +117,13 @@ export default {
       // 내 정보랑 같은지 체크해서
       // 하위 컴포넌트에 전달
       // this.showScrap();
+      axios.get('http://localhost:8080/sidebarUser', 
+            { params: { id: this.$route.params.id } },
+          ).then((response) => {
+            this.curator = response.data;
+            this.curator.id = this.$route.params.id;
+          });
+
     },
 }
 </script>

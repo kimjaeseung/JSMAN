@@ -9,8 +9,8 @@
           <v-card>
             <v-container>
               <v-row>
-                <v-col class="caption">
-                  {{news.date}}
+                <v-col class="caption" cols=8>
+                  {{news.article_date[0]}}
                 </v-col>
                 <v-col class="d-flex justify-end">
                   <v-btn fab x-small dark color="grey">
@@ -21,24 +21,24 @@
               <v-row no-gutters>
                 <v-col class="ma-auto" cols=auto>
                   <v-avatar size="120" tile>
-                    <v-img :src="news.news_image"></v-img>
+                    <v-img :src="news.image_path[0]"></v-img>
                   </v-avatar>
                 </v-col>
                 <v-col style="width:0">
                   <v-card-title>
-                    <div class="ellipsis">{{news.title}}</div>
+                    <div class="ellipsis">{{news.title[0]}}</div>
                   </v-card-title>
                   <v-card-subtitle>
-                    <div class="ellipsis">{{news.curator_summary}}</div>
+                    <div class="ellipsis" v-html="news.curator_summary[0]"></div>
                   </v-card-subtitle>
                   <v-card-actions class="d-flex justify-end">
                     <v-btn dark small :color="news.islike ? 'red':'grey'"> 
                       <v-icon dark>mdi-heart</v-icon>
-                      <div>{{news.like_cnt}}</div>
+                      <div>{{news.like_cnt[0]}}</div>
                     </v-btn>
                     <v-btn dark small :color="news.isdislike ? 'blue':'grey'"> 
                       <v-icon dark>mdi-heart-broken</v-icon>
-                      <div>{{news.dislike_cnt}}</div>
+                      <div>{{news.dislike_cnt[0]}}</div>
                     </v-btn>
                   </v-card-actions>
                 </v-col>
@@ -56,7 +56,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      scrap_no: 0,
+      post_no: 0,
       id: String,
       scrap_news: []
     }
@@ -66,42 +66,20 @@ export default {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     backPage() {
-      this.$emit("callScrap");
+      this.$router.go(-1);
     }
   },
   created() {
-    this.scrap_no = this.$route.params.scrap_no;
+    this.post_no = this.$route.params.scrap_no;
     this.id = this.$route.params.id;
 
     // 스크랩 기사들 axios
     axios.get('http://localhost:8080/article/scraplist', 
-            { params: { postNo: this.scrap_no } },
+            { params: { postNo: this.post_no } },
           ).then((response) => {
             this.scrap_news = response.data;
+            // 사진없는 기사 이미지 추가할것.
           });
-
-    // this.scrap_news = [
-    //   {
-    //     title: '증여세는 시가 기준…증여 직후 거래가격 뛰면 세금 더 낼수도',
-    //     curator_summary: '기사요약기사요약기사요약기사요약기사요약기사요약기사요약',
-    //     like_cnt: this.numberWithCommas(12345),
-    //     dislike_cnt: this.numberWithCommas(6789),
-    //     date: '2021-02-01 23:43',
-    //     image_path: 'https://imgnews.pstatic.net/image/001/2021/02/02/PYH2021011914410001300_P4_20210202120232595.jpg?type=w647',
-    //     islike: true,
-    //     isdislike: false,
-    //   },
-    //   {
-    //     title: "회삿돈 빼돌려 증여자금 마련…부동산 '아빠찬스' 딱 걸렸네",
-    //     curator_summary: '기사요약기사요약기사요약기사요약기사요약기사요약기사요약',
-    //     like_cnt: this.numberWithCommas(23345),
-    //     dislike_cnt: this.numberWithCommas(67349),
-    //     date: '2020-12-01 23:43',
-    //     image_path: 'https://imgnews.pstatic.net/image/025/2021/02/02/0003074770_001_20210202150647925.jpg?type=w647',
-    //     islike: false,
-    //     isdislike: true,
-    //   },
-    // ]
   },
 }
 </script>
