@@ -29,6 +29,8 @@ public interface NewsService {
 	public List<UserScrapNews> selectUserScrapNewsByPostNo(String postNo);
 	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName);
 	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo);
+	public List<UserScrapNews> selectUserScrapNewsByNewsNo(String newsNo);
+	public UserScrapNews selectUserScrapNewsByScrapNo(String scrapNo);
 	public News selectNewsByScrapNo(String scrapNo);
 	public List<HashTag> selectHashTagByName(String name);
 	public UserGoodNews selectLikeNews(UserGoodNews userGoodNews);
@@ -37,6 +39,7 @@ public interface NewsService {
 	public List<NewsImage> selectNewImageByNewsNo(String newsNo);
 	public List<News> selectNewsByTagName(String tagName);
 	public List<News> selectNewsByUserNo(String userNo);
+	public List<News> selectAllNews();
 	public int deletePost(String postNo);
 	public int deleteScrap(String scarpNo);
 	public int updatePost(Post post);
