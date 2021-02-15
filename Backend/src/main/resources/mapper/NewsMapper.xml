@@ -53,6 +53,19 @@
 		select * from post where name = #{name};
 	</select>
 	
+	<select id="selectPostByLikeName" parameterType="String" resultType="Post">
+		select * from post where name like #{name};
+	</select>
+	
+	<select id="selectPostByTag" parameterType="String" resultType="Post">
+		select * from post where postNo in(
+		select postNo from user_scrap_news where newsNo in(
+		select newsNo from news where newsNo in (
+		select newsNo from user_scrap_news where scrapNo in (
+		select scrapNo from post_tag where tagNo in (
+		select tagNo from hashtag where name like #{tag})))));
+	</select>
+	
 	<select id="selectUserById" parameterType="String" resultType="User">
 		select userNo from user where id = #{id};
 	</select>

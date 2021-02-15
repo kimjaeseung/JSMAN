@@ -192,6 +192,7 @@ public class NewsController {
 			}
 			status = HttpStatus.ACCEPTED;
 			map.put("message", SUCCESS);
+			map.put("postNo", postNo);
 		} catch (IOException e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			map.put("message", FAIL);
@@ -276,7 +277,7 @@ public class NewsController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 
-	@ApiOperation(value = "포스트 목록", notes = "해당 id가 작성한 포스트 목록을 반환", response = List.class)
+	@ApiOperation(value = "포스트 목록 (아이디)", notes = "해당 id가 작성한 포스트 목록을 반환", response = List.class)
 	@GetMapping(value = "/article/post")
 	public ResponseEntity<List<Post>> getPost(@ApiParam(value = "String", required = true) @RequestParam String id) {
 		HttpStatus status = null;
@@ -289,6 +290,35 @@ public class NewsController {
 		}
 		return new ResponseEntity<List<Post>>(list, status);
 	}
+	
+	@ApiOperation(value = "포스트 목록 이름으로 검색", notes = "포스트 이름으로 검색", response = List.class)
+	@GetMapping(value = "/article/postByName")
+	public ResponseEntity<List<Post>> getPostByName(@ApiParam(value = "String", required = true) @RequestParam String name) {
+		HttpStatus status = null;
+		List<Post> list = new ArrayList<Post>();
+		try {
+			list = service.selectPostByLikeName(name + "%");
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<Post>>(list, status);
+	}
+	
+	@ApiOperation(value = "포스트 목록 태그로 검색", notes = "포스트 태그로 검색", response = List.class)
+	@GetMapping(value = "/article/postByTag")
+	public ResponseEntity<List<Post>> getPostByTag(@ApiParam(value = "String", required = true) @RequestParam String tag) {
+		HttpStatus status = null;
+		List<Post> list = new ArrayList<Post>();
+		try {
+			list = service.selectPostByTag(tag + "%");
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<Post>>(list, status);
+	}
+
 
 	@ApiOperation(value = "스크랩 목록", notes = "해당 포스트에 포함된 스크랩 목록을 반환", response = List.class)
 	@GetMapping(value = "/article/scrap")
@@ -695,7 +725,7 @@ public class NewsController {
 	}
 
 	@ApiOperation(value = "유저가 싫어요 눌럿는지 여부 파악", notes = "결과 'success' 또는 'fail' 문자열을 리턴", response = Map.class)
-	@GetMapping(value = "/article/savelist")
+	@GetMapping(value = "/article/isdislike")
 	public ResponseEntity<Map<String, String>> isDisLike(
 			@ApiParam(value = "String", required = true) @RequestParam String scrapNo,
 			@ApiParam(value = "String", required = true) @RequestParam String id) {
@@ -723,7 +753,7 @@ public class NewsController {
 
 	
 	@ApiOperation(value = "저장한 기사리스트", notes = "저장한 기사 리스트를 반환", response = List.class)
-	@GetMapping(value = "/article/isdislike")
+	@GetMapping(value = "/article/savelist")
 	public ResponseEntity<List<News>> saveList(
 			@ApiParam(value = "String", required = true) @RequestParam String id) {
 		ArrayList<News> result = new ArrayList<News>();

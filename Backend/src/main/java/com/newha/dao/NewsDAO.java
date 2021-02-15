@@ -22,7 +22,9 @@ public interface NewsDAO {
 	public int insertUserGoodNews(UserGoodNews userGoodNews);
 	public List<News> selectByUrl(String url);
 	public List<Post> selectPostByName(String name);
+	public List<Post> selectPostByLikeName(String name);
 	public List<Post> selectPostById(String id);
+	public List<Post> selectPostByTag(String tag);
 	public User selectUserById(String id);
 	public List<UserScrapNews> selectUserScrapNewsByPostNo(String postNo);
 	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName);
