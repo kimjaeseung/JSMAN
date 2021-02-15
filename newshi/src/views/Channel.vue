@@ -27,7 +27,8 @@
               <v-col><v-btn block>커뮤니티</v-btn></v-col>
             </v-row>
             <v-row v-else>
-              <v-col><v-btn block>구독하기</v-btn></v-col>
+              <v-col v-if="isSubs == false"><v-btn block @click="follow">구독하기</v-btn></v-col>
+              <v-col v-else><v-btn block @click="unfollow" class="error">구독취소</v-btn></v-col>
               <v-col><v-btn block>커뮤니티</v-btn></v-col>
             </v-row>
           </v-container>
@@ -45,28 +46,74 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
+  computed: {
+    getMember() {
+      return this.$store.state.userProfile;
+    },
+  },
+  watch: {
+    getMember: function(val) {
+      this.member = val;
+    },
+    member: function() {
+      if(this.member.id == this.$route.params.id){
+        this.isMyPage = true;
+      }
+      this.subsCheck();
+    }
+  },
     data() {
         return {
           member: {},
           isMyPage: false,
+          isSubs: false,
         }
     },
     methods: {
+      subsCheck() {
+        axios.get('http://localhost:8080/subscribe', 
+          { params: { id: this.member.id } },
+        ).then((response) => { 
+            // 응답 처리 
+            var followers = response.data;
+            followers.forEach((follower) => {
+              if(follower.id == this.$route.params.id) {
+                this.isSubs = true;
+                console.log(follower.id);
+              }
+            })
+          }) .catch((error) => { 
+            console.log(error);
+          });
+      },
       showScrap() {
         this.$router.push({name:"Scrap", params: {propsIsMyPage: this.isMyPage}});
       },
+      follow() {
+        var frm = new FormData();
+        frm.append("id", this.member.id);
+        frm.append("id2", this.$route.params.id);
+        axios.post('http://localhost:8080/subsc', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+        .then(() => {
+          this.$router.go(this.$router.currentRoute);
+        })
+      },
+      unfollow() {
+      var frm = new FormData();
+      frm.append("id", this.member.id);
+      frm.append("id2", this.$route.params.id);
+      axios.post('http://localhost:8080/subscdelete', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+      .then(() => {
+        this.$router.go(this.$router.currentRoute);
+      })
+    },
     },
   created() {
-      console.log("아이디>>>>" + this.$route.params.id);
-      //유저 정보 받아오는 axios
-      this.member = {
-          name: '김재성',
-          id: 'kimjea23@naver.com',
-          thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-      };
+    this.member = this.$store.getters.userProfile;
       // 내 정보랑 같은지 체크해서
-      this.isMyPage = true;
       // 하위 컴포넌트에 전달
       // this.showScrap();
     },

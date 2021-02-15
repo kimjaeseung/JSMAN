@@ -153,10 +153,10 @@ export default {
       params.append("id", this.member.id);
       this.tags.forEach(function(tag) {
         params.append("list",tag_dict[tag]);
-      })
+      });
       console.log(this.member.id);
       axios.get('http://localhost:8080/tagListUpdate', 
-      { params: params},
+      { params: params },
     ).then(() => { 
       this.$router.go(this.$router.currentRoute);
       }) .catch((error) => { 
