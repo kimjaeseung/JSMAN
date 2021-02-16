@@ -77,11 +77,6 @@ export default {
   },
   methods: {
     changePw() {
-      if (this.password == 'blue!!1100') {
-        alert('비밀번호 변경에 성공했습니다.');
-        this.$router.push('/');
-        return;
-      }
       let { id, password } = this;
       let info = {
         id,
