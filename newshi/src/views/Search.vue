@@ -55,17 +55,15 @@ export default {
       ];
         } else{
             // 큐레이터에 접근하는 axios
-            console.log("사람 검색 axios");
-            console.log(this.search_word);
-            
             axios.get('http://localhost:8080/search/people', 
             { params: { keyword: this.search_word } },
             ).then((response) => { 
                 let resData = response.data;
-                console.log(resData);
                 let arr = [];
                 resData.forEach(e => {
-                    arr.push(e['name']);
+                    if(e['name'] != undefined) {
+                        arr.push(e['name']);
+                    }
                 });
                 this.autocomp_value = arr;
             })

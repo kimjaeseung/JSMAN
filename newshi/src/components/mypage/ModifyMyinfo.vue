@@ -34,7 +34,6 @@
                             outlined
                             type="password"
                             :error-messages="errors"
-                            :success="old_check"
                         ></v-text-field>
                         </ValidationProvider>
                         <ValidationProvider
@@ -69,6 +68,8 @@
 import { ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
+import axios from 'axios';
+import { mapActions } from 'vuex';
 
 var old_check = false;
 var new_check = false;
@@ -102,16 +103,35 @@ extend('passwordConfirm', {
 });
 
 export default {
+  computed: {
+    getMember() {
+      return this.$store.state.userProfile;
+    },
+  },
+  watch: {
+    getMember: function(val) {
+      this.member = val;
+      this.subsCheck();
+      console.log(this.isSubs);
+    },
+  },
   methods: {
+    ...mapActions(['logout', 'getUserInfo']),
     passwordChangeSubmit() {
-      if(!old_check) {
-        alert('현재 비밀번호를 확인해주세요.');
-        return;
-      } else if(!new_check) {
-        alert('새 비밀번호를 확인해주세요.')
+      if(!old_check || !new_check) {
+        alert('비밀번호를 확인해주세요.')
         return;
       }
-      
+      var frm = new FormData();
+      frm.append("id", this.member.id);
+      frm.append("newpassword", this.new_password);
+      frm.append("oldpassword", this.old_password);
+
+      axios.put('http://localhost:8080/updatePassword', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+        .then(() => {
+          this.logout();
+          this.$router.go("/");
+        });
     }
   },
     components: {
@@ -126,8 +146,9 @@ export default {
         }
     },
     created() {
-        //개인 정보 받아오는 부분
-        
+        if(this.$store.getters.userProfile.id != undefined) {
+      this.member = this.$store.getters.userProfile;
+    }
     },
 }
 </script>
