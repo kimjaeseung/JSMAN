@@ -231,4 +231,9 @@ public class NewsServiceImpl implements NewsService {
 	public News selectNewsByNewsNo(String newsNo) {
 		return dao.selectNewsByNewsNo(newsNo);
 	}
+	
+	@Override
+	public User selectUserByUserNo(String userNo) {
+		return dao.selectUserByUserNo(userNo);
+	}
 }

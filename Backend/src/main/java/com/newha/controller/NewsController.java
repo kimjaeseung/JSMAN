@@ -853,6 +853,8 @@ public class NewsController {
 				temp.put("title", news.getTitle());
 				temp.put("company", news.getCompany());
 				temp.put("image_path", news.getImage_path());
+				temp.put("article_bot_summary", news.getArticle_bot_summary());
+				temp.put("content", news.getContent());
 				
 				List<UserScrapNews> scrapList = service.selectUserScrapNewsByNewsNo(news.getNewsNo());
 				if(scrapList.size() > 0) {
@@ -862,17 +864,15 @@ public class NewsController {
 					String newsNo = scrapList.get(0).getNewsNo();
 					String date = scrapList.get(0).getDate();
 					String curator_summary = scrapList.get(0).getCurator_summary();
-					String like_cnt = scrapList.get(0).getLike_cnt();
-					String dislike_cnt = scrapList.get(0).getDislike_cnt();
+					String name = service.selectUserByUserNo(userNo).getName();
 					
+					temp.put("name", name);
 					temp.put("scrapNo", scrapNo);
 					temp.put("userNo", userNo);
 					temp.put("postNo", postNo);
 					temp.put("newsNo", newsNo);
 					temp.put("date", date);
 					temp.put("curator_summary", curator_summary);
-					temp.put("like_cnt", like_cnt);
-					temp.put("dislike_cnt", dislike_cnt);
 				}
 				result.add(temp);
 			}
