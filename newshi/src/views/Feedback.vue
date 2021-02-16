@@ -30,6 +30,28 @@
         >피드백 보내기</v-btn
       >
     </v-form> 
+    <br>
+    <!-- v-show="this.mailSent == true" -->
+    <v-expand-x-transition>
+      <v-alert
+        v-show="expand"
+        prominent
+        type="success"
+        bottom
+      >
+        {{ this.responseText }}
+      </v-alert>
+    </v-expand-x-transition>
+    <v-expand-x-transition>
+      <v-alert
+        v-show="expand2"
+        prominent
+        type="error"
+        bottom
+      >
+        {{ this.responseText }}
+      </v-alert>
+    </v-expand-x-transition>
   </div>
 </template>
 
@@ -53,42 +75,31 @@ export default {
         title: this.title,
         content: this.content,
       }), {})
-      .then((res) => {
-        console.log(res)
-        // this.mailingInProgress = false
-        // this.responseText = 'Email sent succeeded!'
-        // this.mailSent = true
+      .then(() => {
+        this.responseText = '메일 발송 성공!';
+        this.mailSent = true;
+        this.expand = !this.expand;
+        this.expand2 = false;   //성공하면 실패 메시지 지워줘야하기 때문에
       })
       .catch((e) => {
+        this.responseText = '메일 발송 실패';
+        this.mailSent = false;
+        this.expand = false;  //실패하면 성공 메시지 지워줘야하기 때문에
+        this.expand2 = !this.expand2;
         console.log(e)
-        // this.mailingInProgress = false
-        // this.responseText = e + '. Please try later.'
-        // this.mailSent = false
       })
     },
-    // mailTo () {
-    //   if (this.checkInputValidity() && !this.mailingInProgress && !this.mailSent) {
-    //     this.mailingInProgress = true
-    //     axios.post('YOUR_API_ADDRESS.amazonaws.com/seesoMailer', JSON.stringify(this.inquiryInput))
-    //       .then(() => {
-    //         this.mailingInProgress = false
-    //         this.responseText = 'Email sent succeeded!'
-    //         this.mailSent = true
-    //       })
-    //       .catch((e) => {
-    //         this.mailingInProgress = false
-    //         this.responseText = e + '. Please try later.'
-    //         this.mailSent = false
-    //       })
-    //   }
-    // }
   },
   data: function () {
     return {
       email: '',
       title: '',
       content: '',
+      responseText: '',
+      mailSent: false,
       valid: false,
+      expand: false,
+      expand2: false,
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /.+@.+/.test(v) || 'E-mail must be valid',
