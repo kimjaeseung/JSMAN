@@ -2,7 +2,7 @@
   <div>
     <v-container>
         <v-row>
-            <v-col cols="2">
+            <v-col cols="3">
                 <v-responsive :aspect-ratio="1/1" @click="toChannel(curator.id)" style="cursor: pointer">
                     <v-avatar width=100% height=100%>
                         <v-img v-if="mode=='curator'" :src="curator.thumbnail_path"></v-img>
@@ -10,10 +10,10 @@
                     </v-avatar>
                 </v-responsive>
             </v-col>
-            <v-col class="d-flex align-center justify-start" style="padding:0px;">
-                <div class="ml-0" style="font-size:min(4vw, 40px); cursor: pointer" @click="toChannel(curator.id)">{{search_word}}</div>
+            <v-col cols="3" class="d-flex align-center justify-start" style="padding:0px;">
+                <div class="ml-0" style="font-size:min(6vw, 40px); cursor: pointer" @click="toChannel(curator.id)">{{search_word}}</div>
             </v-col>
-            <v-col v-if="mode == 'curator' && member.id != curator.id" class="d-flex align-center justify-end">
+            <v-col cols="6" v-if="mode == 'curator' && member.id != curator.id" class="d-flex align-center justify-end">
               <v-btn v-if="isSubs == false" @click="follow">구독</v-btn>
               <v-btn v-else @click="unfollow" class="error">구독취소</v-btn>
             </v-col>
@@ -52,6 +52,11 @@
               </v-row>
             </v-container>
           </v-card>
+        </v-col>
+      </v-row>
+      <v-row v-if="scrap_news.length == 0" >
+        <v-col class="d-flex justify-center mt-10">
+          <h1 style='color:#B9B9B9'>기사가 없습니다.</h1>
         </v-col>
       </v-row>
     </v-container>
