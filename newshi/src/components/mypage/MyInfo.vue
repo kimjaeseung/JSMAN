@@ -102,6 +102,7 @@
 <script>
 import axios from 'axios';
 import { mapActions } from 'vuex';
+import { uploadImage } from '@/api/board.js';
 
 const tag_dict = {
         '속보': 0,
@@ -177,19 +178,24 @@ export default {
     },
     fileUpload() {
       console.log(this.file);
-      var frm = new FormData();
-      frm.append("file", this.file)
-      let list = [
-        frm
-      ];
-      axios.post('http://localhost:8080/upload', list, { headers: { 'Content-Type': 'multipart/form-data' } }) 
-      .then((response) => { 
-        // 응답 처리 
-        console.log(response)
-      }) .catch((error) => { 
-        // 예외 처리 
-        console.log(error);
-      })
+      let file = this.file;
+      const fileName = file.name;
+      uploadImage(
+        file,
+        (response) => {
+          if (response.data.message === 'success') {
+            this.imageSrc =
+              'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
+            console.log(this.imageSrc);
+          } else {
+            alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
+          }
+        },
+        (error) => {
+          console.error(error);
+          alert('큐레이터의 데이터를 받아오는 중 에러가 발생했습니다.');
+        }
+      );
     },
     getFollowers() {
       axios.get('http://localhost:8080/subscribe', 
