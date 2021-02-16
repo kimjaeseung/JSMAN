@@ -242,7 +242,7 @@ public class UserController {
 	public ResponseEntity<Map<String, String>> insert(@RequestBody List<Map<String, Object>> list){
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		User u = new User(); 
+		User u = new User();
 		
 		System.out.println(list.get(0).toString());
 		try { 
@@ -325,22 +325,20 @@ public class UserController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 	
+	
 	@ApiOperation(value = "파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
 	@PostMapping("/upload")
-	public ResponseEntity<Map<String, String>> upload(@RequestBody List<Map<String, Object>> list) {
-		MultipartFile file = (MultipartFile) list.get(0);
+	public ResponseEntity<Map<String, String>> upload(@RequestParam String id,
+			@RequestParam String thumbnail_path
+			) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		String userNo = String.valueOf(service.userNo((String)list.get(1).get("id")));
-		String thumbnailPath = "https://newha.s3.us-east-2.amazonaws.com/"+file.getOriginalFilename();
+		String userNo = String.valueOf(service.userNo(id));
 
 		try {
-			service.thumbnailPath(userNo, thumbnailPath);
-			File f = new File(file.getOriginalFilename());
-			file.transferTo(f);
-			s3service.uploadOnS3(file.getOriginalFilename(), f);
+			service.thumbnailPath(userNo, thumbnail_path);
 			status = HttpStatus.ACCEPTED;
-			map.put("message", SUCCESS); 
+			map.put("message", SUCCESS);
 		} catch (Exception e) {
 			map.put("message", FAIL);
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
