@@ -73,7 +73,7 @@ public class BoardController {
 	@PostMapping("/uploadFile")
 	public ResponseEntity<Map<String, String>> uploadFile(@RequestBody MultipartFile file) {
 		Map<String, String> map = new HashMap<>();
-		HttpStatus status = null; 
+		HttpStatus status = null;
 		try {
 			File f = new File(file.getOriginalFilename());
 			file.transferTo(f);
