@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { emailTest } from '@/api/user.js';
+import { emailTest, emailValidTest } from '@/api/user.js';
 import { ValidationProvider } from 'vee-validate';
 import { extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
@@ -58,20 +58,35 @@ export default {
 
   methods: {
     findPw() {
-      if (this.id == 'chunawoos@hanmail.net') {
-        this.isEmailCheck = true;
-        return;
-      }
       emailTest(
         this.id,
         (response) => {
           if (response.data.message === 'success') {
-            this.isEmailCheck = true;
-            this.validNumCheck = response.data['validNum'];
-          } else {
             this.isEmailCheck = false;
             alert(
               '입력하신 아이디는 없는 아이디입니다. 다시 한번 확인해주시기 바랍니다.'
+            );
+          } else {
+            this.isEmailCheck = true;
+            emailValidTest(
+              this.id,
+              (resp) => {
+                if (resp.status >= 200 && resp.status < 300) {
+                  console.log(resp.data['confirm']);
+                  this.validNumCheck = resp.data['confirm'];
+                } else {
+                  console.log(resp);
+                }
+              },
+              (error) => {
+                console.log(error);
+                alert('이메일 인증 중 에러가 발생했습니다.');
+              }
+            );
+
+            this.validNumCheck = response.data['validNum'];
+            alert(
+              '입력하신 아이디로 인증메일을 발송하였습니다. 인증번호를 입력해주세요.'
             );
           }
         },
@@ -82,7 +97,6 @@ export default {
       );
     },
     validCheck() {
-      this.validNumCheck = 1234;
       if (this.validNum == this.validNumCheck) {
         alert('인증에 성공했습니다.');
         this.$router.push({ name: 'ChangePw', params: { id: this.id } });

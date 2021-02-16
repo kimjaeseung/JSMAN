@@ -268,6 +268,8 @@ export default {
   },
   methods: {
     save() {
+      console.log('타이틀!!!');
+      console.log(this.title);
       this.$emit('saveData', this.editor.getHTML(), this.title);
     },
     showLinkMenu(attrs) {

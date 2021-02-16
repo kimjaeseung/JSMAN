@@ -1,72 +1,74 @@
 <template>
   <v-hover v-slot="{ hover }">
     <v-card>
-      <v-card-title>
-        <v-list>
-          <template>
+      <v-card-title class="card-title">
+        <v-list style="padding: 0px">
+          <v-list-item style="padding-left:12px; padding-bottom:0px">
             <v-list-item-avatar>
               <v-img :src="member.thumbnail_path" :alt="member.name"></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title
-                ><span>
-                  <a class="title" @click="goChannel">{{ member.name }}</a>
-                </span>
-                <span>
-                  <a
-                    style="color: black;text-decoration:none"
-                    class="date"
-                    @click="boardDetail"
-                    >업로드 : {{ time }}</a
-                  >
-                </span>
+                ><a class="name" @click="goChannel">{{ member.name }}</a>
+                <span class="time"> {{ time }} </span>
               </v-list-item-title>
-              <v-list-item-subtitle>{{ board.title }}</v-list-item-subtitle>
+              <v-list-item-subtitle v-text="board.title"></v-list-item-subtitle>
             </v-list-item-content>
-            <v-divider></v-divider>
-            <v-list-item-action v-show="hover">
-              <v-menu offset-y>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn icon v-show="isMyPage" v-bind="attrs" v-on="on">
-                    <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
-                </template>
-                <v-list>
-                  <v-list-item>
-                    <v-list-item-title
-                      ><v-btn text @click="modifyBoard"
-                        >수정</v-btn
-                      ></v-list-item-title
-                    >
-                    <v-list-item-title
-                      ><v-btn text @click="deleteBoard"
-                        >삭제</v-btn
-                      ></v-list-item-title
-                    >
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-            </v-list-item-action>
-          </template>
+          </v-list-item>
         </v-list>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              style="position:absolute; right: 0%; top:5%;"
+              icon
+              v-show="hover && isMyPage"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title
+                ><v-btn text @click="modifyBoard"
+                  >수정</v-btn
+                ></v-list-item-title
+              >
+              <v-list-item-title
+                ><v-btn text @click="deleteBoard"
+                  >삭제</v-btn
+                ></v-list-item-title
+              >
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-card-title>
-      <v-card-text v-html="content.front"> </v-card-text>
-      <a v-show="!isDetail && !isEmpty" @click="isDetail = !isDetail"
+      <v-card-text class="main-content card-text" v-html="content.front">
+      </v-card-text>
+      <a
+        class="main-content"
+        v-show="!isDetail && !isEmpty"
+        @click="isDetail = !isDetail"
         >자세히 보기</a
       >
-      <v-card-text v-if="isDetail">
-        {{ content.behind }}
+      <v-card-text
+        class="main-content card-text"
+        v-if="isDetail"
+        v-html="content.behind"
+      >
       </v-card-text>
-      <a v-show="isDetail & !isEmpty" @click="isDetail = !isDetail"
+      <a
+        class="main-content"
+        v-show="isDetail & !isEmpty"
+        @click="isDetail = !isDetail"
         >간략히 보기</a
       >
-      <v-card-actions>
-        <v-btn @click="boardDetail">
-          <v-btn icon @click="boardDetail"
-            ><v-icon>mdi-comment-text</v-icon></v-btn
-          >
-          {{ board.commentCnt }}
-        </v-btn>
+      <v-card-actions v-if="isMain">
+        <v-btn style="padding-left: 66px;" x-small icon @click="boardDetail"
+          ><v-icon @click="boardDetail">mdi-comment-text</v-icon></v-btn
+        >
+        {{ board.commentCnt }}
       </v-card-actions>
     </v-card>
   </v-hover>
@@ -78,6 +80,7 @@ export default {
     member: Object,
     board: Object,
     num: Number,
+    isMain: Boolean,
   },
   data() {
     return {
@@ -98,7 +101,7 @@ export default {
     boardDetail() {
       this.$router.push({
         name: 'BoardDetail',
-        params: { board: this.board, member: this.member, num: this.num },
+        query: { board: this.board, member: this.member, num: this.num },
       });
     },
     modifyBoard() {
@@ -142,8 +145,15 @@ export default {
 </script>
 
 <style>
-/* .title {
-  color: black;
-  text-decoration: none;
-} */
+.card-title {
+  padding-left: 0px;
+}
+.main-content {
+  font-size: 16px;
+  padding-left: 66px;
+}
+.card-text {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
 </style>
