@@ -22,6 +22,7 @@
           <v-icon medium v-else color="#ff9800">mdi-bookmark</v-icon>
         </v-btn>
       </div>
+      <Alert v-if="this.alert == true"/>
       <!-- TTS Play icon -->
       <div class="d-flex justify-content-start">
         <v-row
@@ -153,12 +154,17 @@
 </template>
 
 <script>
+import Alert from '../components/Alert.vue';
 import axios from 'axios';
 const API_URL = 'http://localhost:8080';
 const id = localStorage.getItem('id');
+const isLogged = localStorage.getItem('access-token');
 
 export default {
   name: "ArticleDetail",
+  components: {
+    Alert,
+  },
   props: [
     'newsInfo',
   ],
@@ -206,17 +212,21 @@ export default {
       this.swipeDirection = direction
     },
     save () {
-      this.saved = !this.saved;
-      const scrapNo = this.newsInfo.scrapNo;
-      axios.get(`${API_URL}`+'/article/save'+`?id=${id}`+`&scrapNo=${scrapNo}`)
-      .then((res)=> {
-        if (res.data.message == 'success' && this.saved == true) {
-          console.log(res.data.message)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (this.logged !== null) {
+        this.saved = !this.saved;
+        const scrapNo = this.newsInfo.scrapNo;
+        axios.get(`${API_URL}`+'/article/save'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        .then((res)=> {
+          if (res.data.message == 'success' && this.saved == true) {
+            console.log(res.data.message)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      } else {
+        this.alert = !this.alert;
+      }
     },
     saveCheck() {
       const newsNo = this.newsInfo.newsNo;
@@ -235,30 +245,38 @@ export default {
       })
     },
     like () {
-      this.liked = !this.liked;
-      const scrapNo = this.newsInfo.scrapNo;
-      axios.get(`${API_URL}`+'/article/like'+`?id=${id}`+`&scrapNo=${scrapNo}`)
-      .then((res)=> {
-        if (res.data.message == 'success' && this.liked == true) {
-          console.log('like', res.data.message)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (this.logged !== null) {
+        this.liked = !this.liked;
+        const scrapNo = this.newsInfo.scrapNo;
+        axios.get(`${API_URL}`+'/article/like'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        .then((res)=> {
+          if (res.data.message == 'success' && this.liked == true) {
+            console.log('like', res.data.message)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      } else {
+        this.alert = !this.alert;
+      }
     },
     dislike () {
-      this.disliked = !this.disliked;
-      const scrapNo = this.newsInfo.scrapNo;
-      axios.get(`${API_URL}`+'/article/dislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
-      .then((res)=> {
-        if (res.data.message == 'success' && this.disliked == true) {
-          console.log('dislike', res.data.message)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (this.logged !== null) {
+        this.disliked = !this.disliked;
+        const scrapNo = this.newsInfo.scrapNo;
+        axios.get(`${API_URL}`+'/article/dislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        .then((res)=> {
+          if (res.data.message == 'success' && this.disliked == true) {
+            console.log('dislike', res.data.message)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      } else {
+        this.alert = !this.alert;
+      }
     },
     likeCheck() {
       const scrapNo = this.newsInfo.scrapNo;
@@ -298,6 +316,8 @@ export default {
       liked: false,
       disliked: false,
       play: false,
+      logged: isLogged,
+      alert: false,  //저장
     }
   },
 }
@@ -308,5 +328,8 @@ export default {
   .hidden {
     display: none;
   }
+}
+.news-body-text{
+  line-height: 2;
 }
 </style>

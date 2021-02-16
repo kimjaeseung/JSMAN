@@ -98,7 +98,7 @@
           title: '김재성',
           role: 'Front-End',
           link: 'https://github.com/JS-2',
-          text: '술 좋아하고, 롤 못합니다🎤',
+          text: '술 좋아하고, 롤 못해요',
         },
         {
           color: '#952175',
@@ -106,7 +106,7 @@
           title: '김재승',
           role: 'Back-End',
           link: 'https://github.com/kimjaeseung',
-          text: `롤 다이아, 백준 실버4😢`,
+          text: `롤💎, 백준 실버IV😢`,
         },
         {
           color: '#952175',
