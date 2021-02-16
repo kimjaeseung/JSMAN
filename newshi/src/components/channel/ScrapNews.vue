@@ -96,33 +96,31 @@ export default {
             
             if (localStorage['access-token'] && localStorage['access-token'] !== '') {
               for(let i = 0; i < scrap_news.length; i++) {
-                axios.get('http://localhost:8080/article/islike',
-                {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
-                .then((response) => {
-                  if(response.data['message'] == 'success') {
-                    scrap_news[i]['islike'] = new Array(true);
-                  } else { scrap_news[i]['islike'] = new Array(false); }
-                }).finally(() => {
+                setTimeout(() => {
+                  setTimeout(() => {
+                    axios.get('http://localhost:8080/article/islike',
+                  {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
+                  .then((response) => {
+                    if(response.data['message'] == 'success') {
+                      scrap_news[i]['islike'] = new Array(true);
+                    } else { scrap_news[i]['islike'] = new Array(false); }
+                  });
+                  }, i * 20 + 10);
                   
-                });
-                  axios.get('http://localhost:8080/article/isdislike',
-                {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
-                .then((response) => {
-                  if(response.data['message'] == 'success') {
-                    scrap_news[i]['isdislike'] = new Array(true);
-                  } else { scrap_news[i]['isdislike'] = new Array(false); }
-                }).finally(() => { 
-                  this.scrap_news.push(scrap_news[i]); 
-                  console.log(scrap_news[i]);
-                });
+                  setTimeout(() => {
+                    axios.get('http://localhost:8080/article/isdislike',
+                  {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
+                  .then((response) => {
+                    if(response.data['message'] == 'success') {
+                      scrap_news[i]['isdislike'] = new Array(true);
+                    } else { scrap_news[i]['isdislike'] = new Array(false); }
+                  }).finally(() => { 
+                    this.scrap_news.push(scrap_news[i]); 
+                  });
+                  }, i * 20 + 20);
+                }, i * 20);
               }
             }
-          }).finally(() => {
-            setTimeout(() => {
-              this.scrap_news.sort(function(a, b) {
-                return a.scrapNo - b.scrapNo;
-              });
-            }, 5);
           });
           
     },
