@@ -259,9 +259,6 @@ public class UserController {
 			for (int j = 1; j < tag.length; j++) {
 				service.insertTag(u.getId(), tag[j]);
 			}
-//			for (int i = 1; i < list.size(); i++) {
-//				service.insertTag(u.getId(), (String)list.get(1).get("tag"));
-//			}
 			boardservice.boardCreate(u.getId()); //회원가입과 동시에 개인 게시판 생성
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
@@ -416,7 +413,8 @@ public class UserController {
 		try {
 			int a = service.selectId(user.getId());
 			if(a==0) {
-				service.socialInsert(user);  
+				service.socialInsert(user); 
+				boardservice.boardCreate(user.getId()); //회원가입과 동시에 개인 게시판 생성
 			}
 			User loginUser = service.socialLogin(user);
 			if (loginUser != null) {
@@ -429,6 +427,7 @@ public class UserController {
 				resultMap.put("message", FAIL);
 				status = HttpStatus.ACCEPTED;
 			}
+			
 		} catch (Exception e) {
 			logger.error("로그인 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
@@ -445,8 +444,8 @@ public class UserController {
 		return service.searchUser(keyword + "%");
 	}
 	
-	@ApiOperation(value = "사이드바용 유저 정보", notes = "name, thumbnail_path 반환", response = Map.class)
-	@GetMapping(value = "/sidebarUser") // 이메일체크
+	@ApiOperation(value = "유저 정보 by id", notes = "name, thumbnail_path 반환", response = Map.class)
+	@GetMapping(value = "/sidebarUser")
 	public ResponseEntity<Map<String, String>> sidebarUser(
 			@ApiParam(value = "id", required = true) @RequestParam String id) {
 		Map<String, String> map = new HashMap<>();
@@ -455,6 +454,28 @@ public class UserController {
 			User u = service.userInfo(id);
 			map.put("name", u.getName());
 			map.put("thumbnail_path", u.getThumbnail_path());
+			map.put("platformtype", u.getPlatformType());
+			map.put("userNo", u.getUserNo());
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			map.put("message", FAIL);
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
+	@ApiOperation(value = "유저 정보 by userNo", notes = "name, thumbnail_path 반환", response = Map.class)
+	@GetMapping(value = "/userInfo")
+	public ResponseEntity<Map<String, String>> userInfo(
+			@ApiParam(value = "userNo", required = true) @RequestParam int userNo) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			User u = service.selectUser(userNo);
+			map.put("name", u.getName());
+			map.put("thumbnail_path", u.getThumbnail_path());
+			map.put("platformtype", u.getPlatformType());
+			map.put("userNo", u.getUserNo());
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;

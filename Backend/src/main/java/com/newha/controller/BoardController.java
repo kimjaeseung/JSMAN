@@ -197,7 +197,7 @@ public class BoardController {
 			@ApiParam(value = "String", required = true) @RequestParam String id,
 			@ApiParam(value = "String", required = true) @RequestParam String content) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-
+		
 		HttpStatus status = null;
 		try {
 			service.boardCommentInsert(boardPostNo, id, content);
