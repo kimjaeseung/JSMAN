@@ -41,7 +41,7 @@
               <v-dialog v-model="dialog">
                 <template v-slot:activator="{ on, attrs }">
                   <v-avatar size="150px" v-bind="attrs" v-on="on">
-                    <v-img :src="require('@/assets/images/default_avatar.png')"></v-img>
+                    <v-img :src="member.thumbnail_path"></v-img>
                   </v-avatar>
                 </template>
               <v-card>
@@ -102,6 +102,7 @@
 <script>
 import axios from 'axios';
 import { mapActions } from 'vuex';
+import { uploadImage } from '@/api/board.js';
 
 const tag_dict = {
         '속보': 0,
@@ -177,17 +178,31 @@ export default {
     },
     fileUpload() {
       console.log(this.file);
-      var frm = new FormData();
-      frm.append("file", this.file);
-      frm.append("id", 'kimjea23@naver.com');
-      axios.post('http://localhost/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' } }) 
-      .then((response) => { 
-        // 응답 처리 
-        console.log(response)
-      }) .catch((error) => { 
-        // 예외 처리 
-        console.log(error);
-      })
+      let file = this.file;
+      const fileName = file.name;
+      uploadImage(
+        file,
+        (response) => {
+          if (response.data.message === 'success') {
+            this.imageSrc =
+              'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
+            console.log(this.imageSrc);
+            var frm = new FormData();
+            frm.append("id", this.member.id);
+            frm.append("thumbnail_path", this.imageSrc);
+            axios.post('http://localhost:8080/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+            .then(() => {
+              this.$router.go(this.$router.currentRoute);
+            })
+          } else {
+            alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
+          }
+        },
+        (error) => {
+          console.error(error);
+          alert('큐레이터의 데이터를 받아오는 중 에러가 발생했습니다.');
+        }
+      );
     },
     getFollowers() {
       axios.get('http://localhost:8080/subscribe', 

@@ -14,7 +14,7 @@
         </div>
       </a>
       <v-spacer />
-      <v-icon @click="search_drawer = !search_drawer">mdi-magnify</v-icon>
+      <v-icon @click="toSearch">mdi-magnify</v-icon>
       <v-dialog
         v-model="dialog"
         width="500"
@@ -71,14 +71,52 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-navigation-drawer right bottom v-model="search_drawer" fixed temporary>
-      <v-autocomplete
-        :search-input.sync="search_word"
-        :items="autocomp_value"
-        filled
-      ></v-autocomplete>
-      <br />{{ search_word }}
-    </v-navigation-drawer>
+    
+    <!-- Footer Start -->
+    <v-card
+      v-show="this.logged == false && this.close != 'true'"
+    >
+    <v-footer
+      v-bind="localAttrs"
+      :padless="padless"
+    >
+      <v-card
+        flat
+        tile
+        width="100%"
+        class="black text-center"
+      >
+        <v-card-text>
+          <!-- 로그인 -->
+          <!-- 회원가입 -->
+          <v-btn
+            class="mx-4 white--text"
+            icon
+            @click="dialog = !dialog"
+          >
+            <v-icon size="24px">
+              mdi-account-plus-outline
+            </v-icon>
+          </v-btn>
+          <!-- Footer Close -->
+          <v-btn
+            class="mx-4 white--text"
+            icon
+            @click="closeFooter()"
+          >
+            <v-icon size="24px">
+              mdi-close-outline
+            </v-icon>
+          </v-btn>
+        </v-card-text>
+        <v-divider></v-divider>
+          <v-card-text class="white--text">
+            지금 가입하고 <br>전문가가 추천하는 최신 기사를 받아보세요.
+          </v-card-text>
+        </v-card>
+      </v-footer>
+    </v-card>
+    <!-- Footer end -->
     <v-navigation-drawer v-model="menu_drawer" fixed temporary>
       <v-list>
         <v-list-item-group>
@@ -130,25 +168,25 @@
 import Login from '@/components/Login.vue';
 import Join from '@/components/Join.vue';
 import { mapActions } from 'vuex';
-
+// import Footer from '../components/Footer.vue';
 const localThemeMode = localStorage.getItem('themeMode');
+// const close  = localStorage.getItem('closeFooter');
 
 export default {
   components: {
     Login,
     Join,
+    // Footer,
   },
   data() {
     return {
       menu_drawer: false,
-      search_drawer: false,
       member: {
         name: '김재성',
         id: 'kimjea23@naver.com',
         thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
       },
       autocomp_value: [],
-      search_word: '',
       menus: [
         {
           icon: 'bookmark-outline',
@@ -176,6 +214,14 @@ export default {
       info: {},
       logged: true,
       switchTheme: '',
+      items: [
+        'default',
+        'absolute',
+        'fixed',
+      ],
+      padless: false,
+      variant: 'fixed',
+      close: '',
     };
   },
   computed: {
@@ -203,9 +249,22 @@ export default {
       }
       return check;
     },
+    localAttrs () {
+        const attrs = {}
+        if (this.variant === 'default') {
+          attrs.absolute = false
+          attrs.fixed = false
+        } else {
+          attrs[this.variant] = true
+        }
+        return attrs
+    },
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    toSearch() {
+      this.$router.push("/search");
+    },
     closeDialog() {
       this.dialog = !this.dialog;
       this.isLogin = true;
@@ -244,24 +303,14 @@ export default {
       this.member = {};
       this.$router.go(this.$router.currentRoute);
     },
+    closeFooter(){
+      localStorage.setItem('closeFooter', true);
+      this.close = 'true';
+    }
   },
   watch: {
     getMember: function(val) {
       this.member = val;
-    },
-    search_word: function() {
-      console.log('검색어 변경');
-
-      if (this.search_word == undefined) return;
-
-      if (this.search_word == '') this.autocomp_value = [];
-      else if (this.search_word.charAt(0) == '#') {
-        // 태그에 접근하는 axios
-        this.autocomp_value = ['#경제', '#시사', '#IT', '#감성'];
-      } else {
-        // 큐레이터에 접근하는 axios
-        this.autocomp_value = ['사람1', '사람2', '사람3', '감재성'];
-      }
     },
   },
   created() {
@@ -285,6 +334,7 @@ export default {
       localThemeMode.toString() == 'true'
         ? (this.$vuetify.theme.dark = true)
         : (this.$vuetify.theme.dark = false); // 시작하자마자 다크테마인지 아닌지 체크
+    this.close = localStorage.getItem('closeFooter');
   },
 };
 </script>
@@ -308,5 +358,8 @@ export default {
 }
 .v-list-item__icon {
   margin-left: 0px !important;
+}
+.v-footer{
+  padding: 0 !important;
 }
 </style>

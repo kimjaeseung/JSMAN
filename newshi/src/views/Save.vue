@@ -1,7 +1,8 @@
 <template>
   <v-container>
   <h3>내일 볼 기사</h3>
-  <h5>이제 더 이상 미루지 말자...</h5>
+  <h5>그..그만 미루자...</h5>
+  <!-- <List :news-items="newsItems" /> -->
     <v-list>
       <template v-for="(newsInfo, i) in newsItems">
         <v-list-item
@@ -22,12 +23,14 @@
 </template>
 
 <script>
+// import List from '../components/List.vue';
 import axios from 'axios';
 const API_URL = 'http://localhost:8080';
 const id = localStorage.getItem('id')
 
 export default {
   name: 'Save',
+  // components: { List },
   data() {
     return {
       newsItems: []
@@ -38,6 +41,7 @@ export default {
       axios.get(`${API_URL}`+'/article/savelist'+`?id=${id}`)
       .then((res)=> {
         this.newsItems = res.data;
+        console.log(res.data)
       })
       .catch((err) => {
         console.log(err)

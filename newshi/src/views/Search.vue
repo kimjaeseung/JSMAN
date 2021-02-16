@@ -59,12 +59,14 @@ export default {
             { params: { keyword: this.search_word } },
             ).then((response) => { 
                 let resData = response.data;
+                console.log(resData);
                 let arr = [];
-                resData.forEach(e => {
-                    if(e['name'] != undefined) {
-                        arr.push(e['name']);
+                for(let i = 0; i < resData.length; i++) {
+                    if(resData[i]['name'] != undefined) {
+                        arr.push(resData[i]['name']);
                     }
-                });
+                }
+                console.log(arr);
                 this.autocomp_value = arr;
             })
             

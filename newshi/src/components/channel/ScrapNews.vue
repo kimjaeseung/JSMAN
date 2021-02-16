@@ -34,11 +34,11 @@
                   </v-card-subtitle>
                   </div>
                   <v-card-actions class="d-flex justify-end">
-                    <v-btn dark small :color="news.islike != undefined && news.islike[0] ? 'red':'grey'" @click="likeBtn(news.scrapNo[0], news.islike[0])"> 
+                    <v-btn dark small :color="news.islike != undefined && news.islike[0] ? 'red':'grey'" @click="likeBtn(news.scrapNo[0], news.islike)"> 
                       <v-icon dark>mdi-heart</v-icon>
                       <div>{{news.like_cnt[0]}}</div>
                     </v-btn>
-                    <v-btn dark small :color="news.isdislike != undefined && news.isdislike[0] ? 'blue':'grey'" @click="dislikeBtn(news.scrapNo[0], news.isdislike[0])"> 
+                    <v-btn dark small :color="news.isdislike != undefined && news.isdislike[0] ? 'blue':'grey'" @click="dislikeBtn(news.scrapNo[0], news.isdislike)"> 
                       <v-icon dark>mdi-heart-broken</v-icon>
                       <div>{{news.dislike_cnt[0]}}</div>
                     </v-btn>
@@ -68,10 +68,6 @@ export default {
         this.isMyPage = true;
       }
     },
-    member: function() {
-      // 스크랩 기사들 axios
-      this.getScrap();
-    }
   },
   data() {
     return {
@@ -87,46 +83,52 @@ export default {
       },
 
     getScrap() {
+      this.scrap_news = [];
       axios.get('http://localhost:8080/article/scraplist', 
             { params: { postNo: this.post_no } },
           ).then((response) => {
             let scrap_news = response.data;
             // 사진없는 기사 이미지 추가할것.
             // 좋아요 싫어요 axios 추가하자
-            
             if (localStorage['access-token'] && localStorage['access-token'] !== '') {
               for(let i = 0; i < scrap_news.length; i++) {
-                axios.get('http://localhost:8080/article/islike',
-                {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
-                .then((response) => {
-                  if(response.data['message'] == 'success') {
-                    scrap_news[i]['islike'] = new Array(true);
-                  } else { scrap_news[i]['islike'] = new Array(false); }
-                }).finally(() => {
+                setTimeout(() => {
+                  setTimeout(() => {
+                    axios.get('http://localhost:8080/article/islike',
+                  {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
+                  .then((response) => {
+                    if(response.data['message'] == 'success') {
+                      scrap_news[i]['islike'] = new Array(true);
+                    } else { scrap_news[i]['islike'] = new Array(false); }
+                  });
+                  }, i * 20 + 10);
                   
-                });
-                  axios.get('http://localhost:8080/article/isdislike',
-                {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
-                .then((response) => {
-                  if(response.data['message'] == 'success') {
-                    scrap_news[i]['isdislike'] = new Array(true);
-                  } else { scrap_news[i]['isdislike'] = new Array(false); }
-                }).finally(() => { 
-                  this.scrap_news.push(scrap_news[i]); 
-                  console.log(scrap_news[i]);
-                });
+                  setTimeout(() => {
+                    axios.get('http://localhost:8080/article/isdislike',
+                  {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
+                  .then((response) => {
+                    if(response.data['message'] == 'success') {
+                      scrap_news[i]['isdislike'] = new Array(true);
+                    } else { scrap_news[i]['isdislike'] = new Array(false); }
+                  }).finally(() => { 
+                    if(scrap_news[i].image_path[0] == null) scrap_news[i].image_path[0] = require('@/assets/images/default-image.jpg')
+                    this.scrap_news.push(scrap_news[i]); 
+                  });
+                  }, i * 20 + 20);
+                }, i * 20);
               }
+            } else {
+              this.scrap_news = scrap_news;
             }
-          }).finally(() => {
-            setTimeout(() => {
-              this.scrap_news.sort(function(a, b) {
-                return a.scrapNo - b.scrapNo;
-              });
-            }, 5);
           });
           
     },
     likeBtn(scrapNo, check) {
+      if(check == undefined) {
+        alert('로그인을 해주세요.');
+        return;
+      }
+      check = check[0];
       if (localStorage['access-token'] && localStorage['access-token'] !== '') {
         // console.log('좋아요 axios');
         console.log(scrapNo);
@@ -147,13 +149,15 @@ export default {
                 .then(() => {
                 });
         }
-        this.scrap_news = [];
         this.getScrap();
-      } else {
-        alert('로그인을 해주세요.');
       }
     },
     dislikeBtn(scrapNo, check) {
+      if(check == undefined) {
+        alert('로그인을 해주세요.');
+        return;
+      }
+      check = check[0];
       if (localStorage['access-token'] && localStorage['access-token'] !== '') {
         // console.log("싫어요 axios");
         console.log(scrapNo);
@@ -173,10 +177,7 @@ export default {
                 .then(() => {
                 });
         }
-        this.scrap_news = [];
         this.getScrap();
-      } else {
-        alert('로그인을 해주세요.');
       }
     },
     numberWithCommas(x) {
@@ -187,13 +188,12 @@ export default {
     }
   },
   created() {
+    this.post_no = this.$route.params.scrap_no;
+    this.id = this.$route.params.id;
     if(this.$store.getters.userProfile.id != undefined) {
       this.member = this.$store.getters.userProfile;
     }
-    console.log("member>>>>>");
-    console.log(this.member.id);
-    this.post_no = this.$route.params.scrap_no;
-    this.id = this.$route.params.id;
+    this.getScrap();
   },
 }
 </script>
