@@ -41,6 +41,7 @@ public interface NewsDAO {
 	public List<NewsImage> selectNewImageByNewsNo(String newsNo);
 	public List<News> selectNewsByTagName(String tagName);
 	public List<News> selectNewsByUserNo(String userNo);
+	public News selectNewsByNewsNo(String newsNo);
 	public int deletePost(String postNo);
 	public int deleteScrap(String scarpNo);
 	public int updatePost(Post post);

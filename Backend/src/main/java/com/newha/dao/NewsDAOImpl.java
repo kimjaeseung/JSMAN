@@ -226,4 +226,9 @@ public class NewsDAOImpl implements NewsDAO {
 	public User selectUserByName(String name) {
 		return mapper.selectUserByName(name);
 	}
+	
+	@Override
+	public News selectNewsByNewsNo(String newsNo) {
+		return mapper.selectNewsByNewsNo(newsNo);
+	}
 }

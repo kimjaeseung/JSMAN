@@ -103,6 +103,10 @@
 		select * from news where newsNo in (select newsNo from user_scrap_news where userNo = #{userNo});
 	</select>
 	
+	<select id="selectNewsByNewsNo" parameterType="String" resultType="News">
+		select * from news where newsNo = #{newsNo} );
+	</select>
+	
 	<select id="selectAllNews" resultType="News">
 		select * from news order by newsNo desc;
 	</select>

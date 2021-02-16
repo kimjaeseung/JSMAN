@@ -440,8 +440,27 @@ public class UserController {
 	// 사람검색 
 	@ApiOperation(value = "유저 검색", notes = "유저 List 리턴", response = List.class)
 	@GetMapping(value = "/search/people")
-	public List<User> searchUser(@ApiParam(value = "keyword", required = true) @RequestParam String keyword) {
-		return service.searchUser(keyword + "%");
+	public ResponseEntity<List<Map<String, String>>> searchUser(@ApiParam(value = "keyword", required = true) @RequestParam String keyword) {
+		List<User> list = new ArrayList<User>();
+		List<Map<String, String>> result = new ArrayList<Map<String,String>>();
+		HttpStatus status = null;
+		try {
+			 Map<String, String> m = new HashMap<String, String>();
+			 list = service.searchUser(keyword + "%");
+			 for (User user : list) {
+				m.put("userNo", user.getUserNo());
+				m.put("name", user.getName());
+				m.put("thumbnail_path", user.getThumbnail_path());
+				m.put("id", user.getId());
+				m.put("platformType", user.getPlatformType());
+			}
+			 result.add(m);
+			 status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<List<Map<String, String>>>(result, status);
 	}
 	
 	@ApiOperation(value = "유저 정보 by id", notes = "name, thumbnail_path 반환", response = Map.class)

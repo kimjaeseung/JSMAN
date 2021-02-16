@@ -883,4 +883,19 @@ public class NewsController {
 		}
 		return new ResponseEntity<List<Map<String, String>>>(result, status);
 	}
+	
+	@ApiOperation(value = "newsNo로 news 가져오기", notes = "하나의 news 반환", response = List.class)
+	@GetMapping(value = "/article/newsByNewsNo")
+	public ResponseEntity<News> getNewsByNewsNo(@ApiParam(value = "String", required = true) @RequestParam String newsNo) {
+		HttpStatus status = null;
+		News news = new News();
+		try {
+			news = service.selectNews(newsNo);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<News>(news, status);
+	}
 }
