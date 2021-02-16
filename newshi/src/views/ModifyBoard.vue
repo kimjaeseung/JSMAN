@@ -41,7 +41,7 @@ export default {
     };
   },
   methods: {
-    updateBoard(content, files, title) {
+    updateBoard(content, title) {
       let modifiedBoard = {
         boardPostNo: this.board.boardPostNo,
         title: title,

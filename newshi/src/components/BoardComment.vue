@@ -1,27 +1,28 @@
 <template>
-  <v-container>
-    <v-form>
+  <v-container style="padding-left: 10px; padding-top: 0px">
+    <v-form v-if="isLogged">
       <v-text-field
+        style="padding: 0px"
         v-model="newComment"
         placeholder="댓글 추가..."
         ref="comment"
         @focus="isFocus = true"
         @blur="!isFocus"
       >
-        <v-avatar size="100px" slot="prepend">
+        <v-avatar size="40px" slot="prepend">
           <v-img :src="member.thumbnail_path"></v-img>
         </v-avatar>
       </v-text-field>
-      <v-row no-gutters v-show="isFocus">
+      <v-row class="justify-end" no-gutters v-show="isFocus">
         <v-btn @click="cancel">취소</v-btn>
         <v-btn @click="addComment">작성</v-btn>
       </v-row>
     </v-form>
     <v-divider></v-divider>
     <BoardCommentDetail
-      v-for="(comment, index) in commentList"
+      v-for="(com, index) in commentList"
       :key="index"
-      :comment="comment"
+      :comment="com"
       :num="index"
       @delComment="removeComment"
       @updateComment="modifyComment"
@@ -50,6 +51,7 @@ export default {
       commentList: [],
       newComment: '',
       isFocus: false,
+      isLogged: false,
     };
   },
   methods: {
@@ -90,12 +92,13 @@ export default {
           if (response.status >= 200 && response.status < 300) {
             console.log(response.data);
             let newComm = {
-              BoardPostNo: response.data['BoardPostNo'],
-              CommentNo: response.data['CommentNo'],
-              Content: response.data['Content'],
-              Date: response.data['Date'],
-              UserNo: response.data['UserNo'],
+              boardPostNo: response.data['BoardPostNo'],
+              commentNo: response.data['CommentNo'],
+              content: response.data['Content'],
+              date: response.data['Date'],
+              userNo: response.data['UserNo'],
             };
+            console.log(newComm);
             this.commentList.unshift(newComm);
           } else {
             alert('댓글 등록이 실패하였습니다.');
@@ -113,11 +116,17 @@ export default {
     },
   },
   created() {
+    if (localStorage['access-token'] && localStorage['access-token'] !== '') {
+      this.isLogged = true;
+    }
     boardCommentList(
       this.boardPostNo,
       (response) => {
         if (response.status >= 200 && response.status < 300) {
           this.commentList = response.data;
+          console.log('commentList');
+          console.log(response.data);
+          console.log(this.commentList);
         } else {
           alert('댓글을 가져오는데 실패하였습니다.');
         }

@@ -88,12 +88,12 @@ export default {
               'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
             console.log(this.imageSrc);
           } else {
-            alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
+            alert('이미지 업로드에 실패했습니다.');
           }
         },
         (error) => {
           console.error(error);
-          alert('큐레이터의 데이터를 받아오는 중 에러가 발생했습니다.');
+          alert('이미지 업로드 중 에러가 발생했습니다.');
         }
       );
     },
@@ -110,12 +110,12 @@ export default {
               'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
             console.log(this.imageSrc);
           } else {
-            alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
+            alert('이미지 업로드에 실패했습니다.');
           }
         },
         (error) => {
           console.error(error);
-          alert('큐레이터의 데이터를 받아오는 중 에러가 발생했습니다.');
+          alert('이미지 업로드 중 에러가 발생했습니다.');
         }
       );
     },
@@ -124,8 +124,6 @@ export default {
         command: this.command,
         data: {
           src: this.imageSrc,
-          // alt: "YOU CAN ADD ALT",
-          // title: "YOU CAN ADD TITLE"
         },
       };
 
