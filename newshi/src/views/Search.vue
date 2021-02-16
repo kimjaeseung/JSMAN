@@ -60,10 +60,9 @@ export default {
             ).then((response) => { 
                 let resData = response.data;
                 let arr = [];
+                console.log(resData);
                 resData.forEach(e => {
-                    if(e['name'] != undefined) {
                         arr.push(e['name']);
-                    }
                 });
                 this.autocomp_value = arr;
             })

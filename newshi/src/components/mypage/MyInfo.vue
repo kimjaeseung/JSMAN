@@ -41,7 +41,7 @@
               <v-dialog v-model="dialog">
                 <template v-slot:activator="{ on, attrs }">
                   <v-avatar size="150px" v-bind="attrs" v-on="on">
-                    <v-img :src="require('@/assets/images/default_avatar.png')"></v-img>
+                    <v-img :src="member.thumbnail_path"></v-img>
                   </v-avatar>
                 </template>
               <v-card>
@@ -178,9 +178,11 @@ export default {
     fileUpload() {
       console.log(this.file);
       var frm = new FormData();
-      frm.append("file", this.file);
-      frm.append("id", 'kimjea23@naver.com');
-      axios.post('http://localhost/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' } }) 
+      frm.append("file", this.file)
+      let list = [
+        frm
+      ];
+      axios.post('http://localhost:8080/upload', list, { headers: { 'Content-Type': 'multipart/form-data' } }) 
       .then((response) => { 
         // 응답 처리 
         console.log(response)
