@@ -10,7 +10,11 @@
               </v-col>
           </v-row>
           <v-row>
-              <v-col><router-view :key="$route.fullPath"></router-view></v-col>
+              <v-col>
+                  <v-card>
+                  <router-view :key="$route.fullPath"></router-view>
+                  </v-card>
+              </v-col>
           </v-row>
       </v-container>
   </div>

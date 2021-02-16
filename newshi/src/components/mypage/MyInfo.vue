@@ -60,12 +60,13 @@
       </div>
       <div class="d-flex justify-center">
         <p @click="toChannel(member.id)" style="cursor: pointer">{{member.id}}</p></div>
-      <v-container class="ma-5">
+      
+      <v-container class="mt-8">
         <v-row>
           <v-col></v-col>
           <v-col class="d-flex justify-center" cols="8">
             <div>
-              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:150%" color="#646464" @click="toSearch(hashtag)">#{{hashtag}}</v-btn>
+              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:125%" color="#646464" @click="toSearch(hashtag)">#{{hashtag}}</v-btn>
             </div>
           </v-col>
           <v-col></v-col>
@@ -76,7 +77,7 @@
       <v-container>
       <v-row>
         <v-col>
-      <v-card class="mt-10">
+      <v-card class="mt-8">
         <v-list style="text-align: left">
             <v-subheader>구독중인 큐레이터</v-subheader>
             <v-list-item v-for="(follower, index) in followers" :key="index">
