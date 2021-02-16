@@ -235,7 +235,9 @@ export default {
     }
   },
   created() {
-    this.member = this.$store.getters.userProfile;
+    if(this.$store.getters.userProfile.id != undefined) {
+      this.member = this.$store.getters.userProfile;
+    }
     // 내 hashtags 불러오는 axios(임시)
     // this.hashtags = ['#속보', '#정치', '#경제', '#사회', '#문화'];
     
