@@ -187,6 +187,13 @@ export default {
             this.imageSrc =
               'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
             console.log(this.imageSrc);
+            var frm = new FormData();
+            frm.append("id", this.member.id);
+            frm.append("thumbnail_path", this.imageSrc);
+            axios.post('http://localhost:8080/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+            .then(() => {
+              this.$router.go(this.$router.currentRoute);
+            })
           } else {
             alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
           }
