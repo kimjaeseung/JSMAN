@@ -37,7 +37,7 @@
           >
             <v-icon
             >
-              mdi-play
+              mdi-volume-high
             </v-icon>
             Play
           </v-btn>
@@ -49,7 +49,7 @@
           >
             <v-icon
             >
-              mdi-stop
+              mdi-volume-mute
             </v-icon>
             Stop
           </v-btn>
