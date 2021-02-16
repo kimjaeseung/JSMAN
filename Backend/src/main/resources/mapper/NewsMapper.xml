@@ -70,6 +70,10 @@
 		select userNo from user where id = #{id};
 	</select>
 	
+	<select id="selectUserByName" parameterType="String" resultType="User">
+		select userNo from user where name = #{name};
+	</select>
+	
 	<select id="selectUserScrapNewsByPostNo" parameterType="String" resultType="UserScrapNews">
 		select * from user_scrap_news where postNo = #{postNo};
 	</select>
