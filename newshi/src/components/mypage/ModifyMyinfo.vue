@@ -55,7 +55,7 @@
                         <v-btn width=100% dark @click="passwordChangeSubmit()">확인</v-btn>
                     </v-card-actions>
                     <v-card-actions>
-                        <v-btn width=100%>취소</v-btn>
+                        <v-btn width=100% @click="backPage">취소</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -117,6 +117,9 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    backPage() {
+      this.$router.push('/mypage');
+    },
     passwordChangeSubmit() {
       if(!old_check || !new_check) {
         alert('비밀번호를 확인해주세요.')
