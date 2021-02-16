@@ -445,16 +445,16 @@ public class UserController {
 		List<Map<String, String>> result = new ArrayList<Map<String,String>>();
 		HttpStatus status = null;
 		try {
-			 Map<String, String> m = new HashMap<String, String>();
 			 list = service.searchUser(keyword + "%");
 			 for (User user : list) {
+				Map<String, String> m = new HashMap<String, String>();
 				m.put("userNo", user.getUserNo());
 				m.put("name", user.getName());
 				m.put("thumbnail_path", user.getThumbnail_path());
 				m.put("id", user.getId());
 				m.put("platformType", user.getPlatformType());
+				result.add(m);
 			}
-			 result.add(m);
 			 status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
