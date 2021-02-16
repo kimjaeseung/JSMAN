@@ -22,9 +22,6 @@
           </v-list-item>
         </template>
       </v-list>
-       <!-- <div v-if="this.cancelFooter == false">
-        <Footer />
-       </div>  -->
     </div>
   </v-container>
 </template>
@@ -32,16 +29,13 @@
 <script>
 import NewsList from '../components/NewsList.vue';
 import axios from 'axios';
-// import Footer from '../components/Footer.vue';
 const API_URL = 'http://localhost:8080';
 const id = localStorage.getItem('id');
-
 
 export default {
   name: "Main",
   components: { 
     NewsList,
-    // Footer,
   },
   methods: {
     getData: function () {
