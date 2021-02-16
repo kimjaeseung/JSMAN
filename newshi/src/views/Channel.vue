@@ -145,6 +145,10 @@ export default {
       axios.get('http://localhost:8080/sidebarUser', 
             { params: { id: this.$route.params.id } },
           ).then((response) => {
+            let curator = response.data;
+            if(curator.thumbnail_path == null) {
+              curator.thumbnail_path = require('@/assets/images/default_avatar.png');
+            }
             this.curator = response.data;
             this.curator.id = this.$route.params.id;
           });
