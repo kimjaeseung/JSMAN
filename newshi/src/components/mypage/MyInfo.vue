@@ -31,7 +31,7 @@
           </v-col>
           <v-col>
             <v-card-actions class="d-flex justify-end">
-            <v-btn class="mr-3"> 비밀번호 수정 </v-btn>
+            <v-btn class="mr-3" @click="toModify"> 비밀번호 수정 </v-btn>
             </v-card-actions>
           </v-col>
         </v-row>
@@ -55,16 +55,17 @@
               </v-card>
               </v-dialog>
       </div>
-      <div class="d-flex justify-center mt-3" >
-        <h2>{{member.name}}</h2>
+      <div class="d-flex justify-center mt-3">
+        <h2 @click="toChannel(member.id)" style="cursor: pointer">{{member.name}}</h2>
       </div>
-      <div class="d-flex justify-center">{{member.id}}</div>
+      <div class="d-flex justify-center">
+        <p @click="toChannel(member.id)" style="cursor: pointer">{{member.id}}</p></div>
       <v-container class="ma-5">
         <v-row>
           <v-col></v-col>
           <v-col class="d-flex justify-center" cols="8">
             <div>
-              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:150%" color="#646464">#{{hashtag}}</v-btn>
+              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:150%" color="#646464" @click="toSearch(hashtag)">#{{hashtag}}</v-btn>
             </div>
           </v-col>
           <v-col></v-col>
@@ -138,6 +139,12 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    toModify() {
+      this.$router.push('mypage/modify');
+    },
+    toSearch(tag) {
+      this.$router.push('/search/hashtag/' + tag);
+    },
     unfollow(id) {
       var frm = new FormData();
       frm.append("id", this.member.id);
