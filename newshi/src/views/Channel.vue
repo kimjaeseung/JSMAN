@@ -14,7 +14,7 @@
                 <div>
                   <h2>{{ curator.name }}</h2>
                 </div>
-                <div>구독자 없음</div>
+                <div>{{ curator.id }}</div>
               </v-col>
             </v-row>
           </v-container>
@@ -25,19 +25,15 @@
         <v-col class="d-flex justify-center">
           <v-container>
             <v-row v-if="isMyPage == true">
-              <v-col><v-btn block>스크랩 만들기</v-btn></v-col>
-              <v-col><v-btn @click="goBoard">커뮤니티</v-btn></v-col>
+              <v-col><v-btn block @click="toMyPage">마이페이지</v-btn></v-col>
+              <v-col><v-btn block @click="goBoard">커뮤니티</v-btn></v-col>
             </v-row>
             <v-row v-else>
-              <v-col v-if="isSubs == false"
-                ><v-btn block @click="follow">구독하기</v-btn></v-col
-              >
-              <v-col v-else
-                ><v-btn block @click="unfollow" class="error"
-                  >구독취소</v-btn
-                ></v-col
-              >
-              <v-col><v-btn @click="goBoard">커뮤니티</v-btn></v-col>
+              <v-col v-if="isSubs == false">
+                <v-btn block @click="follow">구독하기</v-btn></v-col>
+              <v-col v-else>
+                <v-btn block @click="unfollow" class="error">구독취소</v-btn></v-col>
+              <v-col><v-btn block @click="goBoard">커뮤니티</v-btn></v-col>
             </v-row>
           </v-container>
         </v-col>
@@ -82,6 +78,9 @@ export default {
     };
   },
   methods: {
+    toMyPage() {
+      this.$router.push('/mypage');
+    },
     subsCheck() {
       axios
         .get('http://localhost:8080/subscribe', {

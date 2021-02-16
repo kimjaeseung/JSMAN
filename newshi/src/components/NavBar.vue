@@ -14,7 +14,7 @@
         </div>
       </a>
       <v-spacer />
-      <v-icon @click="search_drawer = !search_drawer">mdi-magnify</v-icon>
+      <v-icon @click="toSearch">mdi-magnify</v-icon>
       <v-dialog
         v-model="dialog"
         width="500"
@@ -71,14 +71,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <v-navigation-drawer right bottom v-model="search_drawer" fixed temporary>
-      <v-autocomplete
-        :search-input.sync="search_word"
-        :items="autocomp_value"
-        filled
-      ></v-autocomplete>
-      <br />{{ search_word }}
-    </v-navigation-drawer>
+    
     <!-- Footer Start -->
     <v-card
       v-show="this.logged == false && this.close != 'true'"
@@ -188,14 +181,12 @@ export default {
   data() {
     return {
       menu_drawer: false,
-      search_drawer: false,
       member: {
         name: '김재성',
         id: 'kimjea23@naver.com',
         thumbnail_path: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
       },
       autocomp_value: [],
-      search_word: '',
       menus: [
         {
           icon: 'bookmark-outline',
@@ -271,6 +262,9 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    toSearch() {
+      this.$router.push("/search");
+    },
     closeDialog() {
       this.dialog = !this.dialog;
       this.isLogin = true;
@@ -317,20 +311,6 @@ export default {
   watch: {
     getMember: function(val) {
       this.member = val;
-    },
-    search_word: function() {
-      console.log('검색어 변경');
-
-      if (this.search_word == undefined) return;
-
-      if (this.search_word == '') this.autocomp_value = [];
-      else if (this.search_word.charAt(0) == '#') {
-        // 태그에 접근하는 axios
-        this.autocomp_value = ['#경제', '#시사', '#IT', '#감성'];
-      } else {
-        // 큐레이터에 접근하는 axios
-        this.autocomp_value = ['사람1', '사람2', '사람3', '감재성'];
-      }
     },
   },
   created() {
