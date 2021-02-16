@@ -25,12 +25,14 @@
                   </v-avatar>
                 </v-col>
                 <v-col style="width:0">
+                  <div @click="move(news)" style="cursor: pointer">
                   <v-card-title>
                     <div class="ellipsis">{{news.title[0]}}</div>
                   </v-card-title>
                   <v-card-subtitle>
                     <div class="ellipsis" v-html="news.curator_summary[0]"></div>
                   </v-card-subtitle>
+                  </div>
                   <v-card-actions class="d-flex justify-end">
                     <v-btn dark small :color="news.islike != undefined && news.islike[0] ? 'red':'grey'" @click="likeBtn(news.scrapNo[0], news.islike[0])"> 
                       <v-icon dark>mdi-heart</v-icon>
@@ -80,6 +82,10 @@ export default {
     }
   },
   methods: {
+    move(newsInfo){
+        this.$router.push({name: 'Article', params: {newsNo: newsInfo.newsNo, newsInfo2: newsInfo} })
+      },
+
     getScrap() {
       axios.get('http://localhost:8080/article/scraplist', 
             { params: { postNo: this.post_no } },
@@ -107,7 +113,7 @@ export default {
                   } else { scrap_news[i]['isdislike'] = new Array(false); }
                 }).finally(() => { 
                   this.scrap_news.push(scrap_news[i]); 
-                  console.log(scrap_news[i].title);
+                  console.log(scrap_news[i]);
                 });
               }
             }

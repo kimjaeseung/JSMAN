@@ -41,7 +41,7 @@
                     <v-img :src="news.image_path[0]"></v-img>
                   </v-avatar>
                 </v-col>
-                <v-col style="width:0">
+                <v-col style="width:0; cursor: pointer" @click="move(news)">
                   <v-card-title>
                     <div class="ellipsis">{{news.title[0]}}</div>
                   </v-card-title>
@@ -84,6 +84,9 @@ export default {
         }
     },
     methods: {
+      move(newsInfo){
+        this.$router.push({name: 'Article', params: {newsNo: newsInfo.newsNo, newsInfo2: newsInfo} })
+      },
       subsCheck() {
         axios
           .get('http://localhost:8080/subscribe', {
