@@ -79,6 +79,51 @@
       ></v-autocomplete>
       <br />{{ search_word }}
     </v-navigation-drawer>
+    <!-- Footer Start -->
+    <v-card
+      v-show="this.logged == false && this.close != 'true'"
+    >
+    <v-footer
+      v-bind="localAttrs"
+      :padless="padless"
+    >
+      <v-card
+        flat
+        tile
+        width="100%"
+        class="black text-center"
+      >
+        <v-card-text>
+          <!-- 로그인 -->
+          <!-- 회원가입 -->
+          <v-btn
+            class="mx-4 white--text"
+            icon
+            @click="dialog = !dialog"
+          >
+            <v-icon size="24px">
+              mdi-account-plus-outline
+            </v-icon>
+          </v-btn>
+          <!-- Footer Close -->
+          <v-btn
+            class="mx-4 white--text"
+            icon
+            @click="closeFooter()"
+          >
+            <v-icon size="24px">
+              mdi-close-outline
+            </v-icon>
+          </v-btn>
+        </v-card-text>
+        <v-divider></v-divider>
+          <v-card-text class="white--text">
+            지금 가입하고 <br>전문가가 추천하는 최신 기사를 받아보세요.
+          </v-card-text>
+        </v-card>
+      </v-footer>
+    </v-card>
+    <!-- Footer end -->
     <v-navigation-drawer v-model="menu_drawer" fixed temporary>
       <v-list>
         <v-list-item-group>
@@ -130,13 +175,15 @@
 import Login from '@/components/Login.vue';
 import Join from '@/components/Join.vue';
 import { mapActions } from 'vuex';
-
+// import Footer from '../components/Footer.vue';
 const localThemeMode = localStorage.getItem('themeMode');
+// const close  = localStorage.getItem('closeFooter');
 
 export default {
   components: {
     Login,
     Join,
+    // Footer,
   },
   data() {
     return {
@@ -176,6 +223,14 @@ export default {
       info: {},
       logged: true,
       switchTheme: '',
+      items: [
+        'default',
+        'absolute',
+        'fixed',
+      ],
+      padless: false,
+      variant: 'fixed',
+      close: '',
     };
   },
   computed: {
@@ -202,6 +257,16 @@ export default {
           break;
       }
       return check;
+    },
+    localAttrs () {
+        const attrs = {}
+        if (this.variant === 'default') {
+          attrs.absolute = false
+          attrs.fixed = false
+        } else {
+          attrs[this.variant] = true
+        }
+        return attrs
     },
   },
   methods: {
@@ -244,6 +309,10 @@ export default {
       this.member = {};
       this.$router.go(this.$router.currentRoute);
     },
+    closeFooter(){
+      localStorage.setItem('closeFooter', true);
+      this.close = 'true';
+    }
   },
   watch: {
     getMember: function(val) {
@@ -285,6 +354,7 @@ export default {
       localThemeMode.toString() == 'true'
         ? (this.$vuetify.theme.dark = true)
         : (this.$vuetify.theme.dark = false); // 시작하자마자 다크테마인지 아닌지 체크
+    this.close = localStorage.getItem('closeFooter');
   },
 };
 </script>
@@ -308,5 +378,8 @@ export default {
 }
 .v-list-item__icon {
   margin-left: 0px !important;
+}
+.v-footer{
+  padding: 0 !important;
 }
 </style>
