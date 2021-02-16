@@ -41,7 +41,7 @@ export default {
   font-weight: 900;
 }
 .news-info {
-  margin-top: 30px;
+  margin: 20px auto;
 }
 .news-info > div {
   margin-right: .5rem;
@@ -51,5 +51,14 @@ export default {
   color: #999;
   font-size: 12px;
   margin-bottom: 20px;
+}
+@media(max-width: 560px){
+  .news-title {
+    font-size: 28px;
+    font-weight: 900;
+  }
+  .news-info {
+    margin: 10px auto;
+  }
 }
 </style>

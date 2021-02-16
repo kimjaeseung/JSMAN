@@ -1,23 +1,21 @@
 <template>
   <v-container>
-      <!-- <v-row no-gutters>현재 스크랩 수: {{scraps.length}}</v-row> -->
     <v-row justify="center">
         <v-col v-for="(scrap, index) in scraps" :key="index" cols="auto">
-        <v-hover v-slot="{ hover }">
-            <v-card width='150' height='150'>
+            <v-card width='130' height='130' class="ma-1">
             <v-img :src="scrap.scrap_thumbnail" aspect-ratio="1">
                 <div fill-height style="width:100%; height:100%;" class="d-flex justify-center align-center" else>
                   <v-container >
                     <v-row>
                       <v-col class="d-flex justify-center align-center">
-                         <v-btn :disabled="hover == false" @click="showNews(scrap.postNo)">보러가기</v-btn>
+                         <v-btn class="subtitle-2" @click="showNews(scrap.postNo)">보러가기</v-btn>
                       </v-col>
                     </v-row>
                     <v-row v-if="isMyPage==true">
                       <v-col class="d-flex justify-center align-center">
                         <v-dialog :retain-focus="false" width="500" v-model="dialog">
                           <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" @click="modifyBtn(scrap.name, scrap.postNo)">
+                            <v-btn class="subtitle-2" v-bind="attrs" v-on="on" @click="modifyBtn(scrap.name, scrap.postNo)">
                              수정하기
                             </v-btn>
                           </template>
@@ -34,15 +32,18 @@
                             </v-card-actions>
                           </v-card>
                         </v-dialog>
-                         <!-- <v-btn :disabled="hover == false">수정하기</v-btn> -->
                       </v-col>
                     </v-row>
                   </v-container>
                 </div>
             </v-img>
-            <div class="ellipsis">{{scrap.name}}</div>
+            <div class="ellipsis subtitle-2 mt-2">{{scrap.name}}</div>
             </v-card>
-        </v-hover>
+        </v-col>
+    </v-row>
+    <v-row v-if="scraps[0]==undefined" height="100%">
+        <v-col class="d-flex justify-center">
+          포스트가 없습니다.
         </v-col>
     </v-row>
     </v-container>
@@ -89,7 +90,7 @@ export default {
     },
     methods: {
       showNews(scrap_no) {
-        this.$router.push('./' + this.member.id + '/' + scrap_no);
+        this.$router.push('./' + this.$route.params.id + '/' + scrap_no);
       },
       modifyBtn(name, postNo) {
         this.modify_title = name;
@@ -110,55 +111,26 @@ export default {
         axios.get('http://localhost:8080/article/post', 
         { params: { id: this.$route.params.id } },
       ).then((response) => { 
-        this.scraps = response.data;
-        this.scraps.forEach((scrap) => {
-          axios.get('http://localhost:8080/article/scraplist', 
-            { params: { postNo: scrap.postNo } },
+        let scraps = response.data;
+        for(let i = 0; i < scraps.length; i++) {
+          setTimeout(() => {
+            axios.get('http://localhost:8080/article/scraplist', 
+            { params: { postNo: scraps[i].postNo } },
           ).then((response) => {
-            scrap.scrap_thumbnail = response.data[0].new_image[0];
+            scraps[i].scrap_thumbnail = response.data[0].new_image[0];
+            this.scraps.push(scraps[i]);
           });
-        })
-        console.log(this.scraps);
-        })
+          }, i * 10);
+        }
+        });
       }
     },
     created() {
       if(this.$store.getters.userProfile.id != undefined) {
       this.member = this.$store.getters.userProfile;
     }
-        //스크랩 받아오는 axios
-      //큐레이터 정보 받아오기..
-      
       this.getPostList();
-        // this.forceUpdate()
-      // this.scraps = [
-      //   {
-      //     title: '테스트1',
-      //     scrap_thumbnail: 'https://imgnews.pstatic.net/image/030/2021/02/01/0002926385_001_20210201141045283.jpg?type=w647',
-      //     scrap_no: 1,
-      //   },
-      //   {
-      //     title: '긴문자자자자자자자자자자자자',
-      //     scrap_thumbnail: 'https://imgnews.pstatic.net/image/005/2021/02/01/611711110015488625_1_20210201135740135.jpg?type=w647',
-      //     scrap_no: 2,
-      //   },
-      //   {
-      //     title: '짧',
-      //     scrap_thumbnail: 'https://imgnews.pstatic.net/image/421/2021/02/01/0005141266_001_20210201142223475.jpg?type=w647',
-      //     scrap_no: 3,
-      //   },
-      //   {
-      //     title: '테스트4',
-      //     scrap_thumbnail: 'https://imgnews.pstatic.net/image/005/2021/02/01/611511110015488651_1_20210201143210985.jpg?type=w647',
-      //     scrap_no: 4,
-      //   },
-      //   {
-      //     title: '테스트5',
-      //     scrap_thumbnail: 'https://imgnews.pstatic.net/image/008/2021/02/01/0004537180_001_20210201140726181.jpg?type=w647',
-      //     scrap_no: 5,
-      //   },
-      // ];
-    },
+  },
 }
 </script>
 

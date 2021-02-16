@@ -25,7 +25,7 @@
         v-for="(newsItem, idx) in newsItems"
         :key="newsItem+idx"
       >
-      <p class="mt-2">{{ newsItem.name }} 님의 추천 </p>
+      <p class="mt-2">{{ newsItem.name }} 님의 오늘의 뉴하!</p>
       <hr>
         <v-list>
           <template v-for="(newsInfo, i) in newsItem.newsLists">

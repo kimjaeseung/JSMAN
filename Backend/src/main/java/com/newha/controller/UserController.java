@@ -244,7 +244,7 @@ public class UserController {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
 		User u = new User();
-
+		
 		System.out.println(list.get(0).toString());
 		try {
 			u.setId((String) list.get(0).get("id"));
@@ -324,21 +324,19 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-
+	
+	
 	@ApiOperation(value = "파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
 	@PostMapping("/upload")
-	public ResponseEntity<Map<String, String>> upload(@RequestBody List<Map<String, Object>> list) {
-		MultipartFile file = (MultipartFile) list.get(0);
+	public ResponseEntity<Map<String, String>> upload(@RequestParam String id,
+			@RequestParam String thumbnail_path
+			) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-		String userNo = String.valueOf(service.userNo((String) list.get(1).get("id")));
-		String thumbnailPath = "https://newha.s3.us-east-2.amazonaws.com/" + file.getOriginalFilename();
+		String userNo = String.valueOf(service.userNo(id));
 
 		try {
-			service.thumbnailPath(userNo, thumbnailPath);
-			File f = new File(file.getOriginalFilename());
-			file.transferTo(f);
-			s3service.uploadOnS3(file.getOriginalFilename(), f);
+			service.thumbnailPath(userNo, thumbnail_path);
 			status = HttpStatus.ACCEPTED;
 			map.put("message", SUCCESS);
 		} catch (Exception e) {
@@ -440,8 +438,27 @@ public class UserController {
 	// 사람검색
 	@ApiOperation(value = "유저 검색", notes = "유저 List 리턴", response = List.class)
 	@GetMapping(value = "/search/people")
-	public List<User> searchUser(@ApiParam(value = "keyword", required = true) @RequestParam String keyword) {
-		return service.searchUser(keyword + "%");
+	public ResponseEntity<List<Map<String, String>>> searchUser(@ApiParam(value = "keyword", required = true) @RequestParam String keyword) {
+		List<User> list = new ArrayList<User>();
+		List<Map<String, String>> result = new ArrayList<Map<String,String>>();
+		HttpStatus status = null;
+		try {
+			 list = service.searchUser(keyword + "%");
+			 for (User user : list) {
+				Map<String, String> m = new HashMap<String, String>();
+				m.put("userNo", user.getUserNo());
+				m.put("name", user.getName());
+				m.put("thumbnail_path", user.getThumbnail_path());
+				m.put("id", user.getId());
+				m.put("platformType", user.getPlatformType());
+				result.add(m);
+			}
+			 status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<List<Map<String, String>>>(result, status);
 	}
 
 	@ApiOperation(value = "유저 정보 by id", notes = "name, thumbnail_path 반환", response = Map.class)

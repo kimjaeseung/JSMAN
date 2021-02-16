@@ -1,36 +1,46 @@
 <template>
   <v-container>
   <h3>내일 볼 기사</h3>
-  <h5>이제 더 이상 미루지 말자...</h5>
-    <v-list>
-      <template v-for="(newsInfo, i) in newsItems">
-        <v-list-item
-          :key="newsInfo+i"
-          @click="move(newsInfo)"
-        >
-          <v-list-item-avatar rounded >
-            <v-img :src="newsInfo.image_path" centered></v-img>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <v-list-item-title v-html="newsInfo.title"></v-list-item-title>
-            <v-list-item-subtitle v-html="newsInfo.company"></v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </template>
-    </v-list>
+    <div v-if="this.logged !== null">
+      <h5>그..그만 미루자...</h5>
+    <!-- <List :news-items="newsItems" /> -->
+      <v-list>
+        <template v-for="(newsInfo, i) in newsItems">
+          <v-list-item
+            :key="newsInfo+i"
+            @click="move(newsInfo)"
+          >
+            <v-list-item-avatar rounded >
+              <v-img :src="newsInfo.image_path" centered></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-html="newsInfo.title"></v-list-item-title>
+              <v-list-item-subtitle v-html="newsInfo.company"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list>
+    </div>
+    <div v-else>
+      <Alert />
+    </div>
   </v-container>
 </template>
 
 <script>
+import Alert from '@/components/Alert.vue';
 import axios from 'axios';
 const API_URL = 'http://localhost:8080';
-const id = localStorage.getItem('id')
+const id = localStorage.getItem('id');
+const isLogged = localStorage.getItem('access-token');
 
 export default {
   name: 'Save',
+  components: { Alert },
   data() {
     return {
-      newsItems: []
+      newsItems: [],
+      logged: isLogged,
     }
   },
   methods: {
