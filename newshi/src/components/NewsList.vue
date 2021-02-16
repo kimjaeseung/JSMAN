@@ -65,8 +65,6 @@ export default {
         newsItems: this.newsInfos,
       }
   },
-  created: function () {
-  }
 }
 </script>
 

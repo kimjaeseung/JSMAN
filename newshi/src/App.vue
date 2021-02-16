@@ -12,7 +12,10 @@ import NavBar from './components/NavBar.vue';
 import AddNews from './components/AddNews.vue';
 
 export default {
-  components: { NavBar, AddNews },
+  components: { 
+    NavBar, 
+    AddNews, 
+  },
 };
 </script>
 <style>
