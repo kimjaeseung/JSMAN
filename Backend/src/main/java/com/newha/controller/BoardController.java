@@ -53,13 +53,8 @@ public class BoardController {
 		HttpStatus status = null;
 		
 		Board b = new Board();
-		b.setBoardNo((String)list.get(0).get("boardNo")); 
-		b.setBoardPostNo((String)list.get(0).get("boardPostNo"));
 		b.setContent((String)list.get(0).get("content"));
-		b.setDate((String)list.get(0).get("date"));
-		b.setIs_notice((String)list.get(0).get("is_notice"));
 		b.setTitle((String)list.get(0).get("title"));
-		b.setVisit_cnt((String)list.get(0).get("visit_cnt"));
 				
 		try {
 			String userNo = Integer.toString(userservice.userNo((String)list.get(1).get("id")));
@@ -202,7 +197,7 @@ public class BoardController {
 			@ApiParam(value = "String", required = true) @RequestParam String id,
 			@ApiParam(value = "String", required = true) @RequestParam String content) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-
+		
 		HttpStatus status = null;
 		try {
 			service.boardCommentInsert(boardPostNo, id, content);

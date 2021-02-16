@@ -9,8 +9,8 @@
           <v-card>
             <v-container>
               <v-row>
-                <v-col class="caption">
-                  {{news.date}}
+                <v-col class="caption" cols=8>
+                  {{news.article_date[0]}}
                 </v-col>
                 <v-col class="d-flex justify-end">
                   <v-btn fab x-small dark color="grey">
@@ -21,24 +21,24 @@
               <v-row no-gutters>
                 <v-col class="ma-auto" cols=auto>
                   <v-avatar size="120" tile>
-                    <v-img :src="news.news_image"></v-img>
+                    <v-img :src="news.image_path[0]"></v-img>
                   </v-avatar>
                 </v-col>
                 <v-col style="width:0">
                   <v-card-title>
-                    <div class="ellipsis">{{news.title}}</div>
+                    <div class="ellipsis">{{news.title[0]}}</div>
                   </v-card-title>
                   <v-card-subtitle>
-                    <div class="ellipsis">{{news.curator_summary}}</div>
+                    <div class="ellipsis" v-html="news.curator_summary[0]"></div>
                   </v-card-subtitle>
                   <v-card-actions class="d-flex justify-end">
-                    <v-btn dark small :color="news.islike ? 'red':'grey'"> 
+                    <v-btn dark small :color="news.islike != undefined && news.islike[0] ? 'red':'grey'" @click="likeBtn(news.scrapNo[0], news.islike[0])"> 
                       <v-icon dark>mdi-heart</v-icon>
-                      <div>{{news.like_cnt}}</div>
+                      <div>{{news.like_cnt[0]}}</div>
                     </v-btn>
-                    <v-btn dark small :color="news.isdislike ? 'blue':'grey'"> 
+                    <v-btn dark small :color="news.isdislike != undefined && news.isdislike[0] ? 'blue':'grey'" @click="dislikeBtn(news.scrapNo[0], news.isdislike[0])"> 
                       <v-icon dark>mdi-heart-broken</v-icon>
-                      <div>{{news.dislike_cnt}}</div>
+                      <div>{{news.dislike_cnt[0]}}</div>
                     </v-btn>
                   </v-card-actions>
                 </v-col>
@@ -54,54 +54,140 @@
 <script>
 import axios from 'axios';
 export default {
+  computed: {
+    getMember() {
+      return this.$store.state.userProfile;
+    },
+  },
+  watch: {
+    getMember: function(val) {
+      this.member = val;
+      if(this.member.id == this.$route.params.id){
+        this.isMyPage = true;
+      }
+    },
+    member: function() {
+      // 스크랩 기사들 axios
+      this.getScrap();
+    }
+  },
   data() {
     return {
-      scrap_no: 0,
+      post_no: 0,
       id: String,
-      scrap_news: []
+      scrap_news: [],
+      member: {},
     }
   },
   methods: {
+    getScrap() {
+      axios.get('http://localhost:8080/article/scraplist', 
+            { params: { postNo: this.post_no } },
+          ).then((response) => {
+            let scrap_news = response.data;
+            // 사진없는 기사 이미지 추가할것.
+            // 좋아요 싫어요 axios 추가하자
+            
+            if (localStorage['access-token'] && localStorage['access-token'] !== '') {
+              for(let i = 0; i < scrap_news.length; i++) {
+                axios.get('http://localhost:8080/article/islike',
+                {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
+                .then((response) => {
+                  if(response.data['message'] == 'success') {
+                    scrap_news[i]['islike'] = new Array(true);
+                  } else { scrap_news[i]['islike'] = new Array(false); }
+                }).finally(() => {
+                  
+                });
+                  axios.get('http://localhost:8080/article/isdislike',
+                {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
+                .then((response) => {
+                  if(response.data['message'] == 'success') {
+                    scrap_news[i]['isdislike'] = new Array(true);
+                  } else { scrap_news[i]['isdislike'] = new Array(false); }
+                }).finally(() => { 
+                  this.scrap_news.push(scrap_news[i]); 
+                  console.log(scrap_news[i].title);
+                });
+              }
+            }
+          }).finally(() => {
+            setTimeout(() => {
+              this.scrap_news.sort(function(a, b) {
+                return a.scrapNo - b.scrapNo;
+              });
+            }, 5);
+          });
+          
+    },
+    likeBtn(scrapNo, check) {
+      if (localStorage['access-token'] && localStorage['access-token'] !== '') {
+        // console.log('좋아요 axios');
+        console.log(scrapNo);
+        console.log(check);
+        axios.get('http://localhost:8080/article/like',
+                {params: { id: this.member.id, scrapNo: scrapNo}})
+                .then(() => {
+                });
+        
+        if(check == true) {
+          axios.get('http://localhost:8080/article/decrealike',
+                {params: {scrapNo: scrapNo}})
+                .then(() => {
+                });
+        } else {
+          axios.get('http://localhost:8080/article/increalike',
+                {params: {scrapNo: scrapNo}})
+                .then(() => {
+                });
+        }
+        this.scrap_news = [];
+        this.getScrap();
+      } else {
+        alert('로그인을 해주세요.');
+      }
+    },
+    dislikeBtn(scrapNo, check) {
+      if (localStorage['access-token'] && localStorage['access-token'] !== '') {
+        // console.log("싫어요 axios");
+        console.log(scrapNo);
+        console.log(check);
+        axios.get('http://localhost:8080/article/dislike',
+                {params: { id: this.member.id, scrapNo: scrapNo}})
+                .then(() => {
+                });
+        if(check == true) {
+          axios.get('http://localhost:8080/article/decreadislike',
+                {params: {scrapNo: scrapNo}})
+                .then(() => {
+                });
+        } else {
+          axios.get('http://localhost:8080/article/increadislike',
+                {params: {scrapNo: scrapNo}})
+                .then(() => {
+                });
+        }
+        this.scrap_news = [];
+        this.getScrap();
+      } else {
+        alert('로그인을 해주세요.');
+      }
+    },
     numberWithCommas(x) {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
     backPage() {
-      this.$emit("callScrap");
+      this.$router.go(-1);
     }
   },
   created() {
-    this.scrap_no = this.$route.params.scrap_no;
+    if(this.$store.getters.userProfile.id != undefined) {
+      this.member = this.$store.getters.userProfile;
+    }
+    console.log("member>>>>>");
+    console.log(this.member.id);
+    this.post_no = this.$route.params.scrap_no;
     this.id = this.$route.params.id;
-
-    // 스크랩 기사들 axios
-    axios.get('http://localhost:8080/article/scraplist', 
-            { params: { postNo: this.scrap_no } },
-          ).then((response) => {
-            this.scrap_news = response.data;
-          });
-
-    // this.scrap_news = [
-    //   {
-    //     title: '증여세는 시가 기준…증여 직후 거래가격 뛰면 세금 더 낼수도',
-    //     curator_summary: '기사요약기사요약기사요약기사요약기사요약기사요약기사요약',
-    //     like_cnt: this.numberWithCommas(12345),
-    //     dislike_cnt: this.numberWithCommas(6789),
-    //     date: '2021-02-01 23:43',
-    //     image_path: 'https://imgnews.pstatic.net/image/001/2021/02/02/PYH2021011914410001300_P4_20210202120232595.jpg?type=w647',
-    //     islike: true,
-    //     isdislike: false,
-    //   },
-    //   {
-    //     title: "회삿돈 빼돌려 증여자금 마련…부동산 '아빠찬스' 딱 걸렸네",
-    //     curator_summary: '기사요약기사요약기사요약기사요약기사요약기사요약기사요약',
-    //     like_cnt: this.numberWithCommas(23345),
-    //     dislike_cnt: this.numberWithCommas(67349),
-    //     date: '2020-12-01 23:43',
-    //     image_path: 'https://imgnews.pstatic.net/image/025/2021/02/02/0003074770_001_20210202150647925.jpg?type=w647',
-    //     islike: false,
-    //     isdislike: true,
-    //   },
-    // ]
   },
 }
 </script>
