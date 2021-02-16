@@ -115,6 +115,7 @@ export default {
                       scrap_news[i]['isdislike'] = new Array(true);
                     } else { scrap_news[i]['isdislike'] = new Array(false); }
                   }).finally(() => { 
+                    if(scrap_news[i].image_path[0] == null) scrap_news[i].image_path[0] = require('@/assets/images/default-image.jpg')
                     this.scrap_news.push(scrap_news[i]); 
                   });
                   }, i * 20 + 20);

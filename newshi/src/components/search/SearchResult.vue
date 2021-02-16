@@ -162,7 +162,9 @@ export default {
                 let arr = [];
                 resData.forEach(e => {
                   if(e['name'] == name){
-                    console.log(e);
+                    if(e.thumbnail_path == null){
+                      e.thumbnail_path = require('@/assets/images/default_avatar.png');
+                    }
                     this.curator = e;
                   }
                 });
@@ -173,6 +175,11 @@ export default {
             { params: { name: name } },
             ).then((response) => { 
                 this.scrap_news = response.data;
+                for(let i = 0; i < this.scrap_news.length; i++) {
+                  if(this.scrap_news[i].image_path[0] == null) {
+                    this.scrap_news[i].image_path[0] = require('@/assets/images/default-image.jpg');
+                  }
+                }
             })
         } else {
           let tag = this.$route.params.search_word;
@@ -180,7 +187,12 @@ export default {
             { params: { tagName: tag } },
             ).then((response) => { 
                 this.scrap_news = response.data;
-            })
+                for(let i = 0; i < this.scrap_news.length; i++) {
+                  if(this.scrap_news[i].image_path[0] == null) {
+                    this.scrap_news[i].image_path[0] = require('@/assets/images/default-image.jpg');
+                  }
+                }
+            });
         }
     },
 }
