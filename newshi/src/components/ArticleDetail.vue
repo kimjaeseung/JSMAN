@@ -18,7 +18,7 @@
           @click="save()"
           icon
         >
-          <v-icon medium v-if="this.saved !== true">mdi-bookmark</v-icon>
+          <v-icon medium v-if="this.saved !== true">mdi-bookmark-outline</v-icon>
           <v-icon medium v-else color="#ff9800">mdi-bookmark</v-icon>
         </v-btn>
       </div>
