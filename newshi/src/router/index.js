@@ -18,7 +18,6 @@ import ModifyMyinfo from '../components/mypage/ModifyMyinfo.vue';
 import Search from '../views/Search.vue';
 import NoSearch from '../components/search/NoSearch.vue';
 import SearchResult from '../components/search/SearchResult.vue';
-import Board from '../views/Board.vue';
 import BoardDetail from '../views/BoardDetail.vue';
 import AddBoard from '../views/AddBoard.vue';
 import ModifyBoard from '../views/ModifyBoard.vue';
@@ -144,13 +143,8 @@ const routes = [
         path: 'board',
         name: 'ChannelBoard',
         component: ChannelBoard,
-      }
+      },
     ],
-  },
-  {
-    path: '/board/:id',
-    name: 'Board',
-    component: Board,
   },
   {
     path: '/addBoard',
