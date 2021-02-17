@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { API_BASE_URL } from '@/config';
+
 export default {
   props: {
     postNo: String,
@@ -88,7 +90,7 @@ export default {
   },
   created() {
     this.id = localStorage['id'];
-    this.url = `http://localhost:8081/${this.id}/${this.postNo}`;
+    this.url = API_BASE_URL + `${this.id}/${this.postNo}`;
     // this.url = `http://i4a307.p.ssafy.io/${this.id}/${this.postNo}`;
   },
 };

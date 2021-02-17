@@ -51,6 +51,7 @@
 
 <script>
 import axios from 'axios';
+import { API_BASE_URL } from '@/config';
 
 export default {
   computed: {
@@ -99,7 +100,7 @@ export default {
       },
       modify() {
         console.log(this.modify_postNo);
-        axios.put('http://localhost:8080/article/post', { id: this.$route.params.id, name: this.modify_title, postNo: this.modify_postNo})
+        axios.put(API_BASE_URL + 'article/post', { id: this.$route.params.id, name: this.modify_title, postNo: this.modify_postNo})
         .then(() => {
           this.$router.go(this.$router.currentRoute);
         });
@@ -108,13 +109,13 @@ export default {
         this.dialog=false;
       },
       getPostList() {
-        axios.get('http://localhost:8080/article/post', 
+        axios.get(API_BASE_URL + 'article/post', 
         { params: { id: this.$route.params.id } },
       ).then((response) => { 
         let scraps = response.data;
         for(let i = 0; i < scraps.length; i++) {
           setTimeout(() => {
-            axios.get('http://localhost:8080/article/scraplist', 
+            axios.get(API_BASE_URL + 'article/scraplist', 
             { params: { postNo: scraps[i].postNo } },
           ).then((response) => {
             if(response.data[0] != undefined) { 

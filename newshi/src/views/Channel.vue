@@ -57,6 +57,7 @@
 
 <script>
 import axios from 'axios';
+import { API_BASE_URL } from '@/config';
 
 export default {
   computed: {
@@ -90,7 +91,7 @@ export default {
     },
     subsCheck() {
       axios
-        .get('http://localhost:8080/subscribe', {
+        .get(API_BASE_URL + 'subscribe', {
           params: { id: this.member.id },
         })
         .then((response) => {
@@ -118,7 +119,7 @@ export default {
       frm.append('id', this.member.id);
       frm.append('id2', this.$route.params.id);
       axios
-        .post('http://localhost:8080/subsc', frm, {
+        .post(API_BASE_URL + 'subsc', frm, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then(() => {
@@ -130,7 +131,7 @@ export default {
       frm.append('id', this.member.id);
       frm.append('id2', this.$route.params.id);
       axios
-        .post('http://localhost:8080/subscdelete', frm, {
+        .post(API_BASE_URL + 'subscdelete', frm, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then(() => {
@@ -142,14 +143,14 @@ export default {
         this.btn_name = '커뮤니티'
         this.$router.push('/channel/' + this.$route.params.id);
       } else {
-        this.btn_name = '스크랩 페이지'
+        this.btn_name = '포스트 페이지'
         this.$router.push(this.$route.params.id + '/board');
       }
     },
   },
   created() {
     if(this.$router.currentRoute.name == 'ChannelBoard') {
-        this.btn_name = '스크랩 페이지';
+        this.btn_name = '포스트 페이지';
       } else {
         this.btn_name = '커뮤니티';
       }
@@ -160,7 +161,7 @@ export default {
       // 내 정보랑 같은지 체크해서
       // 하위 컴포넌트에 전달
       // this.showScrap();
-      axios.get('http://localhost:8080/sidebarUser', 
+      axios.get(API_BASE_URL + 'sidebarUser', 
             { params: { id: this.$route.params.id } },
           ).then((response) => {
             let curator = response.data;

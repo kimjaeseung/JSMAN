@@ -124,6 +124,7 @@
 import axios from 'axios';
 import { mapActions } from 'vuex';
 import { uploadImage } from '@/api/board.js';
+import { API_BASE_URL } from '@/config';
 
 const tag_dict = {
         '속보': 0,
@@ -162,7 +163,7 @@ export default {
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
     userDelete() {
-      axios.delete('http://localhost:8080/delete', {params: { id: this.member.id }})
+      axios.delete(API_BASE_URL + 'delete', {params: { id: this.member.id }})
       .then(() => {
         this.logout();
         this.$router.go(this.$router.currentRoute);
@@ -181,7 +182,7 @@ export default {
       frm.append("id", this.member.id);
       frm.append("id2", id);
       console.log(id);
-      axios.post('http://localhost:8080/subscdelete', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+      axios.post(API_BASE_URL + 'subscdelete', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
       .then(() => {
         this.$router.go(this.$router.currentRoute);
       })
@@ -193,7 +194,7 @@ export default {
         params.append("list",tag_dict[tag]);
       });
       console.log(this.member.id);
-      axios.get('http://localhost:8080/tagListUpdate', 
+      axios.get(API_BASE_URL + 'tagListUpdate', 
       { params: params },
     ).then(() => { 
       this.$router.go(this.$router.currentRoute);
@@ -220,7 +221,7 @@ export default {
             var frm = new FormData();
             frm.append("id", this.member.id);
             frm.append("thumbnail_path", this.imageSrc);
-            axios.post('http://localhost:8080/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+            axios.post(API_BASE_URL + 'upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
             .then(() => {
               this.$router.go(this.$router.currentRoute);
             })
@@ -235,7 +236,7 @@ export default {
       );
     },
     getFollowers() {
-      axios.get('http://localhost:8080/subscribe', 
+      axios.get(API_BASE_URL + 'subscribe', 
       { params: { id: this.member.id } },
     ).then((response) => { 
         // 응답 처리 
@@ -252,7 +253,7 @@ export default {
       })
     },
     getTagList() {
-      axios.get('http://localhost:8080/tagList', 
+      axios.get(API_BASE_URL + 'tagList', 
       { params: { id: this.member.id } },
     ).then((response) => { 
       var hashtags = response.data;

@@ -65,6 +65,8 @@
 
 <script>
 import axios from 'axios';
+import { API_BASE_URL } from '@/config';
+
 export default {
   computed: {
     getMember() {
@@ -108,7 +110,7 @@ export default {
       },
       subsCheck() {
         axios
-          .get('http://localhost:8080/subscribe', {
+          .get(API_BASE_URL + 'subscribe', {
             params: { id: this.member.id },
           })
           .then((response) => {
@@ -130,7 +132,7 @@ export default {
           frm.append('id', this.member.id);
           frm.append('id2', this.curator.id);
           axios
-            .post('http://localhost:8080/subsc', frm, {
+            .post(API_BASE_URL + 'subsc', frm, {
               headers: { 'Content-Type': 'multipart/form-data' },
             })
             .then(() => {
@@ -144,7 +146,7 @@ export default {
         frm.append('id', this.member.id);
         frm.append('id2', this.curator.id);
         axios
-          .post('http://localhost:8080/subscdelete', frm, {
+          .post(API_BASE_URL + 'subscdelete', frm, {
             headers: { 'Content-Type': 'multipart/form-data' },
           })
           .then(() => {
@@ -174,7 +176,7 @@ export default {
         if(this.$route.params.mode == 'curator') {
           let name = this.$route.params.search_word;
           //이름으로 아이디랑 썸네일 받아오기
-          axios.get('http://localhost:8080/search/people', 
+          axios.get(API_BASE_URL + 'search/people', 
             { params: { keyword: name } },
             ).then((response) => { 
                 let resData = response.data;
@@ -190,7 +192,7 @@ export default {
                 this.autocomp_value = arr;
             })
           //이름으로 기사들 받아오기
-          axios.get('http://localhost:8080/article/newsByName', 
+          axios.get(API_BASE_URL + 'article/newsByName', 
             { params: { name: name } },
             ).then((response) => { 
                 this.scrap_news = response.data;
@@ -202,7 +204,7 @@ export default {
             })
         } else {
           let tag = this.$route.params.search_word;
-          axios.get('http://localhost:8080/article/newsByTag', 
+          axios.get(API_BASE_URL + 'article/newsByTag', 
             { params: { tagName: tag } },
             ).then((response) => { 
                 this.scrap_news = response.data;
