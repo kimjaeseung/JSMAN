@@ -34,8 +34,6 @@
               <v-menu offset-y>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    color="primary"
-                    dark
                     v-bind="attrs"
                     v-on="on"
                   >
@@ -60,8 +58,10 @@
             <div class="d-flex justify-center">
               <v-dialog v-model="dialog">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-avatar size="150px" v-bind="attrs" v-on="on">
-                    <v-img :src="member.thumbnail_path"></v-img>
+                  <v-avatar class="elevation-13" size="160px">
+                    <v-avatar size="150px" v-bind="attrs" v-on="on">
+                      <v-img :src="member.thumbnail_path"></v-img>
+                    </v-avatar>
                   </v-avatar>
                 </template>
               <v-card>
@@ -194,10 +194,10 @@ export default {
         params.append("list",tag_dict[tag]);
       });
       console.log(this.member.id);
-      axios.get(API_BASE_URL + 'tagListUpdate', 
+      axios.get('http://localhost:8080/tagListUpdate', 
       { params: params },
     ).then(() => { 
-      this.$router.push('/mypage');
+      window.location.reload();
       }) .catch((error) => { 
         // 예외 처리 
         console.log(error);
@@ -221,7 +221,7 @@ export default {
             var frm = new FormData();
             frm.append("id", this.member.id);
             frm.append("thumbnail_path", this.imageSrc);
-            axios.post(API_BASE_URL + 'upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+            axios.post('http://localhost:8080/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
             .then(() => {
               window.location.reload();
             })
@@ -236,7 +236,7 @@ export default {
       );
     },
     getFollowers() {
-      axios.get(API_BASE_URL + 'subscribe', 
+      axios.get('http://localhost:8080/subscribe', 
       { params: { id: this.member.id } },
     ).then((response) => { 
         // 응답 처리 
@@ -253,7 +253,7 @@ export default {
       })
     },
     getTagList() {
-      axios.get(API_BASE_URL + 'tagList', 
+      axios.get('http://localhost:8080/tagList', 
       { params: { id: this.member.id } },
     ).then((response) => { 
       var hashtags = response.data;
