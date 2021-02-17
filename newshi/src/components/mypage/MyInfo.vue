@@ -31,7 +31,27 @@
           </v-col>
           <v-col>
             <v-card-actions class="d-flex justify-end">
-            <v-btn class="mr-3" @click="toModify"> 비밀번호 수정 </v-btn>
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    회원정보 수정
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-title @click="toModify"> 비밀번호 수정 </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title @click="userDelete"> 회원탈퇴 </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            <!-- <v-btn class="mr-3" @click="toModify"> 비밀번호 수정 </v-btn> -->
             </v-card-actions>
           </v-col>
         </v-row>
@@ -141,6 +161,14 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    userDelete() {
+      axios.delete('http://localhost:8080/delete', {params: { id: this.member.id }})
+      .then(() => {
+        this.logout();
+        this.$router.go(this.$router.currentRoute);
+        // this.$router.push('/');
+      })
+    },
     toModify() {
       this.$router.push('mypage/modify');
     },
