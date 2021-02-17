@@ -25,6 +25,7 @@
                 <div class="mx-auto text-center">
                   <v-avatar
                     color="brown"
+                    class="elevation-5"
                   >
                     <v-img v-if="user.thumnail_path !== undefined" :src="user.thumnail_path[0]"></v-img>
                   </v-avatar>
@@ -37,10 +38,13 @@
                   </span>
                   <br>
                   <v-btn
-                    tile
-                    text
+                    class="mt-1"
+                    rounded
+                    color="#fcbf49"
+                    dark
                     v-if="user.id !== undefined"
                     @click="follow(user.id[0])"
+                    elevation="3"
                   >
                     구독
                   </v-btn>
@@ -146,7 +150,7 @@ export default {
       frm.append("id", id);
       frm.append("id2", subscribeid);
       console.log(id, subscribeid);
-      axios.post('http://localhost:8080/subsc', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+      axios.post(`${API_URL}`+'subsc', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
       .then(() => {
         this.$router.go(this.$router.currentRoute);
         console.log('구독 성공')
@@ -179,5 +183,8 @@ export default {
   opacity: .5;
   position: absolute;
   width: 100%;
+}
+.v-list-item {
+  padding-left: 0 !important;
 }
 </style>
