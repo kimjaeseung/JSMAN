@@ -3,11 +3,11 @@
     <v-container >
       <v-row no-gutters class="mx-3">
         <v-col class="d-flex justify-center align-center" cols="3">
-          <!-- <v-responsive :aspect-ratio="1/1"> -->
+          <v-responsive :aspect-ratio="1/1">
           <v-avatar width="100%" height="100%">
-            <v-img :src="curator.thumbnail_path"></v-img>
+            <v-img :src="curator.thumbnail_path" aspect-ratio="1/1"></v-img>
           </v-avatar>
-          <!-- </v-responsive> -->
+          </v-responsive>
         </v-col>
         <v-col cols="9">
           <v-container fill-height class="d-flex align-center ml-1">
