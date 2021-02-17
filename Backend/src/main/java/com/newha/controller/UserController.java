@@ -76,6 +76,7 @@ public class UserController {
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -96,6 +97,7 @@ public class UserController {
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -118,6 +120,7 @@ public class UserController {
 			map.put("confirm", confirm);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Integer>>(map, status);
@@ -142,6 +145,7 @@ public class UserController {
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<ArrayList<Map<String, String>>>(list, status);
@@ -163,6 +167,7 @@ public class UserController {
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<ArrayList<Map<String, String>>>(list, status);
@@ -189,6 +194,7 @@ public class UserController {
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<ArrayList<Map<String, String>>>(list2, status);
@@ -207,6 +213,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -225,6 +232,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -257,6 +265,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 
@@ -275,6 +284,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -293,6 +303,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -312,6 +323,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -331,6 +343,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -351,6 +364,7 @@ public class UserController {
 			map.put("message", SUCCESS);
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -467,6 +481,7 @@ public class UserController {
 			}
 			 status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
@@ -488,6 +503,7 @@ public class UserController {
 			map.put("userNo", u.getUserNo());
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			map.put("message", FAIL);
 		}
@@ -508,6 +524,7 @@ public class UserController {
 			map.put("id", u.getId());
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			map.put("message", FAIL);
 		}
