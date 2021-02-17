@@ -13,7 +13,7 @@
                 <v-card-actions>
                 <v-chip-group
                   v-model="tags"
-                  active-class="yellow --text"
+                  active-class="green accent-1 --text"
                   column
                   multiple
                 >
