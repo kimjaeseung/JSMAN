@@ -3,7 +3,8 @@
       <v-container>
           <v-row>
               <v-col>
-                  <v-autocomplete solo @change="(event) => search(event)" 
+                  <v-autocomplete solo @change="(event) => search(event)"
+                      placeholder="#태그 혹은 큐레이터를 입력하세요." 
                       :search-input.sync="search_word" 
                       :items="autocomp_value">
                   </v-autocomplete>

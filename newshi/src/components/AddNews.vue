@@ -1,5 +1,11 @@
 <template>
   <v-dialog v-model="addDialog" fullscreen v-if="isLogged">
+    <v-overlay :value="overlay">
+      <v-progress-circular
+      :size="60"
+      indeterminate
+    ></v-progress-circular>
+    </v-overlay>
     <template v-slot:activator="{ on, attrs }">
       <v-btn color="#fcbf49" dark fixed bottom right fab v-bind="attrs" v-on="on">
         <v-icon>mdi-pencil</v-icon>
