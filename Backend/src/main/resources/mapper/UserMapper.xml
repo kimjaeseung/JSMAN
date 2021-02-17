@@ -41,6 +41,10 @@
 		select userNo from user where id = #{id}
 	</select>
 	
+	<select id="selectJoinTagByuserNo" parameterType="string" resultType="String">
+		select name from join_tag where userNo = #{userNo}
+	</select>
+	
 	<insert id="insertTag" parameterType="string">
 		insert into join_tag values ( ( select userNo from user where id = #{id} ), #{tag} );
 	</insert>

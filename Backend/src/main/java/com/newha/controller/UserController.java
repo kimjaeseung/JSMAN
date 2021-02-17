@@ -516,18 +516,48 @@ public class UserController {
 	
 	@ApiOperation(value = "큐레이터 추천", notes = "회원가입때 태그 기반으로 큐레이터를 추천", response = List.class)
 	@GetMapping(value = "/userrecommend")
-	public ResponseEntity<List<User>> recomendPeople(
+	public ResponseEntity<List<Map<String, String[]>>> recomendPeople(
 			@ApiParam(value = "userNo", required = true) @RequestParam String id) {
-		List<User> list = new ArrayList<User>();
+		List<Map<String, String[]>> result = new ArrayList<Map<String,String[]>>();
 		HttpStatus status = null;
 		try {
+			List<User> list = new ArrayList<User>();
 			String userNo = Integer.toString(service.userNo(id));
 			list = service.selectUserByTag(userNo);
+			for (User user : list) {
+				if(user.getId().equals(id))//자기 자신은 제외
+					continue;
+				ArrayList<Integer> follows = service.follow(Integer.parseInt(userNo));
+				boolean flag = false;
+				for (Integer follow : follows) {//이미 구독중인지 확인
+					if(user.getUserNo().equals(Integer.toString(follow)))
+						flag = true;
+				}
+				if(flag)//구독중이면 제외
+					continue;
+				
+				Map<String, String[]> m = new HashMap<String, String[]>();
+				m.put("userNo", new String[] {user.getUserNo()});
+				m.put("name", new String[] {user.getName()});
+				m.put("thumnail_path", new String[] {user.getThumbnail_path()});
+				m.put("id", new String[] {user.getId()});
+				m.put("platformType", new String[] {user.getPlatformType()});
+				
+				List<String> temp = service.selectJoinTagByuserNo(userNo);
+				String tags [] = new String[temp.size()];
+				int cnt = 0;
+				for (String s : temp) {
+					tags[cnt++] = s;
+				}
+				m.put("tag", tags);
+				result.add(m);
+			}
+			
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return new ResponseEntity<List<User>>(list, status);
+		return new ResponseEntity<List<Map<String, String[]>>>(result, status);
 	}
 }

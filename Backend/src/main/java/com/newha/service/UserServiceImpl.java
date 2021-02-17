@@ -133,5 +133,10 @@ public class UserServiceImpl implements UserService {
 	public void changePassword(String id, String password) {
 		dao.changePassword(id, password);
 	}
+	
+	@Override
+	public List<String> selectJoinTagByuserNo(String userNo) {
+		return dao.selectJoinTagByuserNo(userNo);
+	}
 
 }

@@ -192,8 +192,9 @@
     </div>
 
     <v-row>
-      <v-col class="d-flex flex-row-reverse">
-        <v-btn @click="save">등록</v-btn>
+      <v-col class="d-flex flex-row-reverse ma-1">
+        <v-btn class="ml-2" @click="cancel">취소</v-btn>
+        <v-btn class="ml-2" @click="save">등록</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -274,6 +275,9 @@ export default {
     this.editor.destroy();
   },
   methods: {
+    cancel() {
+      this.$emit('cancel');
+    },
     save() {
       console.log('타이틀!!!');
       console.log(this.title);

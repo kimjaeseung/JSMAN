@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Tiptap @saveData="addBoard"></Tiptap>
+    <Tiptap @saveData="addBoard" @cancel="cancel"></Tiptap>
   </v-container>
 </template>
 
@@ -35,6 +35,10 @@ export default {
           alert('게시판 작성 중 에러가 발생했습니다..');
         }
       );
+    },
+    cancel() {
+      const id = localStorage['id'];
+      this.$router.push(`channel/${id}/board/`);
     },
   },
 };

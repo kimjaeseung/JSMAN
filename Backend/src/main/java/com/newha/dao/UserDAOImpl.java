@@ -134,5 +134,9 @@ public class UserDAOImpl implements UserDAO {
 	public void changePassword(String id, String password) {
 		mapper.changePassword(id, password);
 	}
-
+	
+	@Override
+	public List<String> selectJoinTagByuserNo(String userNo) {
+		return mapper.selectJoinTagByuserNo(userNo);
+	}
 }
