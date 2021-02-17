@@ -16,6 +16,7 @@
       <v-spacer />
       <v-icon @click="toSearch">mdi-magnify</v-icon>
       <v-dialog
+        style="position: fixed"
         v-model="dialog"
         width="500"
         height="500"
@@ -267,8 +268,7 @@ export default {
       this.logged = false;
       this.logout();
       this.member = {};
-      if (this.$router.currentRoute == '/')
-        window.location.reload();
+      if (this.$router.currentRoute == '/') window.location.reload();
       else this.$router.push('/');
     },
     closeFooter() {
