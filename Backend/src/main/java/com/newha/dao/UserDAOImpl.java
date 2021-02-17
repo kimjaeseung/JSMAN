@@ -125,6 +125,12 @@ public class UserDAOImpl implements UserDAO {
 		return mapper.socialLogin(u);
 	}
 
+	@Override
+	public void changePassword(String id, String password) {
+		mapper.changePassword(id, password);
+		
+	}
+
 
 	
 

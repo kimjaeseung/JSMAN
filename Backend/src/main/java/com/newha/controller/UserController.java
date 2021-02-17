@@ -325,6 +325,24 @@ public class UserController {
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
 	
+	@ApiOperation(value = "회원 비밀번호 수정", notes = "수정 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
+	@PutMapping(value = "/changePassword")
+	public ResponseEntity<Map<String, String>> changePassword(
+			@ApiParam(value = "String", required = true) @RequestParam String id, 
+			@ApiParam(value = "String", required = true) @RequestParam String password
+			) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			service.changePassword(id, password);
+			map.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
 	
 	@ApiOperation(value = "파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
 	@PostMapping("/upload")

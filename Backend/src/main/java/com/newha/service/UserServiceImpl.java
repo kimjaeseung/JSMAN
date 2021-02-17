@@ -124,4 +124,9 @@ public class UserServiceImpl implements UserService {
 		return dao.socialLogin(u);
 	}
 
+	@Override
+	public void changePassword(String id, String password) {
+		dao.changePassword(id, password);
+	}
+
 }
