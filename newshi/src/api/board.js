@@ -95,7 +95,7 @@ function boardDelete(boardno, success, fail) {
     'access-token'
   );
   var params = new URLSearchParams();
-  params.append("boardPostNo", boardno);
+  params.append('boardPostNo', boardno);
   instance
     .delete('/boardDelete', {
       params: params,
@@ -163,7 +163,7 @@ function boardCommentDelete(commentNo, success, fail) {
     'access-token'
   );
   var params = new URLSearchParams();
-  params.append("commentNo", commentno);
+  params.append('commentNo', commentNo);
   instance
     .delete('/boardCommentDelete', {
       params: params,
