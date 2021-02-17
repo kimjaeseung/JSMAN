@@ -258,14 +258,14 @@ export default {
       console.log(this.member);
       this.dialog = !this.dialog;
       this.isLogin = true;
-      this.$router.go(this.$router.currentRoute);
+      window.location.reload();
     },
     loggedOut() {
       this.logged = false;
       this.logout();
       this.member = {};
       if (this.$router.currentRoute == '/')
-        this.$router.go(this.$router.currentRoute);
+        window.location.reload();
       else this.$router.push('/');
     },
     closeFooter() {

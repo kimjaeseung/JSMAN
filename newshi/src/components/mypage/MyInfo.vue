@@ -166,7 +166,7 @@ export default {
       axios.delete(API_BASE_URL + 'delete', {params: { id: this.member.id }})
       .then(() => {
         this.logout();
-        this.$router.go(this.$router.currentRoute);
+        window.location.reload();
         // this.$router.push('/');
       })
     },
@@ -184,7 +184,7 @@ export default {
       console.log(id);
       axios.post(API_BASE_URL + 'subscdelete', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
       .then(() => {
-        this.$router.go(this.$router.currentRoute);
+        window.location.reload();
       })
     },
     modifyTags(){
@@ -223,7 +223,7 @@ export default {
             frm.append("thumbnail_path", this.imageSrc);
             axios.post(API_BASE_URL + 'upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
             .then(() => {
-              this.$router.go(this.$router.currentRoute);
+              window.location.reload();
             })
           } else {
             alert('큐레이터의 데이터를 받아오는데 실패했습니다.');

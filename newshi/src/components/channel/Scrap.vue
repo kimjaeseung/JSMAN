@@ -102,7 +102,7 @@ export default {
         console.log(this.modify_postNo);
         axios.put(API_BASE_URL + 'article/post', { id: this.$route.params.id, name: this.modify_title, postNo: this.modify_postNo})
         .then(() => {
-          this.$router.go(this.$router.currentRoute);
+          window.location.reload();
         });
       },
       refreshPage() {
