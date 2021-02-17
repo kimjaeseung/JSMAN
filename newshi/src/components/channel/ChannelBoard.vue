@@ -46,8 +46,9 @@ export default {
     },
     removeBoard(index) {
       let board = this.list.splice(index, 1);
+      console.log(board);
       boardDelete(
-        board.boardPostNo,
+        board[0].boardPostNo,
         (response) => {
           if (response.data.message === 'success') {
             alert('게시물 삭제에 성공했습니다.');
