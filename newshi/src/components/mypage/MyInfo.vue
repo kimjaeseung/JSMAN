@@ -31,7 +31,7 @@
           </v-col>
           <v-col>
             <v-card-actions class="d-flex justify-end">
-            <v-btn class="mr-3"> 비밀번호 수정 </v-btn>
+            <v-btn class="mr-3" @click="toModify"> 비밀번호 수정 </v-btn>
             </v-card-actions>
           </v-col>
         </v-row>
@@ -41,7 +41,7 @@
               <v-dialog v-model="dialog">
                 <template v-slot:activator="{ on, attrs }">
                   <v-avatar size="150px" v-bind="attrs" v-on="on">
-                    <v-img :src="require('@/assets/images/default_avatar.png')"></v-img>
+                    <v-img :src="member.thumbnail_path"></v-img>
                   </v-avatar>
                 </template>
               <v-card>
@@ -55,16 +55,18 @@
               </v-card>
               </v-dialog>
       </div>
-      <div class="d-flex justify-center mt-3" >
-        <h2>{{member.name}}</h2>
+      <div class="d-flex justify-center mt-3">
+        <h2 @click="toChannel(member.id)" style="cursor: pointer">{{member.name}}</h2>
       </div>
-      <div class="d-flex justify-center">{{member.id}}</div>
-      <v-container class="ma-5">
+      <div class="d-flex justify-center">
+        <p @click="toChannel(member.id)" style="cursor: pointer">{{member.id}}</p></div>
+      
+      <v-container class="mt-8">
         <v-row>
           <v-col></v-col>
           <v-col class="d-flex justify-center" cols="8">
             <div>
-              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:150%" color="#646464">#{{hashtag}}</v-btn>
+              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:125%" color="#646464" @click="toSearch(hashtag)">#{{hashtag}}</v-btn>
             </div>
           </v-col>
           <v-col></v-col>
@@ -75,7 +77,7 @@
       <v-container>
       <v-row>
         <v-col>
-      <v-card class="mt-10">
+      <v-card class="mt-8">
         <v-list style="text-align: left">
             <v-subheader>구독중인 큐레이터</v-subheader>
             <v-list-item v-for="(follower, index) in followers" :key="index">
@@ -101,6 +103,7 @@
 <script>
 import axios from 'axios';
 import { mapActions } from 'vuex';
+import { uploadImage } from '@/api/board.js';
 
 const tag_dict = {
         '속보': 0,
@@ -138,6 +141,13 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    toModify() {
+      this.$router.push('mypage/modify');
+    },
+    toSearch(tag) {
+      tag = tag.replace('/', '%2F');
+      this.$router.push('/search/hashtag/' + tag);
+    },
     unfollow(id) {
       var frm = new FormData();
       frm.append("id", this.member.id);
@@ -170,17 +180,31 @@ export default {
     },
     fileUpload() {
       console.log(this.file);
-      var frm = new FormData();
-      frm.append("file", this.file);
-      frm.append("id", 'kimjea23@naver.com');
-      axios.post('http://localhost/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' } }) 
-      .then((response) => { 
-        // 응답 처리 
-        console.log(response)
-      }) .catch((error) => { 
-        // 예외 처리 
-        console.log(error);
-      })
+      let file = this.file;
+      const fileName = file.name;
+      uploadImage(
+        file,
+        (response) => {
+          if (response.data.message === 'success') {
+            this.imageSrc =
+              'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
+            console.log(this.imageSrc);
+            var frm = new FormData();
+            frm.append("id", this.member.id);
+            frm.append("thumbnail_path", this.imageSrc);
+            axios.post('http://localhost:8080/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+            .then(() => {
+              this.$router.go(this.$router.currentRoute);
+            })
+          } else {
+            alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
+          }
+        },
+        (error) => {
+          console.error(error);
+          alert('큐레이터의 데이터를 받아오는 중 에러가 발생했습니다.');
+        }
+      );
     },
     getFollowers() {
       axios.get('http://localhost:8080/subscribe', 
@@ -235,7 +259,9 @@ export default {
     }
   },
   created() {
-    this.member = this.$store.getters.userProfile;
+    if(this.$store.getters.userProfile.id != undefined) {
+      this.member = this.$store.getters.userProfile;
+    }
     // 내 hashtags 불러오는 axios(임시)
     // this.hashtags = ['#속보', '#정치', '#경제', '#사회', '#문화'];
     

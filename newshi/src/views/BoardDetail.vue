@@ -1,18 +1,19 @@
 <template>
-  <v-container>
+  <v-container style="padding: 0">
     <v-row no-gutters>
       <v-col>
         <BoardInfo
           :member="member"
           :board="board"
           :num="num"
+          :isMain="false"
           @delBoard="removeBoard"
         ></BoardInfo>
       </v-col>
     </v-row>
     <v-divider></v-divider>
-    <v-row no-gutters
-      ><h3>댓글 {{ board.boardCommentCount }}</h3></v-row
+    <v-row style="padding:10px 0px 0px 12px" no-gutters
+      ><h4>댓글 {{ board.boardCommentCount }}개</h4></v-row
     >
     <v-row no-gutters>
       <BoardComment
@@ -33,10 +34,17 @@ export default {
     BoardInfo,
     BoardComment,
   },
-  props: {
-    member: Object,
-    board: Object,
-    num: Number,
+  // props: {
+  //   member: Object,
+  //   board: Object,
+  //   num: Number,
+  // },
+  data() {
+    return {
+      member: {},
+      board: {},
+      num: 0,
+    };
   },
   methods: {
     removeBoard(index) {
@@ -57,6 +65,11 @@ export default {
       console.log(this.list);
       console.log(index);
     },
+  },
+  created() {
+    this.member = this.$route.query.member;
+    this.board = this.$route.query.board;
+    this.num = this.$route.query.num;
   },
 };
 </script>

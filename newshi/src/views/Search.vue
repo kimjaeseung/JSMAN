@@ -10,13 +10,19 @@
               </v-col>
           </v-row>
           <v-row>
-              <v-col><router-view :key="$route.fullPath"></router-view></v-col>
+              <v-col>
+                  <v-card>
+                  <router-view :key="$route.fullPath"></router-view>
+                  </v-card>
+              </v-col>
           </v-row>
       </v-container>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -39,15 +45,35 @@ export default {
             this.autocomp_value = [];
             this.curator_search_flag = false;
         }
-        else if (this.search_word.length == 1 && this.search_word.charAt(0) == '#') {
+        else if (this.search_word.charAt(0) == '#') {
             console.log('해시태그들 axios')
-            this.autocomp_value = ['#경제', '#시사', '#IT', '#감성'];
-            this.curator_search_flag = false;
-        } else if(this.search_word.length == 1 && !this.curator_search_flag){
+            this.autocomp_value = [
+        '#속보',
+        '#정치',
+        '#경제',
+        '#사회',
+        '#생활/문화',
+        '#세계/국제',
+        '#IT/과학',
+        '#오피니언',
+      ];
+        } else{
             // 큐레이터에 접근하는 axios
-            console.log("사람 검색 axios");
-            this.autocomp_value = ['사람1', '사람2', '사람3', '감재성'];
-            this.curator_search_flag = true;
+            axios.get('http://localhost:8080/search/people', 
+            { params: { keyword: this.search_word } },
+            ).then((response) => { 
+                let resData = response.data;
+                console.log(resData);
+                let arr = [];
+                for(let i = 0; i < resData.length; i++) {
+                    if(resData[i]['name'] != undefined) {
+                        arr.push(resData[i]['name']);
+                    }
+                }
+                console.log(arr);
+                this.autocomp_value = arr;
+            })
+            
         }
         },
     },

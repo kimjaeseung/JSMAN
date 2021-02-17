@@ -26,6 +26,8 @@ public interface NewsDAO {
 	public List<Post> selectPostById(String id);
 	public List<Post> selectPostByTag(String tag);
 	public User selectUserById(String id);
+	public User selectUserByName(String name);
+	public User selectUserByUserNo(String userNo);
 	public List<UserScrapNews> selectUserScrapNewsByPostNo(String postNo);
 	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName);
 	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo);
@@ -40,6 +42,7 @@ public interface NewsDAO {
 	public List<NewsImage> selectNewImageByNewsNo(String newsNo);
 	public List<News> selectNewsByTagName(String tagName);
 	public List<News> selectNewsByUserNo(String userNo);
+	public News selectNewsByNewsNo(String newsNo);
 	public int deletePost(String postNo);
 	public int deleteScrap(String scarpNo);
 	public int updatePost(Post post);
