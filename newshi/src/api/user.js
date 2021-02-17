@@ -139,6 +139,37 @@ function changePassword(info, success, fail) {
     .catch(fail);
 }
 
+function sidebarUser(id, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+  instance
+    .get('sidebarUser', {
+      params: {
+        id: id,
+      },
+    })
+    .then(success)
+    .catch(fail);
+}
+
+function userInfo(userNo, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  console.log(userNo);
+
+  instance
+    .get('userInfo', {
+      params: {
+        userNo: userNo,
+      },
+    })
+    .then(success)
+    .catch(fail);
+}
+
 export {
   login,
   join,
@@ -146,6 +177,8 @@ export {
   emailValidTest,
   nameTest,
   getInfo,
+  userInfo,
   socialLogin,
   changePassword,
+  sidebarUser,
 };

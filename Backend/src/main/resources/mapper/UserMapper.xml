@@ -81,6 +81,10 @@
 		update user set password = #{newpassword} where id = #{id} and password = #{oldpassword};
 	</update>
 	
+	<update id="changePassword" parameterType="string">
+		update user set password = #{password} where id = #{id};
+	</update>
+	
 	<update id="updateName" parameterType="string">
 		update user set name = #{name} where id = #{id};
 	</update>

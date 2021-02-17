@@ -1,22 +1,21 @@
 <template>
   <v-container>
-      <!-- <v-row no-gutters>현재 스크랩 수: {{scraps.length}}</v-row> -->
     <v-row justify="center">
         <v-col v-for="(scrap, index) in scraps" :key="index" cols="auto">
-            <v-card width='150' height='150'>
+            <v-card width='130' height='130' class="ma-1">
             <v-img :src="scrap.scrap_thumbnail" aspect-ratio="1">
                 <div fill-height style="width:100%; height:100%;" class="d-flex justify-center align-center" else>
                   <v-container >
                     <v-row>
                       <v-col class="d-flex justify-center align-center">
-                         <v-btn @click="showNews(scrap.postNo)">보러가기</v-btn>
+                         <v-btn class="subtitle-2" @click="showNews(scrap.postNo)">보러가기</v-btn>
                       </v-col>
                     </v-row>
                     <v-row v-if="isMyPage==true">
                       <v-col class="d-flex justify-center align-center">
                         <v-dialog :retain-focus="false" width="500" v-model="dialog">
                           <template v-slot:activator="{ on, attrs }">
-                            <v-btn v-bind="attrs" v-on="on" @click="modifyBtn(scrap.name, scrap.postNo)">
+                            <v-btn class="subtitle-2" v-bind="attrs" v-on="on" @click="modifyBtn(scrap.name, scrap.postNo)">
                              수정하기
                             </v-btn>
                           </template>
@@ -33,14 +32,18 @@
                             </v-card-actions>
                           </v-card>
                         </v-dialog>
-                         <!-- <v-btn :disabled="hover == false">수정하기</v-btn> -->
                       </v-col>
                     </v-row>
                   </v-container>
                 </div>
             </v-img>
-            <div class="ellipsis">{{scrap.name}}</div>
+            <div class="ellipsis subtitle-2 mt-2">{{scrap.name}}</div>
             </v-card>
+        </v-col>
+    </v-row>
+    <v-row v-if="scraps[0]==undefined" height="100%">
+        <v-col class="d-flex justify-center">
+          포스트가 없습니다.
         </v-col>
     </v-row>
     </v-container>
@@ -114,8 +117,10 @@ export default {
             axios.get('http://localhost:8080/article/scraplist', 
             { params: { postNo: scraps[i].postNo } },
           ).then((response) => {
-            scraps[i].scrap_thumbnail = response.data[0].new_image[0];
-            this.scraps.push(scraps[i]);
+            if(response.data[0] != undefined) { 
+              scraps[i].scrap_thumbnail = response.data[0].new_image[0];
+              this.scraps.push(scraps[i]);
+            }
           });
           }, i * 10);
         }

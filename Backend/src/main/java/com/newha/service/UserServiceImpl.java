@@ -128,4 +128,10 @@ public class UserServiceImpl implements UserService {
 	public List<User> selectUserByTag(String userNo) {
 		return dao.selectUserByTag(userNo);
 	}
+
+	@Override
+	public void changePassword(String id, String password) {
+		dao.changePassword(id, password);
+	}
+
 }

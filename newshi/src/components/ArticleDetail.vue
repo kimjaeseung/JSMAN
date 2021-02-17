@@ -2,15 +2,15 @@
   <v-container>
     <!-- news header -->      
     <header>
-      <div class="news-title text-center">
+      <div class="news-title d-flex justify-content-start">
         {{ news.title }}
       </div>
       <div class="news-header text-center">
         {{ news.article_date }}
       </div>
       <div class="news-info d-flex justify-content-start">
-        <div>{{ news.company }}</div>
-        <div>
+        <div class="my-auto">{{ news.company }}</div>
+        <div class="my-auto">
           <a :href="news.url">원본보기</a>
         </div>
         <v-spacer></v-spacer>
@@ -22,6 +22,7 @@
           <v-icon medium v-else color="#ff9800">mdi-bookmark</v-icon>
         </v-btn>
       </div>
+      <Alert v-if="this.alert == true"/>
       <!-- TTS Play icon -->
       <div class="d-flex justify-content-start">
         <v-row
@@ -36,7 +37,7 @@
           >
             <v-icon
             >
-              mdi-play
+              mdi-volume-high
             </v-icon>
             Play
           </v-btn>
@@ -48,7 +49,7 @@
           >
             <v-icon
             >
-              mdi-stop
+              mdi-volume-mute
             </v-icon>
             Stop
           </v-btn>
@@ -81,18 +82,18 @@
       <div class="news-body-text">
         <div class="article-bot-summary">
           <h3 class="text-center">핵심 요약</h3>
-          <p>{{ news.article_bot_summary }}</p>
+          <p v-html="news.article_bot_summary"></p>
         </div>
-        <div class="text-center my-2">
+        <div class="text-center my-3">
           <h3 class="my-auto">기사 본문</h3>
         </div>
         <div class="article-content">
-          <p>{{ news.content }}</p>
+          <p v-html="news.content"></p>
         </div>
         <div class="news-body-text hidden">
-          <div class="article-bot-summary">
+          <div class="my-3">
             <h3 class="text-center">큐레이터의 오피니언</h3>
-            <p>{{ news.curator_summary }}</p>
+            <p v-html="news.curator_summary"></p>
           </div>
           <div class="d-flex my-2">
             <div class="mx-auto">
@@ -114,17 +115,17 @@
               </v-btn>
             </div>
           </div>
-          <p class="text-center">큐레이터의 오피니언이 괜찮았나요?</p>
+          <h3 class="text-center my-3">큐레이터의 오피니언이 괜찮았나요?</h3>
         </div>
       </div>
     </section>
     <section class="my-2" v-if="swipeDirection === 'Left'">
       <div class="news-body-text">
         <div class="article-bot-summary">
-          <p class="text-center">큐레이터의 오피니언</p>
-          <p>{{ news.curator_summary }}</p>
+          <h3 class="text-center my-3">큐레이터의 오피니언</h3>
+          <p v-html="news.curator_summary"></p>
         </div>
-        <div class="d-flex">
+        <div class="d-flex my-4">
           <div class="mx-auto">
             <v-btn 
               icon 
@@ -144,7 +145,7 @@
             </v-btn>
           </div>
         </div>
-        <p class="text-center">큐레이터의 오피니언이 괜찮았나요?</p>
+        <p class="text-center my-3">큐레이터의 오피니언이 괜찮았나요?</p>
       </div>
     </section>
     </div>
@@ -153,12 +154,17 @@
 </template>
 
 <script>
+import Alert from '../components/Alert.vue';
 import axios from 'axios';
 const API_URL = 'http://localhost:8080';
 const id = localStorage.getItem('id');
+const isLogged = localStorage.getItem('access-token');
 
 export default {
   name: "ArticleDetail",
+  components: {
+    Alert,
+  },
   props: [
     'newsInfo',
   ],
@@ -206,17 +212,21 @@ export default {
       this.swipeDirection = direction
     },
     save () {
-      this.saved = !this.saved;
-      const scrapNo = this.newsInfo.scrapNo;
-      axios.get(`${API_URL}`+'/article/save'+`?id=${id}`+`&scrapNo=${scrapNo}`)
-      .then((res)=> {
-        if (res.data.message == 'success' && this.saved == true) {
-          console.log(res.data.message)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (this.logged !== null) {
+        this.saved = !this.saved;
+        const scrapNo = this.newsInfo.scrapNo;
+        axios.get(`${API_URL}`+'/article/save'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        .then((res)=> {
+          if (res.data.message == 'success' && this.saved == true) {
+            console.log(res.data.message)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      } else {
+        this.alert = !this.alert;
+      }
     },
     saveCheck() {
       const newsNo = this.newsInfo.newsNo;
@@ -235,30 +245,38 @@ export default {
       })
     },
     like () {
-      this.liked = !this.liked;
-      const scrapNo = this.newsInfo.scrapNo;
-      axios.get(`${API_URL}`+'/article/like'+`?id=${id}`+`&scrapNo=${scrapNo}`)
-      .then((res)=> {
-        if (res.data.message == 'success' && this.liked == true) {
-          console.log('like', res.data.message)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (this.logged !== null) {
+        this.liked = !this.liked;
+        const scrapNo = this.newsInfo.scrapNo;
+        axios.get(`${API_URL}`+'/article/like'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        .then((res)=> {
+          if (res.data.message == 'success' && this.liked == true) {
+            console.log('like', res.data.message)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      } else {
+        this.alert = !this.alert;
+      }
     },
     dislike () {
-      this.disliked = !this.disliked;
-      const scrapNo = this.newsInfo.scrapNo;
-      axios.get(`${API_URL}`+'/article/dislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
-      .then((res)=> {
-        if (res.data.message == 'success' && this.disliked == true) {
-          console.log('dislike', res.data.message)
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (this.logged !== null) {
+        this.disliked = !this.disliked;
+        const scrapNo = this.newsInfo.scrapNo;
+        axios.get(`${API_URL}`+'/article/dislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        .then((res)=> {
+          if (res.data.message == 'success' && this.disliked == true) {
+            console.log('dislike', res.data.message)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      } else {
+        this.alert = !this.alert;
+      }
     },
     likeCheck() {
       const scrapNo = this.newsInfo.scrapNo;
@@ -298,6 +316,8 @@ export default {
       liked: false,
       disliked: false,
       play: false,
+      logged: isLogged,
+      alert: false,  //저장
     }
   },
 }
@@ -308,5 +328,8 @@ export default {
   .hidden {
     display: none;
   }
+}
+.news-body-text{
+  line-height: 2;
 }
 </style>

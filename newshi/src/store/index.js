@@ -34,13 +34,17 @@ const store = new Vuex.Store({
           (response) => {
             if (response.data.message === 'success') {
               let user = response.data['userInfo'];
+              if (user.thumbnail_path == null) {
+                user.thumbnail_path =
+                  'https://newha.s3.us-east-2.amazonaws.com/default-avatar.png';
+              }
               commit('SET_USER', user);
             } else {
               this.isLoginError = true;
 
               localStorage.clear();
               commit('SET_USER', null);
-              this.$router.go(this.$router.currentRoute);
+              this.$router.push('/');
             }
           },
           (error) => {

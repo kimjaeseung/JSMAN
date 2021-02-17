@@ -43,6 +43,7 @@
           :board="board"
           :num="index"
           :member="member"
+          :isMain="true"
           @delBoard="removeBoard"
         ></BoardInfo>
       </v-col>
@@ -55,7 +56,7 @@
 
 <script>
 import BoardInfo from '@/components/BoardInfo.vue';
-import { getInfo } from '@/api/user.js';
+import { sidebarUser } from '@/api/user.js';
 import { boardList, boardDelete } from '@/api/board.js';
 
 export default {
@@ -98,11 +99,16 @@ export default {
   created() {
     this.curator = this.$route.params.id;
     //유저 정보 받아오는 axios
-    getInfo(
+    sidebarUser(
       this.curator,
       (response) => {
-        if (response.data.message === 'success') {
-          this.member = response.data.userInfo;
+        if (response.status >= 200 && response.status < 300) {
+          this.member = {
+            id: this.curator,
+            name: response.data['name'],
+            userNo: response.data['userNo'],
+            thumbnail_path: response.data['thumbnail_path'],
+          };
 
           if (this.member.id === localStorage['id']) {
             console.log(this.member.id);

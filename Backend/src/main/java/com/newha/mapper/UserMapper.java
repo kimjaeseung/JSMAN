@@ -34,5 +34,6 @@ public interface UserMapper {
 	public List<String> tagList(int userNo);
 	public void tagDelete(int userNo);
 	public User socialLogin(User u);
+	public void changePassword(@Param("id")String id, @Param("password")String password);
 
 }

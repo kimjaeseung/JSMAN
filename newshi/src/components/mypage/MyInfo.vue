@@ -31,7 +31,27 @@
           </v-col>
           <v-col>
             <v-card-actions class="d-flex justify-end">
-            <v-btn class="mr-3" @click="toModify"> 비밀번호 수정 </v-btn>
+              <v-menu offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    color="primary"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    회원정보 수정
+                  </v-btn>
+                </template>
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-title @click="toModify"> 비밀번호 수정 </v-list-item-title>
+                  </v-list-item>
+                  <v-list-item>
+                    <v-list-item-title @click="userDelete"> 회원탈퇴 </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            <!-- <v-btn class="mr-3" @click="toModify"> 비밀번호 수정 </v-btn> -->
             </v-card-actions>
           </v-col>
         </v-row>
@@ -60,12 +80,13 @@
       </div>
       <div class="d-flex justify-center">
         <p @click="toChannel(member.id)" style="cursor: pointer">{{member.id}}</p></div>
-      <v-container class="ma-5">
+      
+      <v-container class="mt-8">
         <v-row>
           <v-col></v-col>
           <v-col class="d-flex justify-center" cols="8">
             <div>
-              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:150%" color="#646464" @click="toSearch(hashtag)">#{{hashtag}}</v-btn>
+              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:125%" color="#646464" @click="toSearch(hashtag)">#{{hashtag}}</v-btn>
             </div>
           </v-col>
           <v-col></v-col>
@@ -76,7 +97,7 @@
       <v-container>
       <v-row>
         <v-col>
-      <v-card class="mt-10">
+      <v-card class="mt-8">
         <v-list style="text-align: left">
             <v-subheader>구독중인 큐레이터</v-subheader>
             <v-list-item v-for="(follower, index) in followers" :key="index">
@@ -140,10 +161,19 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    userDelete() {
+      axios.delete('http://localhost:8080/delete', {params: { id: this.member.id }})
+      .then(() => {
+        this.logout();
+        this.$router.go(this.$router.currentRoute);
+        // this.$router.push('/');
+      })
+    },
     toModify() {
       this.$router.push('mypage/modify');
     },
     toSearch(tag) {
+      tag = tag.replace('/', '%2F');
       this.$router.push('/search/hashtag/' + tag);
     },
     unfollow(id) {

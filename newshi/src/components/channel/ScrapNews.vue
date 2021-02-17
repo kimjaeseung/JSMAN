@@ -79,7 +79,27 @@ export default {
   },
   methods: {
     move(newsInfo){
-        this.$router.push({name: 'Article', params: {newsNo: newsInfo.newsNo, newsInfo2: newsInfo} })
+        console.log(newsInfo);
+        let newsInfo2 = {
+          article_bot_summary: newsInfo.article_bot_summary[0],
+          article_date: newsInfo.article_date[0],
+          article_image_catpion: newsInfo.article_image_catpion[0],
+          company: newsInfo.company[0],
+          content: newsInfo.content[0],
+          curator_summary: newsInfo.curator_summary[0],
+          dislike_cnt: newsInfo.dislike_cnt[0],
+          image_path: newsInfo.image_path[0],
+          isdislike: newsInfo.isdislike[0],
+          islike: newsInfo.islike[0],
+          like_cnt: newsInfo.like_cnt[0],
+          new_image: newsInfo.new_image[0],
+          newsNo: newsInfo.newsNo[0],
+          scrapNo: newsInfo.scrapNo[0],
+          subtitle: newsInfo.subtitle[0],
+          title: newsInfo.title[0],
+          url: newsInfo.url[0]
+        }
+        this.$router.push({name: 'Article', params: {newsNo: newsInfo2.newsNo, newsInfo2: newsInfo2} })
       },
 
     getScrap() {
@@ -149,7 +169,9 @@ export default {
                 .then(() => {
                 });
         }
-        this.getScrap();
+        setTimeout(() => {
+          this.getScrap();
+        }, 50);
       }
     },
     dislikeBtn(scrapNo, check) {
@@ -177,7 +199,9 @@ export default {
                 .then(() => {
                 });
         }
-        this.getScrap();
+        setTimeout(() => {
+          this.getScrap();
+        }, 50);
       }
     },
     numberWithCommas(x) {

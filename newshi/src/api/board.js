@@ -75,6 +75,14 @@ function boardUpdate(b, success, fail) {
   );
 
   console.log(b);
+  // const frm = new FormData();
+  // frm.append('boardPostNo', b.boardPostNo);
+  // frm.append('content', b.content);
+  // frm.append('date', b.date);
+  // frm.append('is_notice', b.is_notice);
+  // frm.append('title', b.title);
+  // frm.append('userNo', b.userNo);
+  // frm.append('visit_cnt', b.visit_cnt);
 
   instance
     .put('/boardUpdate', b)
@@ -119,14 +127,13 @@ function boardCommentInsert(comment, success, fail) {
 
   console.log(comment);
 
+  var frm = new FormData();
+  frm.append('boardPostNo', comment.boardPostNo);
+  frm.append('id', comment.id);
+  frm.append('content', comment.content);
+
   instance
-    .post('/boardCommentInsert', {
-      params: {
-        boardPostNo: comment.boardPostNo,
-        id: comment.id,
-        content: comment.content,
-      },
-    })
+    .post('/boardCommentInsert', frm)
     .then(success)
     .catch(fail);
 }
@@ -136,8 +143,18 @@ function boardCommentUpdate(comment, success, fail) {
     'access-token'
   );
 
+  const bc = {
+    commentNo: comment.CommentNo,
+    boardPostNo: comment.BoardPostNo,
+    userNo: comment.UserNo,
+    content: comment.Content,
+    date: comment.Date,
+  };
+  console.log(bc);
+  console.log('상단은 코멘트입니다');
+
   instance
-    .put('/boardCommentUpdate', comment)
+    .put('/boardCommentUpdate', bc)
     .then(success)
     .catch(fail);
 }

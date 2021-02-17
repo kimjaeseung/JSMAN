@@ -33,5 +33,6 @@ public interface UserDAO {
 	public List<String> tagList(int userNo);
 	public void tagDelete(int userNo);
 	public User socialLogin(User u);
+	public void changePassword(String id, String password);
 
 }
