@@ -145,6 +145,7 @@ export default {
       this.$router.push('mypage/modify');
     },
     toSearch(tag) {
+      tag = tag.replace('/', '%2F');
       this.$router.push('/search/hashtag/' + tag);
     },
     unfollow(id) {
