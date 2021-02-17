@@ -82,6 +82,7 @@ export default {
       url: '',
       post: [],
       postName: '',
+      overlay: false,
     };
   },
   methods: {
@@ -111,9 +112,11 @@ export default {
         this.post.splice(i, 1, news);
       }
       console.log(this.post);
+      this.overlay = true;
       saveArticle(
         this.post,
         (response) => {
+          this.overlay = false;
           if (response.data.message === 'success') {
             alert('포스트 만들기 성공!');
             let no = response.data.postNo;
@@ -133,6 +136,7 @@ export default {
         (error) => {
           console.error(error);
           alert('포스트 생성 중 에러가 발생했습니다.');
+          this.overlay = false;
         }
       );
     },
