@@ -29,9 +29,9 @@ Vue.use(VueRouter);
 
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(() => {
-        return window.location.reload()
-    })
+  return originalPush.call(this, location).catch(() => {
+    return window.location.reload();
+  });
 };
 
 const requireAuth = () => (to, from, next) => {
@@ -170,7 +170,6 @@ const routes = [
     path: '/boardDetail',
     name: 'BoardDetail',
     component: BoardDetail,
-    props: true,
   },
   {
     path: '/link',

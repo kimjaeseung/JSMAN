@@ -45,6 +45,7 @@ export default {
   props: {
     news: Object,
     num: Number,
+    focus: Boolean,
   },
   data() {
     return {
@@ -74,14 +75,14 @@ export default {
       this.panel = [];
     },
   },
-    created() {
-      if (this.news.url.indexOf('naver') != -1) {
-        this.title = '네이버뉴스 ' + (this.num + 1);
-      } else {
-        this.title = '다른 뉴스 ' + this.num;
-      }
-    },
-  };
+  created() {
+    if (this.news.url.indexOf('naver') != -1) {
+      this.title = '네이버뉴스 ' + (this.num + 1);
+    } else {
+      this.title = '다른 뉴스 ' + this.num;
+    }
+  },
+};
 </script>
 
 <style>

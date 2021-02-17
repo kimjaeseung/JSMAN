@@ -101,13 +101,20 @@ export default {
     boardDetail() {
       this.$router.push({
         name: 'BoardDetail',
-        query: { board: this.board, member: this.member, num: this.num },
+        query: {
+          board: JSON.stringify(this.board),
+          member: JSON.stringify(this.member),
+          num: this.num,
+        },
       });
     },
     modifyBoard() {
       this.$router.push({
         name: 'ModifyBoard',
-        params: { board: this.board, member: this.member },
+        query: {
+          board: JSON.stringify(this.board),
+          member: JSON.stringify(this.member),
+        },
       });
     },
     deleteBoard() {
