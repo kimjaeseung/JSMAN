@@ -197,7 +197,7 @@ export default {
       axios.get(API_BASE_URL + 'tagListUpdate', 
       { params: params },
     ).then(() => { 
-      this.$router.go(this.$router.currentRoute);
+      this.$router.push('/mypage');
       }) .catch((error) => { 
         // 예외 처리 
         console.log(error);
