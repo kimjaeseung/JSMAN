@@ -94,12 +94,11 @@ function boardDelete(boardno, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
-
+  var params = new URLSearchParams();
+  params.append("boardPostNo", boardno);
   instance
     .delete('/boardDelete', {
-      params: {
-        boardPostNo: boardno,
-      },
+      params: params,
     })
     .then(success)
     .catch(fail);
