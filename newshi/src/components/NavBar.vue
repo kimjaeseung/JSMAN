@@ -181,7 +181,6 @@ export default {
           router: '/policy',
         },
         { icon: 'home-outline', title: '만든이들', router: '/whoweare' },
-        { icon: 'information-outline', title: '버전 정보', router: '/version' },
       ],
       mounted_flag: false,
       dialog: null,
