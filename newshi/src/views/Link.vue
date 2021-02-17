@@ -1,40 +1,44 @@
 <template>
   <v-container>
-    <v-row class="justify-center align-center" no-gutters>
-      <v-banner two-line>
-        <template v-slot:actions>
-          <v-row>
-            {{ url }}
-          </v-row>
-          <v-row>
-            <v-btn text color="deep-purple accent-4" @click="copyUrl">
-              <v-icon>
-                mdi-content-copy
-              </v-icon>
-              복사하기
-            </v-btn>
-            <v-btn text color="deep-purple accent-4" @click="kakaoCopy">
-              <v-img src="@/assets/images/kakaolink_btn_small.png"></v-img>
-              카카오톡 공유
-            </v-btn>
-          </v-row>
-        </template>
-      </v-banner>
+    <v-row>
+      <v-col style="margin-top: 20%">
+        <v-textarea
+          class="url-text"
+          auto-grow
+          rows="1"
+          outlined
+          disabled
+          :value="url"
+        >
+        </v-textarea>
+      </v-col>
     </v-row>
-    <v-row class="align-end" no-gutters>
-      <v-btn
-        ><a :href="url" style="color: black; text-decoration: none"
-          >해당 포스트로 이동</a
-        ></v-btn
-      >
-      <v-btn @click="goMain">메인페이지로 이동</v-btn>
+    <v-row class="link-btn">
+      <v-btn text color="deep-purple accent-4" @click="copyUrl">
+        <v-icon>
+          mdi-content-copy
+        </v-icon>
+        URL 복사
+      </v-btn>
+      <v-btn text color="deep-purple accent-4" @click="kakaoCopy">
+        <v-img src="@/assets/images/kakaolink_btn_small.png"></v-img>
+        카카오톡 공유
+      </v-btn>
+    </v-row>
+    <v-row>
+      <v-col align-sm>
+        <v-btn
+          ><a :href="url" style="color: black; text-decoration: none"
+            >해당 포스트로 이동</a
+          ></v-btn
+        >
+        <v-btn @click="goMain">메인페이지로 이동</v-btn>
+      </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { API_BASE_URL } from '@/config';
-
 export default {
   props: {
     postNo: String,
@@ -90,10 +94,15 @@ export default {
   },
   created() {
     this.id = localStorage['id'];
-    this.url = API_BASE_URL + `${this.id}/${this.postNo}`;
-    // this.url = `http://i4a307.p.ssafy.io/${this.id}/${this.postNo}`;
+    // this.url = API_BASE_URL + `${this.id}/${this.postNo}`;
+    this.url = `http://i4a307.p.ssafy.io/${this.id}/${this.postNo}`;
   },
 };
 </script>
 
-<style></style>
+<style>
+.link-btn {
+  position: relative;
+  right: 5%;
+}
+</style>

@@ -1,26 +1,38 @@
 <template>
-  <v-expansion-panels v-model="panel" accordion>
-    <v-expansion-panel>
-      <v-expansion-panel-header
-        hide-actions
-        class="panels rounded-xl no-margin"
-      >
-        <v-row class="no-margin">
-          <v-col class="no-margin"
-            ><div class="ellipsis">{{ news.url }}</div></v-col
-          >
-          <v-col class="no-margin">
-            <v-btn color="red darken-4 " dark icon @click="remove"
-              ><v-icon large>mdi-close</v-icon></v-btn
-            ></v-col
-          >
-        </v-row>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content class="pl-6">
-        <Tiptap @saveData="saveOther"></Tiptap>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
-  </v-expansion-panels>
+  <v-container class="container">
+    <v-expansion-panels v-model="panel">
+      <v-expansion-panel class="panels">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-expansion-panel-header
+              hide-actions
+              class="panels"
+              v-bind="attrs"
+              v-on="on"
+            >
+              <v-row>
+                <v-col class="url-text ellipsis">{{ title }}</v-col>
+                <v-col class="no-margin">
+                  <v-btn
+                    class="close-btn"
+                    color="red darken-4 "
+                    dark
+                    icon
+                    @click="remove"
+                    ><v-icon large>mdi-close</v-icon></v-btn
+                  ></v-col
+                >
+              </v-row>
+            </v-expansion-panel-header>
+          </template>
+          <span>{{ news.url }}</span>
+        </v-tooltip>
+        <v-expansion-panel-content>
+          <Tiptap @saveData="saveOther"></Tiptap>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
+  </v-container>
 </template>
 
 <script>
@@ -51,6 +63,7 @@ export default {
         '오피니언',
       ],
       isSaveOnce: false,
+      title: '',
     };
   },
   methods: {
@@ -63,6 +76,13 @@ export default {
       this.panel = [];
     },
   },
+  created() {
+    if (this.news.url.indexOf('naver') != -1) {
+      this.title = '네이버뉴스 ' + (this.num + 1);
+    } else {
+      this.title = '다른 뉴스 ' + this.num;
+    }
+  },
 };
 </script>
 
@@ -70,8 +90,7 @@ export default {
 .panels {
   border: 1px solid gray;
   background-color: lightgray;
-  width: 80%;
-  height: 10%;
+  padding: 0px;
 }
 .left-border {
   border-left: 2px solid gray;
@@ -81,10 +100,22 @@ export default {
   padding: 0 0 0 0;
   float: right;
 }
-.ellipsis {
+/* .ellipsis {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+} */
+.url-text {
+  padding: 0 50% 1px 0;
+}
+.close-btn {
+  position: absolute;
+  right: 1%;
+  top: 13%;
+}
+.container {
+  margin: 0;
+  padding: 0 24px 0 24px;
 }
 </style>

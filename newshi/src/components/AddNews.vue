@@ -1,22 +1,41 @@
 <template>
-  <v-dialog v-model="addDialog" fullscreen v-if="isLogged">
+  <v-dialog v-model="addDialog" fullscreen scrollable>
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="#fcbf49" fixed bottom right fab v-bind="attrs" v-on="on">
+      <v-btn
+        color="#fcbf49"
+        fixed
+        bottom
+        right
+        fab
+        v-bind="attrs"
+        v-on="on"
+        v-if="isLogged"
+      >
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
     </template>
-    <v-card max-height="300px">
-      <v-toolbar color="orange lighten-4">
-        <v-btn icon @click="addDialog = !addDialog">
+    <v-card>
+      <v-toolbar class="dialog-header" color="orange lighten-4">
+        <v-btn
+          style="padding-right: 10px; padding-bottom:5px"
+          icon
+          @click="addDialog = !addDialog"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-spacer />
-        <v-toolbar-title>기사 등록</v-toolbar-title>
+        <v-toolbar-title style="padding-right: 30px; padding-bottom:10px"
+          >기사 등록</v-toolbar-title
+        >
         <v-spacer />
       </v-toolbar>
 
       <v-form class="pa-6" @submit.prevent="registURL">
-        <ValidationProvider name="url" rules="url" v-slot="{ errors }">
+        <ValidationProvider
+          name="url"
+          rules="url|naver|news"
+          v-slot="{ errors }"
+        >
           <v-text-field
             v-model="url"
             :error-messages="errors"
@@ -66,6 +85,18 @@ extend('url', {
     return /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!]))?/i.test(
       value
     );
+  },
+});
+extend('naver', {
+  message: '네이버 기사만 등록이 가능합니다. 다시 한번 확인해주세요.',
+  validate: (value) => {
+    return /.naver./.test(value);
+  },
+});
+extend('news', {
+  message: '뉴스형식이 아닙니다. 다시 한번 확인해주세요.',
+  validate: (value) => {
+    return /.news./.test(value);
   },
 });
 export default {
@@ -162,4 +193,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.dialog-header {
+  max-height: 6%;
+}
+</style>
