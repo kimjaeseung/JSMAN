@@ -25,7 +25,7 @@ export default {
         (response) => {
           if (response.data.message === 'success') {
             alert('게시판 작성에 성공했습니다.');
-            this.$router.push(`/board/${id}`);
+            this.$router.push(`channel/${id}/board/`);
           } else {
             alert('게시판 작성에 실패했습니다.');
           }
