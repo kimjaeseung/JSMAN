@@ -127,7 +127,7 @@ export default {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then(() => {
-          this.$router.go(this.$router.currentRoute);
+          window.location.reload();
         });
     },
     unfollow() {
@@ -139,7 +139,7 @@ export default {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then(() => {
-          this.$router.go(this.$router.currentRoute);
+          window.location.reload();
         });
     },
     goBoardScrap() {
