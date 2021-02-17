@@ -9,13 +9,8 @@
           <v-card>
             <v-container>
               <v-row>
-                <v-col class="caption" cols=8>
+                <v-col class="caption">
                   {{news.article_date[0]}}
-                </v-col>
-                <v-col class="d-flex justify-end">
-                  <v-btn fab x-small dark color="grey">
-                    <v-icon>mdi-plus</v-icon>
-                  </v-btn>
                 </v-col>
               </v-row>
               <v-row no-gutters>
@@ -123,7 +118,7 @@ export default {
                       scrap_news[i]['islike'] = new Array(true);
                     } else { scrap_news[i]['islike'] = new Array(false); }
                   });
-                  }, i * 20 + 10);
+                  }, 10);
                   
                   setTimeout(() => {
                     axios.get(API_BASE_URL + 'article/isdislike',
@@ -136,8 +131,8 @@ export default {
                     if(scrap_news[i].image_path[0] == null) scrap_news[i].image_path[0] = require('@/assets/images/default-image.jpg')
                     this.scrap_news.push(scrap_news[i]); 
                   });
-                  }, i * 20 + 20);
-                }, i * 20);
+                  }, 20);
+                }, i * 30);
               }
             } else {
               this.scrap_news = scrap_news;
