@@ -23,7 +23,7 @@ public interface UserDAO {
 
 	public void thumbnailPath(String userNo, String thumbnail_path);
 	public void insertTag(String id, String tag);
-	
+	public List<String> selectJoinTagByuserNo(String userNo);
 	public void subscribe(String id, String id2);
 	public void subscdelete(String id, String id2);
 	public int selectName(String name);
