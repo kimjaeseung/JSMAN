@@ -125,7 +125,8 @@ public class UserDAOImpl implements UserDAO {
 		return mapper.socialLogin(u);
 	}
 
-
-	
-
+	@Override
+	public List<User> selectUserByTag(String userNo) {
+		return mapper.selectUserByTag(userNo);
+	}
 }

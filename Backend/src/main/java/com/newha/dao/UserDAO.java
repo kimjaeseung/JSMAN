@@ -3,8 +3,6 @@ package com.newha.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.newha.vo.User;
 
 public interface UserDAO {
@@ -21,6 +19,7 @@ public interface UserDAO {
 	public List<User> selectAllByKeyword(String keyword);
 	public int selectId(String id);
 	public int userNo(String id);
+	public List<User> selectUserByTag(String userNo);
 
 	public void thumbnailPath(String userNo, String thumbnail_path);
 	public void insertTag(String id, String tag);

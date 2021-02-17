@@ -30,6 +30,13 @@
 		select count(*) from user where name = #{name}
 	</select>
 	
+	<select id="selectUserByTag" parameterType="String" resultType="User">
+		select * from user where userNo in (select userNo from user_scrap_news where scrapNo in(
+				select scrapNo from post_tag where tagNo in(
+				select tagNo from hashtag where name in(
+				select name from join_tag where userNo = #{userNo}))));
+	</select>
+	
 	<select id="userNo" resultType="int">
 		select userNo from user where id = #{id}
 	</select>

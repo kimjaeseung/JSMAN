@@ -236,4 +236,9 @@ public class NewsServiceImpl implements NewsService {
 	public User selectUserByUserNo(String userNo) {
 		return dao.selectUserByUserNo(userNo);
 	}
+	
+	@Override
+	public List<User> selectUserByTag(String userNo) {
+		return dao.selectUserByTag(userNo);
+	}
 }

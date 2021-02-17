@@ -20,6 +20,7 @@ public interface UserMapper {
 	public List<User> selectAllByKeyword(String keyword);
 	public int selectId(String id);
 	public int userNo(String id);
+	public List<User> selectUserByTag(String userNo);
 	
 	public void thumbnailPath(@Param("userNo") String userNo, @Param("thumbnail_path") String thumbnail_path);
 	public void insertTag(@Param("id")String id, @Param("tag")String tag);
