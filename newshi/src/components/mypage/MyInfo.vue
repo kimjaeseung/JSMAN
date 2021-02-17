@@ -67,22 +67,22 @@
         </template>
       <v-card >
         <v-card-title>관심태그 추가</v-card-title>
-        <v-card-actions>
-        <v-chip-group
-          v-model="tags"
-          active-class="green accent-1"
-          column
-          multiple
-        >
-          <v-chip border large v-for="tag in tagName" :key="tag">
-            {{ tag }}
-          </v-chip>
-        </v-chip-group>
-        </v-card-actions>
-        <v-card-actions>
-          <v-btn @click="modifyTags">수정</v-btn><v-btn @click="dialog2=flase">취소</v-btn>
-        </v-card-actions>
-      </v-card>
+          <v-card-actions>
+            <v-chip-group
+              v-model="tags"
+              active-class="yellow darken-3"
+              column
+              multiple
+            >
+              <v-chip border medium v-for="tag in tagName" :key="tag">
+                {{ tag }}
+              </v-chip>
+            </v-chip-group>
+          </v-card-actions>
+          <v-card-actions>
+            <v-btn @click="modifyTags" rounded >수정</v-btn><v-btn @click="dialog2=flase" rounded >취소</v-btn>
+          </v-card-actions>
+        </v-card>
       </v-dialog>
     </v-card-actions> 
     <!-- 태그 나열 -->

@@ -10,14 +10,22 @@
             v-on="on"
           >
             <v-row>
-              <v-btn color="red darken-3" icon dark @click="remove">
-                <v-icon medium>mdi-close-circle-outline</v-icon></v-btn
+              <v-btn color="red darken-3" 
+                icon
+                dark
+                height="50px"
+                class="close"
+                @click="remove"
               >
-              <v-col class="url-text ellipsis">{{ title }}</v-col>
+                <v-icon medium>mdi-close-circle-outline</v-icon>
+              </v-btn>
+              <v-col class="ellipsis my-auto">{{ title }}
+                <v-icon >mdi-arrow-down-drop-circle-outline</v-icon>
+              </v-col>
             </v-row>
           </v-expansion-panel-header>
         </template>
-        <span>{{ news.url }}</span>
+        <span>클릭하시면 이 기사에 대한 오피니언과 해시태그를 추가할 수 있습니다.</span>
       </v-tooltip>
       <v-expansion-panel-content>
         <Tiptap @saveData="saveOther"></Tiptap>
@@ -92,7 +100,6 @@ export default {
   float: right;
 }
 .ellipsis {
-  width: 80% !important;
-  align-items: center !important;
+  vertical-align: middle;
 }
 </style>

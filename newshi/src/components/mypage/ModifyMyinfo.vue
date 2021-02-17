@@ -1,66 +1,66 @@
 <template>
   <div>
-      <v-container>
-          <v-row>
-              <v-col class="d-flex justify-center">
-                <v-card width="100%">
-                    <v-card-title>비밀번호 변경</v-card-title>
-                    <v-card-subtitle> 안전한 비밀번호로 내정보를 보호하세요. </v-card-subtitle>
-                    <v-card-text>
-                        <ValidationProvider
-                            name="password"
-                            rules="required|password"
-                            v-slot="{ errors }"
-                        >
-                        <v-text-field
-                            v-model="old_password"
-                            label="현재 비밀번호"
-                            placeholder="Placeholder"
-                            outlined
-                            type="password"
-                            required
-                            :error-messages="errors"
-                        ></v-text-field>
-                        </ValidationProvider>
-                        <ValidationProvider
-                        name="new_password"
-                        rules="required|password"
-                        v-slot="{ errors }"
-                        >
-                        <v-text-field
-                            v-model="new_password"
-                            label="새 비밀번호"
-                            placeholder="Placeholder"
-                            outlined
-                            type="password"
-                            :error-messages="errors"
-                        ></v-text-field>
-                        </ValidationProvider>
-                        <ValidationProvider
-                        name="Password Confirm"
-                        rules="required|password|passwordConfirm:@new_password"
-                        v-slot="{ errors }"
-                        >
-                    <v-text-field
-                        v-model="new_password_confirm"
-                        label="새 비밀번호 확인"
-                        placeholder="Placeholder"
-                        outlined
-                        type="password"
-                        :error-messages="errors"
-                    ></v-text-field>
-                    </ValidationProvider>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn width=100% dark @click="passwordChangeSubmit()">확인</v-btn>
-                    </v-card-actions>
-                    <v-card-actions>
-                        <v-btn width=100% @click="backPage">취소</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-          </v-row> 
-      </v-container>
+    <v-container>
+      <v-row>
+        <v-col class="d-flex justify-center">
+          <v-card width="100%">
+            <v-card-title>비밀번호 변경</v-card-title>
+            <v-card-subtitle> 안전한 비밀번호로 내정보를 보호하세요. </v-card-subtitle>
+            <v-card-text>
+                <ValidationProvider
+                    name="password"
+                    rules="required|password"
+                    v-slot="{ errors }"
+                >
+                <v-text-field
+                    v-model="old_password"
+                    label="현재 비밀번호"
+                    placeholder="Placeholder"
+                    outlined
+                    type="password"
+                    required
+                    :error-messages="errors"
+                ></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider
+                name="new_password"
+                rules="required|password"
+                v-slot="{ errors }"
+                >
+                <v-text-field
+                    v-model="new_password"
+                    label="새 비밀번호"
+                    placeholder="Placeholder"
+                    outlined
+                    type="password"
+                    :error-messages="errors"
+                ></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider
+                name="Password Confirm"
+                rules="required|password|passwordConfirm:@new_password"
+                v-slot="{ errors }"
+                >
+            <v-text-field
+                v-model="new_password_confirm"
+                label="새 비밀번호 확인"
+                placeholder="Placeholder"
+                outlined
+                type="password"
+                :error-messages="errors"
+            ></v-text-field>
+            </ValidationProvider>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn width=100% dark @click="passwordChangeSubmit()">확인</v-btn>
+            </v-card-actions>
+            <v-card-actions>
+                <v-btn width=100% @click="backPage">취소</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row> 
+    </v-container>
   </div>
 </template>
 

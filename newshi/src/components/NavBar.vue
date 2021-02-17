@@ -72,7 +72,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-
+    
     <!-- Footer Start -->
     <template>
       <div class="overflow-hidden">
@@ -83,7 +83,7 @@
           fixed
           bottom
         >
-          <v-btn>
+          <v-btn @click="dialog = !dialog">
             <span>로그인/회원가입</span>
             <v-icon>mdi-account-plus-outline</v-icon>
           </v-btn>
