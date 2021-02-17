@@ -159,15 +159,18 @@ function boardCommentUpdate(comment, success, fail) {
     .catch(fail);
 }
 
-function boardCommentDelete(commentno, success, fail) {
+function boardCommentDelete(commentNo, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
 
+  const params = new URLSearchParams();
+  params.append('commentNo', commentNo);
+
   instance
     .delete('/boardCommentDelete', {
       params: {
-        commentNo: commentno,
+        params: params,
       },
     })
     .then(success)

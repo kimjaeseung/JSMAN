@@ -433,12 +433,14 @@ public class UserController {
 				service.socialInsert(user);
 				boardservice.boardCreate(user.getId()); // 회원가입과 동시에 개인 게시판 생성
 			}
+			System.out.println(a);
 			User loginUser = service.socialLogin(user);
 			if (loginUser != null) {
 				String token = jwtService.create("id", loginUser.getId(), "access-token");// key, data, subject
 				logger.debug("로그인 토큰정보 : {}", token);
 				resultMap.put("access-token", token);
 				resultMap.put("message", SUCCESS);
+				System.out.println(token);
 				status = HttpStatus.ACCEPTED;
 			} else {
 				resultMap.put("message", FAIL);

@@ -53,7 +53,7 @@ const store = new Vuex.Store({
 
             localStorage.clear();
             commit('SET_USER', null);
-            this.$router.go(this.$router.currentRoute);
+            window.location.href('/');
           }
         );
       }
