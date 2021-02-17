@@ -20,7 +20,7 @@ public interface UserService {
 	public List<User> searchUser(String keyword);
 	public int selectId(String id);
 	public int userNo(String id);
-	
+	public List<User> selectUserByTag(String userNo);
 	public void thumbnailPath(String userNo, String thumbnail_path);
 	
 	public void insertTag(String id, String tag);

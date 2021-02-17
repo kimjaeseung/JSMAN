@@ -28,6 +28,7 @@ public interface NewsMapper {
 	public User selectUserById(String id);
 	public User selectUserByName(String name);
 	public User selectUserByUserNo(String userNo);
+	public List<User> selectUserByTag(String userNo);
 	public List<UserScrapNews> selectUserScrapNewsByPostNo(String postNo);
 	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName);
 	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo);

@@ -94,12 +94,11 @@ function boardDelete(boardno, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
-
+  var params = new URLSearchParams();
+  params.append("boardPostNo", boardno);
   instance
     .delete('/boardDelete', {
-      params: {
-        boardPostNo: boardno,
-      },
+      params: params,
     })
     .then(success)
     .catch(fail);
@@ -163,15 +162,11 @@ function boardCommentDelete(commentNo, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
-
-  const params = new URLSearchParams();
-  params.append('commentNo', commentNo);
-
+  var params = new URLSearchParams();
+  params.append("commentNo", commentno);
   instance
     .delete('/boardCommentDelete', {
-      params: {
-        params: params,
-      },
+      params: params,
     })
     .then(success)
     .catch(fail);

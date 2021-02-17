@@ -1,9 +1,5 @@
 package com.newha.controller;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -30,15 +26,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.newha.service.BoardService;
 import com.newha.service.JwtService;
 import com.newha.service.S3Service;
 import com.newha.service.UserService;
 import com.newha.vo.User;
-import com.newha.vo.UserScrapNews;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -521,5 +513,21 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-
+	
+	@ApiOperation(value = "큐레이터 추천", notes = "회원가입때 태그 기반으로 큐레이터를 추천", response = List.class)
+	@GetMapping(value = "/userrecommend")
+	public ResponseEntity<List<User>> recomendPeople(
+			@ApiParam(value = "userNo", required = true) @RequestParam String id) {
+		List<User> list = new ArrayList<User>();
+		HttpStatus status = null;
+		try {
+			String userNo = Integer.toString(service.userNo(id));
+			list = service.selectUserByTag(userNo);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<List<User>>(list, status);
+	}
 }

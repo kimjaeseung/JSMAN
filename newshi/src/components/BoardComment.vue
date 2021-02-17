@@ -59,7 +59,7 @@ export default {
     removeComment(index) {
       let comment = this.commentList.splice(index, 1);
       boardCommentDelete(
-        comment[0].commentNo,
+        comment[0].CommentNo,
         (response) => {
           if (response.data.message === 'success') {
             alert('해당 댓글 삭제에 성공했습니다.');

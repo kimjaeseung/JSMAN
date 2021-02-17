@@ -123,6 +123,11 @@ public class UserServiceImpl implements UserService {
 	public User socialLogin(User u) {
 		return dao.socialLogin(u);
 	}
+	
+	@Override
+	public List<User> selectUserByTag(String userNo) {
+		return dao.selectUserByTag(userNo);
+	}
 
 	@Override
 	public void changePassword(String id, String password) {

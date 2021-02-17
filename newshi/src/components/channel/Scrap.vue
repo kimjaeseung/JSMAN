@@ -90,7 +90,7 @@ export default {
     },
     methods: {
       showNews(scrap_no) {
-        this.$router.push('./' + this.$route.params.id + '/' + scrap_no);
+        this.$router.push('./' + this.$route.params.id + '/scrap/' + scrap_no);
       },
       modifyBtn(name, postNo) {
         this.modify_title = name;
@@ -117,8 +117,10 @@ export default {
             axios.get('http://localhost:8080/article/scraplist', 
             { params: { postNo: scraps[i].postNo } },
           ).then((response) => {
-            scraps[i].scrap_thumbnail = response.data[0].new_image[0];
-            this.scraps.push(scraps[i]);
+            if(response.data[0] != undefined) { 
+              scraps[i].scrap_thumbnail = response.data[0].new_image[0];
+              this.scraps.push(scraps[i]);
+            }
           });
           }, i * 10);
         }

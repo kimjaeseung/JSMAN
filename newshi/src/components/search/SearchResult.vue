@@ -5,7 +5,7 @@
             <v-col cols="3">
                 <v-responsive :aspect-ratio="1/1" @click="toChannel(curator.id)" style="cursor: pointer">
                     <v-avatar width=100% height=100%>
-                        <v-img v-if="mode=='curator'" :src="curator.thumbnail_path"></v-img>
+                        <v-img v-if="mode=='curator'" :src="curator.thumbnail_path" aspect-ratio="1/1"></v-img>
                         <v-icon v-else size="min(10vw,100px)" color="grey lighten-1">mdi-pound</v-icon>
                     </v-avatar>
                 </v-responsive>
