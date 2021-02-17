@@ -18,12 +18,12 @@ import ModifyMyinfo from '../components/mypage/ModifyMyinfo.vue';
 import Search from '../views/Search.vue';
 import NoSearch from '../components/search/NoSearch.vue';
 import SearchResult from '../components/search/SearchResult.vue';
-import Board from '../views/Board.vue';
 import BoardDetail from '../views/BoardDetail.vue';
 import AddBoard from '../views/AddBoard.vue';
 import ModifyBoard from '../views/ModifyBoard.vue';
 import Link from '../views/Link.vue';
 import NotFound from '../views/404.vue';
+import ChannelBoard from '../components/channel/ChannelBoard.vue';
 
 Vue.use(VueRouter);
 
@@ -135,20 +135,16 @@ const routes = [
         props: true,
       },
       {
-        path: ':scrap_no',
+        path: 'scrap/:scrap_no',
         name: 'ScrapNews',
         component: ScrapNews,
       },
       {
-        path: 'modify/:scrap_no',
-        name: 'ModifyScrap',
+        path: 'board',
+        name: 'ChannelBoard',
+        component: ChannelBoard,
       },
     ],
-  },
-  {
-    path: '/board/:id',
-    name: 'Board',
-    component: Board,
   },
   {
     path: '/addBoard',

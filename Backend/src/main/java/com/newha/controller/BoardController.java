@@ -205,6 +205,7 @@ public class BoardController {
 			for (int i = 0; i < l.size(); i++) {
 				String commentNo = Integer.toString(l.get(i));
 				BoardComment bc = service.boardComment(commentNo);
+				System.out.println(bc.getBoardPostNo());
 				Map<String, String> temp = new HashMap<String, String>();
 				temp.put("BoardPostNo", bc.getBoardPostNo());
 				temp.put("CommentNo", bc.getCommentNo());

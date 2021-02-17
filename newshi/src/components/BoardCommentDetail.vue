@@ -142,7 +142,10 @@ export default {
             thumbnail_path: response.data['thumbnail_path'],
             platformtype: response.data['platformtype'],
           };
-
+          if (this.member.thumbnail_path == null) {
+            this.member.thumbnail_path =
+              'https://newha.s3.us-east-2.amazonaws.com/default-avatar.png';
+          }
           if (this.member.id === localStorage['id']) {
             console.log(this.member.id);
             console.log(localStorage['id']);
