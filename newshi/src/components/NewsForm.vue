@@ -1,38 +1,32 @@
 <template>
-  <v-container class="container">
-    <v-expansion-panels v-model="panel">
-      <v-expansion-panel class="panels">
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-expansion-panel-header
-              hide-actions
-              class="panels"
-              v-bind="attrs"
-              v-on="on"
-            >
-              <v-row>
-                <v-col class="url-text ellipsis">{{ title }}</v-col>
-                <v-col class="no-margin">
-                  <v-btn
-                    class="close-btn"
-                    color="red darken-4 "
-                    dark
-                    icon
-                    @click="remove"
-                    ><v-icon large>mdi-close</v-icon></v-btn
-                  ></v-col
-                >
-              </v-row>
-            </v-expansion-panel-header>
-          </template>
-          <span>{{ news.url }}</span>
-        </v-tooltip>
-        <v-expansion-panel-content>
-          <Tiptap @saveData="saveOther"></Tiptap>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
-  </v-container>
+  <v-expansion-panels v-model="panel">
+    <v-expansion-panel class="panels">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-expansion-panel-header
+            hide-actions
+            class="panels"
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-row>
+              <v-btn color="red darken-3" 
+                icon
+                dark
+                @click="remove"
+              >
+              <v-icon medium>mdi-close-circle-outline</v-icon></v-btn>
+              <v-col class="url-text ellipsis">{{ title }}</v-col>
+            </v-row>
+          </v-expansion-panel-header>
+        </template>
+        <span>{{ news.url }}</span>
+      </v-tooltip>
+      <v-expansion-panel-content>
+        <Tiptap @saveData="saveOther"></Tiptap>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+  </v-expansion-panels>
 </template>
 
 <script>
@@ -63,7 +57,6 @@ export default {
         '오피니언',
       ],
       isSaveOnce: false,
-      title: '',
     };
   },
   methods: {
@@ -76,20 +69,20 @@ export default {
       this.panel = [];
     },
   },
-  created() {
-    if (this.news.url.indexOf('naver') != -1) {
-      this.title = '네이버뉴스 ' + (this.num + 1);
-    } else {
-      this.title = '다른 뉴스 ' + this.num;
-    }
-  },
-};
+    created() {
+      if (this.news.url.indexOf('naver') != -1) {
+        this.title = '네이버뉴스 ' + (this.num + 1);
+      } else {
+        this.title = '다른 뉴스 ' + this.num;
+      }
+    },
+  };
 </script>
 
 <style>
 .panels {
   border: 1px solid gray;
-  background-color: lightgray;
+  background-color: transparent;
   padding: 0px;
 }
 .left-border {
@@ -100,22 +93,8 @@ export default {
   padding: 0 0 0 0;
   float: right;
 }
-/* .ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-} */
-.url-text {
-  padding: 0 50% 1px 0;
-}
-.close-btn {
-  position: absolute;
-  right: 1%;
-  top: 13%;
-}
-.container {
-  margin: 0;
-  padding: 0 24px 0 24px;
+.ellipsis {
+  width: 80% !important;
+  align-items: center !important;
 }
 </style>

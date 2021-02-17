@@ -1,50 +1,33 @@
 <template>
-  <v-dialog v-model="addDialog" fullscreen scrollable>
+  <v-dialog v-model="addDialog" fullscreen v-if="isLogged">
     <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        color="#fcbf49"
-        fixed
-        bottom
-        right
-        fab
-        v-bind="attrs"
-        v-on="on"
-        v-if="isLogged"
-      >
+      <v-btn color="#fcbf49" dark fixed bottom right fab v-bind="attrs" v-on="on">
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
     </template>
+    
     <v-card>
-      <v-toolbar class="dialog-header" color="orange lighten-4">
-        <v-btn
-          style="padding-right: 10px; padding-bottom:5px"
-          icon
-          @click="addDialog = !addDialog"
-        >
+      <v-container>
+      <v-toolbar>
+        <v-btn icon @click="addDialog = !addDialog">
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-spacer />
-        <v-toolbar-title style="padding-right: 30px; padding-bottom:10px"
-          >기사 등록</v-toolbar-title
-        >
+        <v-toolbar-title>포스트 만들기</v-toolbar-title>
         <v-spacer />
       </v-toolbar>
-
+      
       <v-form class="pa-6" @submit.prevent="registURL">
-        <ValidationProvider
-          name="url"
-          rules="url|naver|news"
-          v-slot="{ errors }"
-        >
+        <ValidationProvider name="url" rules="url" v-slot="{ errors }">
           <v-text-field
             v-model="url"
             :error-messages="errors"
             required
-            placeholder="URL을 등록해주세요"
+            placeholder="URL Ctrl+C 복사 Ctrl+V 붙여넣기"
             autocapitalize="off"
           ></v-text-field>
         </ValidationProvider>
-        <v-btn color="orange lighten-4" @click="registURL">
+        <v-btn color="#fcbf49" dark rounded @click="registURL">
           저장
         </v-btn>
       </v-form>
@@ -62,10 +45,11 @@
           required
           placeholder="포스트 제목을 작성해주세요"
         ></v-text-field>
-        <v-btn color="orange lighten-4" @click="registPost"
-          >등록<v-icon right>mdi-cloud-upload</v-icon>
+        <v-btn color="#fcbf49" dark rounded @click="registPost"
+          >등록
         </v-btn>
       </v-form>
+      </v-container>
     </v-card>
   </v-dialog>
 </template>
@@ -85,18 +69,6 @@ extend('url', {
     return /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!]))?/i.test(
       value
     );
-  },
-});
-extend('naver', {
-  message: '네이버 기사만 등록이 가능합니다. 다시 한번 확인해주세요.',
-  validate: (value) => {
-    return /.naver./.test(value);
-  },
-});
-extend('news', {
-  message: '뉴스형식이 아닙니다. 다시 한번 확인해주세요.',
-  validate: (value) => {
-    return /.news./.test(value);
   },
 });
 export default {
@@ -143,7 +115,7 @@ export default {
         this.post,
         (response) => {
           if (response.data.message === 'success') {
-            alert('포스트 생성에 성공하셨습니다.');
+            alert('포스트 만들기 성공!');
             let no = response.data.postNo;
             this.addDialog = false;
             this.$router.push({
@@ -155,7 +127,7 @@ export default {
               },
             });
           } else {
-            alert('포스트 생성에 실패하셨습니다.');
+            alert('포스트 만들기 실패');
           }
         },
         (error) => {
@@ -193,8 +165,4 @@ export default {
 };
 </script>
 
-<style>
-.dialog-header {
-  max-height: 6%;
-}
-</style>
+<style></style>
