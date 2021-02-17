@@ -173,7 +173,7 @@ export default {
       axios.delete(API_BASE_URL + 'delete', {params: { id: this.member.id }})
       .then(() => {
         this.logout();
-        this.$router.go(this.$router.currentRoute);
+        window.location.reload();
         // this.$router.push('/');
       })
     },
@@ -191,7 +191,7 @@ export default {
       console.log(id);
       axios.post(API_BASE_URL + 'subscdelete', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
       .then(() => {
-        this.$router.go(this.$router.currentRoute);
+        window.location.reload();
       })
     },
     modifyTags(){
@@ -201,10 +201,10 @@ export default {
         params.append("list",tag_dict[tag]);
       });
       console.log(this.member.id);
-      axios.get(API_BASE_URL + 'tagListUpdate', 
+      axios.get('http://localhost:8080/tagListUpdate', 
       { params: params },
     ).then(() => { 
-      this.$router.go(this.$router.currentRoute);
+      window.location.reload();
       }) .catch((error) => { 
         // 예외 처리 
         console.log(error);
@@ -228,9 +228,9 @@ export default {
             var frm = new FormData();
             frm.append("id", this.member.id);
             frm.append("thumbnail_path", this.imageSrc);
-            axios.post(API_BASE_URL + 'upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+            axios.post('http://localhost:8080/upload', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
             .then(() => {
-              this.$router.go(this.$router.currentRoute);
+              window.location.reload();
             })
           } else {
             alert('큐레이터의 데이터를 받아오는데 실패했습니다.');
@@ -243,7 +243,7 @@ export default {
       );
     },
     getFollowers() {
-      axios.get(API_BASE_URL + 'subscribe', 
+      axios.get('http://localhost:8080/subscribe', 
       { params: { id: this.member.id } },
     ).then((response) => { 
         // 응답 처리 
@@ -260,7 +260,7 @@ export default {
       })
     },
     getTagList() {
-      axios.get(API_BASE_URL + 'tagList', 
+      axios.get('http://localhost:8080/tagList', 
       { params: { id: this.member.id } },
     ).then((response) => { 
       var hashtags = response.data;

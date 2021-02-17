@@ -2,7 +2,7 @@
   <v-app>
     <nav-bar></nav-bar>
     <br /><br />
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
     <AddNews></AddNews>
   </v-app>
 </template>

@@ -27,6 +27,13 @@ import ChannelBoard from '../components/channel/ChannelBoard.vue';
 
 Vue.use(VueRouter);
 
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(() => {
+        return window.location.reload()
+    })
+};
+
 const requireAuth = () => (to, from, next) => {
   if (localStorage['access-token'] && localStorage['access-token'] !== '') {
     console.log(localStorage['access-token']);
