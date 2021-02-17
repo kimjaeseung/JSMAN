@@ -8,6 +8,7 @@
         <v-slide-group
           v-model="model"
           center-active
+          id="recommend"
         >
           <v-slide-item
             v-for="(user, idx) in users"
@@ -17,7 +18,7 @@
               class="d-flex flex-row ma-2"
               max-width="200"
               min-width="140"
-              dismissable
+              elevation="3"
             >
               <v-list-item-content 
                 class="justify-center"
@@ -184,5 +185,7 @@ export default {
   position: absolute;
   width: 100%;
 }
-
+#recommend .theme--dark.v-card {
+  background-color: #222222 !important;
+}
 </style>
