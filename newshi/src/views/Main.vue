@@ -184,7 +184,5 @@ export default {
   position: absolute;
   width: 100%;
 }
-.v-list-item {
-  padding-left: 0 !important;
-}
+
 </style>
