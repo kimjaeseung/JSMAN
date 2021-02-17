@@ -44,7 +44,7 @@ const store = new Vuex.Store({
 
               localStorage.clear();
               commit('SET_USER', null);
-              this.$router.push('/');
+              window.location.href('http://i4a307.p.ssafy.io/');
             }
           },
           (error) => {
@@ -53,7 +53,7 @@ const store = new Vuex.Store({
 
             localStorage.clear();
             commit('SET_USER', null);
-            window.location.href('/');
+            window.location.href('http://i4a307.p.ssafy.io/');
           }
         );
       }

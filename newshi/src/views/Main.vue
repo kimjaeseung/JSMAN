@@ -29,7 +29,8 @@
 <script>
 import NewsList from '../components/NewsList.vue';
 import axios from 'axios';
-const API_URL = 'http://localhost:8080';
+import { API_BASE_URL } from '@/config';
+const API_URL = API_BASE_URL;
 const id = localStorage.getItem('id');
 
 export default {
