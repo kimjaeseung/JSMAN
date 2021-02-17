@@ -98,7 +98,7 @@
     <v-navigation-drawer v-model="menu_drawer" fixed temporary>
       <v-list>
         <v-list-item-group>
-          <v-list-item v-if="logged">
+          <v-list-item v-if="logged" @click="toChannel">
             <v-list-item-avatar>
               <v-img :src="member.thumbnail_path"></v-img>
             </v-list-item-avatar>
@@ -224,6 +224,10 @@ export default {
   },
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
+    toChannel() {
+      // console.log(this.member.id);
+      this.$router.push('/channel/' + this.member.id);
+    },
     toSearch() {
       this.$router.push('/search');
     },
@@ -257,14 +261,14 @@ export default {
       console.log(this.member);
       this.dialog = !this.dialog;
       this.isLogin = true;
-      this.$router.go(this.$router.currentRoute);
+      window.location.reload();
     },
     loggedOut() {
       this.logged = false;
       this.logout();
       this.member = {};
       if (this.$router.currentRoute == '/')
-        this.$router.go(this.$router.currentRoute);
+        window.location.reload();
       else this.$router.push('/');
     },
     closeFooter() {

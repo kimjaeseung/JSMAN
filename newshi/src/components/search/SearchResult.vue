@@ -136,7 +136,7 @@ export default {
               headers: { 'Content-Type': 'multipart/form-data' },
             })
             .then(() => {
-              this.$router.go(this.$router.currentRoute);
+              window.location.reload();
             });
         }
       },
@@ -150,7 +150,7 @@ export default {
             headers: { 'Content-Type': 'multipart/form-data' },
           })
           .then(() => {
-            this.$router.go(this.$router.currentRoute);
+            window.location.reload();
           });
         }
       },
