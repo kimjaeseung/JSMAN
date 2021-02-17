@@ -90,7 +90,7 @@ export default {
     },
     methods: {
       showNews(scrap_no) {
-        this.$router.push('./' + this.$route.params.id + '/' + scrap_no);
+        this.$router.push('./' + this.$route.params.id + '/scrap/' + scrap_no);
       },
       modifyBtn(name, postNo) {
         this.modify_title = name;

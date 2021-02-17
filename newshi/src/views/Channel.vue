@@ -28,14 +28,18 @@
           <v-container>
             <v-row v-if="isMyPage == true">
               <v-col><v-btn block @click="toMyPage">마이페이지</v-btn></v-col>
-              <v-col><v-btn block @click="goBoard">커뮤니티</v-btn></v-col>
+              <v-col>
+                <v-btn block @click="goBoardScrap">{{btn_name}}</v-btn>
+              </v-col>
             </v-row>
             <v-row v-else>
               <v-col v-if="isSubs == false">
                 <v-btn block @click="follow">구독하기</v-btn></v-col>
               <v-col v-else>
                 <v-btn block @click="unfollow" class="error">구독취소</v-btn></v-col>
-              <v-col><v-btn block @click="goBoard">커뮤니티</v-btn></v-col>
+              <v-col>
+                <v-btn block @click="goBoardScrap">{{btn_name}}</v-btn>
+              </v-col>
             </v-row>
           </v-container>
         </v-col>
@@ -77,6 +81,7 @@ export default {
       isMyPage: false,
       isSubs: false,
       curator: {},
+      btn_name: '',
     };
   },
   methods: {
@@ -132,11 +137,23 @@ export default {
           this.$router.go(this.$router.currentRoute);
         });
     },
-    goBoard() {
-      this.$router.push(`/board/${this.$route.params.id}`);
+    goBoardScrap() {
+      if(this.$router.currentRoute.name == 'ChannelBoard') {
+        this.btn_name = '커뮤니티'
+        this.$router.push('/channel/' + this.$route.params.id);
+      } else {
+        this.btn_name = '스크랩 페이지'
+        this.$router.push(this.$route.params.id + '/board');
+      }
     },
   },
   created() {
+    if(this.$router.currentRoute.name == 'ChannelBoard') {
+        this.btn_name = '스크랩 페이지';
+      } else {
+        this.btn_name = '커뮤니티';
+      }
+
     if(this.$store.getters.userProfile.id != undefined) {
       this.member = this.$store.getters.userProfile;
     }
