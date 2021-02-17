@@ -191,8 +191,19 @@
     </v-chip-group>
 
     <v-row class="d-flex flex-row-reverse save-btn">
-      <v-btn class="my-1" rounded dark color="#fcbf49" elevation="3" v-if="!isSaveOnce" @click="save">저장</v-btn>
-      <v-btn class="my-1" rounded dark color="#fcbf49" v-else @click="save">수정</v-btn>
+      <v-btn
+        class="my-1"
+        rounded
+        dark
+        color="#fcbf49"
+        elevation="3"
+        v-if="!isSaveOnce"
+        @click="save"
+        >저장</v-btn
+      >
+      <v-btn class="my-1" rounded dark color="#fcbf49" v-else @click="save"
+        >수정</v-btn
+      >
     </v-row>
   </div>
 </template>
@@ -269,6 +280,11 @@ export default {
   },
   methods: {
     save() {
+      console.log(this.tags.length);
+      if (this.tags.length < 1) {
+        alert('태그를 설정해주세요.');
+        return;
+      }
       let fullTag = '';
       for (let i = 0; i < this.tags.length; i++) {
         fullTag = fullTag + '#' + this.tagName[this.tags[i]];

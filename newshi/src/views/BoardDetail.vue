@@ -67,8 +67,8 @@ export default {
     },
   },
   created() {
-    this.member = this.$route.query.member;
-    this.board = this.$route.query.board;
+    this.member = JSON.parse(this.$route.query.member);
+    this.board = JSON.parse(this.$route.query.board);
     this.num = this.$route.query.num;
   },
 };

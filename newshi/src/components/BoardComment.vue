@@ -10,7 +10,10 @@
         @blur="!isFocus"
       >
         <v-avatar size="40px" slot="prepend">
-          <v-img :src="myInfo.thumbnail_path"></v-img>
+          <v-img
+            v-if="myInfo.thumbnail_path != undefined"
+            :src="myInfo.thumbnail_path"
+          ></v-img>
         </v-avatar>
       </v-text-field>
       <v-row class="justify-end" no-gutters v-show="isFocus">
@@ -37,6 +40,7 @@ import {
   boardCommentDelete,
 } from '@/api/board.js';
 import BoardCommentDetail from '@/components/BoardCommentDetail.vue';
+import { mapActions } from 'vuex';
 
 export default {
   components: {
@@ -56,6 +60,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['getUserInfo']),
     removeComment(index) {
       let comment = this.commentList.splice(index, 1);
       boardCommentDelete(
@@ -111,6 +116,12 @@ export default {
   },
   created() {
     this.myInfo = this.$store.getters.userProfile;
+    if (this.myInfo.thumbnail_path == undefined) {
+      this.getUserInfo();
+      console.log('user');
+      console.log(this.$store.getters.userProfile);
+      this.myInfo = this.$store.getters.userProfile;
+    }
     if (localStorage['access-token'] && localStorage['access-token'] !== '') {
       this.isLogged = true;
     }

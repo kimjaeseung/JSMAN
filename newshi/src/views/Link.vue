@@ -32,7 +32,7 @@
       </v-col>
     </v-row>
     <v-divider></v-divider>
-    <v-row style="margin-top : 5px">
+    <v-row no-gutters class="d-flex align-center">
       <v-col>
         <v-btn style="margin-left: 13px"
           ><a :href="url" style="color: black; text-decoration: none"
@@ -108,6 +108,10 @@ export default {
   created() {
     this.id = localStorage['id'];
     // this.url = API_BASE_URL + `${this.id}/${this.postNo}`;
+    if (this.postNo == undefined) {
+      alert('현재 페이지가 만료되었습니다. 메인으로 이동하겠습니다.');
+      this.goMain();
+    }
     this.url = `http://i4a307.p.ssafy.io/${this.id}/${this.postNo}`;
   },
 };
