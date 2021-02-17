@@ -158,7 +158,7 @@ function boardCommentUpdate(comment, success, fail) {
     .catch(fail);
 }
 
-function boardCommentDelete(commentno, success, fail) {
+function boardCommentDelete(commentNo, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );

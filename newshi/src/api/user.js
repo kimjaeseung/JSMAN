@@ -128,13 +128,12 @@ function getInfo(id, success, fail) {
 }
 
 function changePassword(info, success, fail) {
-  const user = {
-    id: info.id,
-    password: info.password,
-  };
+  var frm = new FormData();
+  frm.append('id', info.id);
+  frm.append('password', info.password);
 
   instance
-    .post('user/changePw', JSON.stringify(user))
+    .put('changePassword', frm)
     .then(success)
     .catch(fail);
 }

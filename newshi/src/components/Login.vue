@@ -161,6 +161,7 @@ export default {
             thumbnail_path: result.user.photoURL,
             platform_type: 'Google',
           };
+          console.log(user);
           socialLogin(
             user,
             (response) => {
@@ -213,7 +214,7 @@ export default {
                   this.login();
                 } else {
                   this.isLoginError = true;
-                  alert('구글 로그인에 실패했습니다.');
+                  alert('카카오 로그인에 실패했습니다.');
                 }
               },
               (error) => {

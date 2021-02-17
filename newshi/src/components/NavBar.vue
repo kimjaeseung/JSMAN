@@ -71,7 +71,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    
+
     <!-- Footer Start -->
     <template>
       <div class="overflow-hidden">
@@ -189,11 +189,7 @@ export default {
       info: {},
       logged: true,
       switchTheme: '',
-      items: [
-        'default',
-        'absolute',
-        'fixed',
-      ],
+      items: ['default', 'absolute', 'fixed'],
       padless: false,
       variant: 'fixed',
       close: '',
@@ -230,7 +226,7 @@ export default {
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
     toSearch() {
-      this.$router.push("/search");
+      this.$router.push('/search');
     },
     closeDialog() {
       this.dialog = !this.dialog;
@@ -268,12 +264,14 @@ export default {
       this.logged = false;
       this.logout();
       this.member = {};
-      this.$router.go(this.$router.currentRoute);
+      if (this.$router.currentRoute == '/')
+        this.$router.go(this.$router.currentRoute);
+      else this.$router.push('/');
     },
-    closeFooter(){
+    closeFooter() {
       localStorage.setItem('closeFooter', true);
       this.close = 'true';
-    }
+    },
   },
   watch: {
     getMember: function(val) {
@@ -326,7 +324,7 @@ export default {
 .v-list-item__icon {
   margin-left: 0px !important;
 }
-.v-footer{
+.v-footer {
   padding: 0 !important;
 }
 </style>
