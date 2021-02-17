@@ -525,8 +525,17 @@ public class UserController {
 			String userNo = Integer.toString(service.userNo(id));
 			list = service.selectUserByTag(userNo);
 			for (User user : list) {
-				if(user.getId().equals(id))
+				if(user.getId().equals(id))//자기 자신은 제외
 					continue;
+				ArrayList<Integer> follows = service.follow(Integer.parseInt(userNo));
+				boolean flag = false;
+				for (Integer follow : follows) {//이미 구독중인지 확인
+					if(user.getUserNo().equals(Integer.toString(follow)))
+						flag = true;
+				}
+				if(flag)//구독중이면 제외
+					continue;
+				
 				Map<String, String[]> m = new HashMap<String, String[]>();
 				m.put("userNo", new String[] {user.getUserNo()});
 				m.put("name", new String[] {user.getName()});
