@@ -1,7 +1,25 @@
 <template>
   <v-container>
+    <v-row class="link-btn">
+      <v-col style="padding: 0px">
+        <v-btn class="top-btn pr-2" text @click="copyUrl">
+          <v-icon color="deep-purple accent-4">
+            mdi-content-copy
+          </v-icon>
+          URL 복사
+        </v-btn>
+        <v-btn class="top-btn pl-2" text @click="kakaoCopy">
+          <v-img
+            max-height="24"
+            max-width="24"
+            src="@/assets/images/kakaolink_btn_small.png"
+          ></v-img>
+          카카오톡 공유
+        </v-btn>
+      </v-col>
+    </v-row>
     <v-row>
-      <v-col style="margin-top: 20%">
+      <v-col style="padding-top: 0px; padding-bottom: 0px">
         <v-textarea
           class="url-text"
           auto-grow
@@ -13,28 +31,23 @@
         </v-textarea>
       </v-col>
     </v-row>
-    <v-row class="link-btn">
-      <v-btn text color="deep-purple accent-4" @click="copyUrl">
-        <v-icon>
-          mdi-content-copy
-        </v-icon>
-        URL 복사
-      </v-btn>
-      <v-btn text color="deep-purple accent-4" @click="kakaoCopy">
-        <v-img src="@/assets/images/kakaolink_btn_small.png"></v-img>
-        카카오톡 공유
-      </v-btn>
-    </v-row>
-    <v-row>
-      <v-col align-sm>
-        <v-btn
+    <v-divider></v-divider>
+    <v-row style="margin-top : 5px">
+      <v-col>
+        <v-btn style="margin-left: 13px"
           ><a :href="url" style="color: black; text-decoration: none"
             >해당 포스트로 이동</a
           ></v-btn
         >
-        <v-btn @click="goMain">메인페이지로 이동</v-btn>
+      </v-col>
+      <v-divider vertical></v-divider>
+      <v-col>
+        <v-btn style="margin-left: 13px" @click="goMain"
+          >메인페이지로 이동</v-btn
+        >
       </v-col>
     </v-row>
+    <v-divider style="margin-top: 15px"></v-divider>
   </v-container>
 </template>
 
@@ -102,7 +115,9 @@ export default {
 
 <style>
 .link-btn {
-  position: relative;
-  right: 5%;
+  margin-top: 20%;
+}
+.top-btn {
+  padding-right: 0;
 }
 </style>
