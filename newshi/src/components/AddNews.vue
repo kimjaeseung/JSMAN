@@ -1,5 +1,9 @@
 <template>
   <v-dialog v-model="addDialog" fullscreen scrollable>
+    <v-overlay :value="overlay"> 
+      <v-progress-circular indeterminate size="60">
+      </v-progress-circular>
+    </v-overlay>
     <template v-slot:activator="{ on, attrs }">
       <v-btn
         color="#fcbf49"
@@ -110,6 +114,7 @@ export default {
       url: '',
       post: [],
       postName: '',
+      overlay: false,
     };
   },
   methods: {
@@ -139,9 +144,11 @@ export default {
         this.post.splice(i, 1, news);
       }
       console.log(this.post);
+      this.overlay = true;
       saveArticle(
         this.post,
         (response) => {
+          this.overlay = false;
           if (response.data.message === 'success') {
             alert('포스트 생성에 성공하셨습니다.');
             let no = response.data.postNo;
@@ -161,6 +168,7 @@ export default {
         (error) => {
           console.error(error);
           alert('포스트 생성 중 에러가 발생했습니다.');
+          this.overlay = false;
         }
       );
     },
