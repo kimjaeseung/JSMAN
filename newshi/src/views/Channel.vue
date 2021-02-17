@@ -61,6 +61,7 @@
 
 <script>
 import axios from 'axios';
+import { API_BASE_URL } from '@/config';
 
 export default {
   computed: {
@@ -94,7 +95,7 @@ export default {
     },
     subsCheck() {
       axios
-        .get('http://localhost:8080/subscribe', {
+        .get(API_BASE_URL + 'subscribe', {
           params: { id: this.member.id },
         })
         .then((response) => {
@@ -122,7 +123,7 @@ export default {
       frm.append('id', this.member.id);
       frm.append('id2', this.$route.params.id);
       axios
-        .post('http://localhost:8080/subsc', frm, {
+        .post(API_BASE_URL + 'subsc', frm, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then(() => {
@@ -134,7 +135,7 @@ export default {
       frm.append('id', this.member.id);
       frm.append('id2', this.$route.params.id);
       axios
-        .post('http://localhost:8080/subscdelete', frm, {
+        .post(API_BASE_URL + 'subscdelete', frm, {
           headers: { 'Content-Type': 'multipart/form-data' },
         })
         .then(() => {
@@ -161,23 +162,22 @@ export default {
     if (this.$store.getters.userProfile.id != undefined) {
       this.member = this.$store.getters.userProfile;
     }
-    // 내 정보랑 같은지 체크해서
-    // 하위 컴포넌트에 전달
-    // this.showScrap();
-    axios
-      .get('http://localhost:8080/sidebarUser', {
-        params: { id: this.$route.params.id },
-      })
-      .then((response) => {
-        let curator = response.data;
-        if (curator.thumbnail_path == null) {
-          curator.thumbnail_path = require('@/assets/images/default_avatar.png');
-        }
-        this.curator = response.data;
-        this.curator.id = this.$route.params.id;
-      });
-  },
-};
+      // 내 정보랑 같은지 체크해서
+      // 하위 컴포넌트에 전달
+      // this.showScrap();
+      axios.get(API_BASE_URL + 'sidebarUser', 
+            { params: { id: this.$route.params.id } },
+          ).then((response) => {
+            let curator = response.data;
+            if(curator.thumbnail_path == null) {
+              curator.thumbnail_path = require('@/assets/images/default_avatar.png');
+            }
+            this.curator = response.data;
+            this.curator.id = this.$route.params.id;
+          });
+
+    },
+}
 </script>
 
 <style scoped>

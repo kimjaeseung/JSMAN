@@ -22,6 +22,7 @@
 
 <script>
 import axios from 'axios';
+import { API_BASE_URL } from '@/config';
 
 export default {
     data() {
@@ -59,7 +60,7 @@ export default {
       ];
         } else{
             // 큐레이터에 접근하는 axios
-            axios.get('http://localhost:8080/search/people', 
+            axios.get(API_BASE_URL + 'search/people', 
             { params: { keyword: this.search_word } },
             ).then((response) => { 
                 let resData = response.data;

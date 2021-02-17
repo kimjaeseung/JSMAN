@@ -70,6 +70,7 @@ import { extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
 import axios from 'axios';
 import { mapActions } from 'vuex';
+import { API_BASE_URL } from '@/config';
 
 var old_check = false;
 var new_check = false;
@@ -130,7 +131,7 @@ export default {
       frm.append("newpassword", this.new_password);
       frm.append("oldpassword", this.old_password);
 
-      axios.put('http://localhost:8080/updatePassword', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+      axios.put(API_BASE_URL + 'updatePassword', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
         .then(() => {
           this.logout();
           this.$router.go("/");
