@@ -13,7 +13,7 @@
                 <v-card-actions>
                 <v-chip-group
                   v-model="tags"
-                  active-class="yellow --text"
+                  active-class="green accent-1 --text"
                   column
                   multiple
                 >
@@ -82,11 +82,11 @@
         <p @click="toChannel(member.id)" style="cursor: pointer">{{member.id}}</p></div>
       
       <v-container class="mt-8">
-        <v-row>
+        <v-row >
           <v-col></v-col>
-          <v-col class="d-flex justify-center" cols="8">
-            <div>
-              <v-btn v-for="(hashtag, index) in hashtags" :key="index" text style="font-size:125%" color="#646464" @click="toSearch(hashtag)">#{{hashtag}}</v-btn>
+          <v-col cols="8">
+            <div class="d-flex justify-center" v-for="(hashtag, index) in hashtags" :key="index" >
+              <v-btn class="text-h6 font-weight-light ma-1" text color="#646464" @click="toSearch(hashtag)">#{{hashtag}}</v-btn>
             </div>
           </v-col>
           <v-col></v-col>
