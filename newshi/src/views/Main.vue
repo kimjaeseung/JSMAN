@@ -1,9 +1,57 @@
 <template>
   <v-container>
     <div v-if="this.isLoggedIn == true">
-      <NewsList 
-        :news-infos="newsInfos"
-      />
+      <v-sheet
+        class="mx-auto"
+        max-width="800"
+      >
+        <v-slide-group
+          v-model="model"
+          center-active
+        >
+          <v-slide-item
+            v-for="(user, idx) in users"
+            :key="idx"
+          >
+            <v-card 
+              class="d-flex flex-row ma-2"
+              max-width="200"
+              min-width="140"
+              dismissable
+            >
+              <v-list-item-content 
+                class="justify-center"
+              >
+                <div class="mx-auto text-center">
+                  <v-avatar
+                    color="brown"
+                  >
+                    <v-img v-if="user.thumnail_path !== undefined" :src="user.thumnail_path[0]"></v-img>
+                  </v-avatar>
+                  <h3 v-if="user.name !== undefined">{{ user.name[0] }}</h3>
+                  <span class="caption mt-1" 
+                    v-for="tag in user.tag"
+                    :key="tag"
+                  >
+                    #{{ tag }}
+                  </span>
+                  <br>
+                  <v-btn
+                    tile
+                    text
+                    v-if="user.id !== undefined"
+                    @click="follow(user.id[0])"
+                  >
+                    구독
+                  </v-btn>
+                </div>
+              </v-list-item-content>
+            </v-card>
+          </v-slide-item>
+        </v-slide-group>
+      </v-sheet>
+      <!-- <Recommend :recommend-user="recommends"/> -->
+      <NewsList :news-infos="newsInfos" />
     </div>
     <div v-else>
       <v-list>
@@ -28,7 +76,9 @@
 
 <script>
 import NewsList from '../components/NewsList.vue';
+// import Recommend from '../components/Recommend.vue';
 import axios from 'axios';
+
 const API_URL = 'http://localhost:8080';
 const id = localStorage.getItem('id');
 
@@ -36,6 +86,7 @@ export default {
   name: "Main",
   components: { 
     NewsList,
+    // Recommend,
   },
   methods: {
     getData: function () {
@@ -73,7 +124,6 @@ export default {
         axios.get(`${API_URL}`+'/article')
         .then((res)=> {
           this.basicNews = res.data;
-          // console.log(this.basicNews)
         })
         .catch((err) => {
           console.log(err)
@@ -85,6 +135,26 @@ export default {
     move(newsInfo){
       this.$router.push({name: 'Article', params: {newsNo: newsInfo.newsNo, newsInfo2: newsInfo} })
     },
+    getRecommend(){
+      axios.get(`${API_URL}`+'/userrecommend'+`?id=${id}`)
+      .then((res)=>{
+        this.users = res.data;
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
+    },
+    follow(subscribeid) {
+      var frm = new FormData();
+      frm.append("id", id);
+      frm.append("id2", subscribeid);
+      console.log(id, subscribeid);
+      axios.post('http://localhost:8080/subsc', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
+      .then(() => {
+        this.$router.go(this.$router.currentRoute);
+        console.log('구독 성공')
+      })
+    },
   },
   data: function () {
     return {
@@ -92,12 +162,14 @@ export default {
       newsInfos: [],
       isLoggedIn: '',
       basicNews: [],
-      // cancelFooter: cancel,
+      users: [],
+      model: null,
     }
   },
   created: function () {
     this.isLogged();
     this.isLoggedIn ? this.getData(): this.isLoggedIn;
+    this.getRecommend();
   }
 }
 </script>

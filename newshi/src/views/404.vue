@@ -15,7 +15,6 @@
       </router-link>
     </div>
   
-<template>
   <div>
     <v-item-group
       v-model="model"
@@ -66,7 +65,6 @@
       </div>
     </v-card>
   </div>
-</template>
 
   </v-container>
 </template>
