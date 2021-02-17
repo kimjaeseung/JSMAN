@@ -437,6 +437,10 @@ public class UserController {
 			int a = service.selectId(user.getId());
 			if (a == 0) {
 				service.socialInsert(user);
+				String tag[] = {"속보", "정치", "경제", "사회", "생활/문화", "세계/국제", "IT/과학", "오피니언"};
+				for (int j = 0; j < tag.length; j++) {
+					service.insertTag(user.getId(), tag[j]);
+				}
 				boardservice.boardCreate(user.getId()); // 회원가입과 동시에 개인 게시판 생성
 			}
 			System.out.println(a);
