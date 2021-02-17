@@ -50,7 +50,6 @@
           </v-slide-item>
         </v-slide-group>
       </v-sheet>
-      <!-- <Recommend :recommend-user="recommends"/> -->
       <NewsList :news-infos="newsInfos" />
     </div>
     <div v-else>
@@ -76,17 +75,15 @@
 
 <script>
 import NewsList from '../components/NewsList.vue';
-// import Recommend from '../components/Recommend.vue';
 import axios from 'axios';
-
-const API_URL = 'http://localhost:8080';
+import { API_BASE_URL } from '@/config';
+const API_URL = API_BASE_URL;
 const id = localStorage.getItem('id');
 
 export default {
   name: "Main",
   components: { 
     NewsList,
-    // Recommend,
   },
   methods: {
     getData: function () {
