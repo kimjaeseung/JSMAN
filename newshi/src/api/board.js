@@ -162,12 +162,11 @@ function boardCommentDelete(commentno, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
-
+  var params = new URLSearchParams();
+  params.append("commentNo", commentno);
   instance
     .delete('/boardCommentDelete', {
-      params: {
-        commentNo: commentno,
-      },
+      params: params,
     })
     .then(success)
     .catch(fail);
