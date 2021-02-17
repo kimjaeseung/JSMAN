@@ -55,6 +55,8 @@
 
 <script>
 import axios from 'axios';
+import { API_BASE_URL } from '@/config';
+
 export default {
   computed: {
     getMember() {
@@ -104,7 +106,7 @@ export default {
 
     getScrap() {
       this.scrap_news = [];
-      axios.get('http://localhost:8080/article/scraplist', 
+      axios.get(API_BASE_URL + 'article/scraplist', 
             { params: { postNo: this.post_no } },
           ).then((response) => {
             let scrap_news = response.data;
@@ -114,7 +116,7 @@ export default {
               for(let i = 0; i < scrap_news.length; i++) {
                 setTimeout(() => {
                   setTimeout(() => {
-                    axios.get('http://localhost:8080/article/islike',
+                    axios.get(API_BASE_URL + 'article/islike',
                   {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
                   .then((response) => {
                     if(response.data['message'] == 'success') {
@@ -124,7 +126,7 @@ export default {
                   }, i * 20 + 10);
                   
                   setTimeout(() => {
-                    axios.get('http://localhost:8080/article/isdislike',
+                    axios.get(API_BASE_URL + 'article/isdislike',
                   {params: { id: this.member.id, scrapNo: scrap_news[i].scrapNo[0]}})
                   .then((response) => {
                     if(response.data['message'] == 'success') {
@@ -153,18 +155,18 @@ export default {
         // console.log('좋아요 axios');
         console.log(scrapNo);
         console.log(check);
-        axios.get('http://localhost:8080/article/like',
+        axios.get(API_BASE_URL + 'article/like',
                 {params: { id: this.member.id, scrapNo: scrapNo}})
                 .then(() => {
                 });
         
         if(check == true) {
-          axios.get('http://localhost:8080/article/decrealike',
+          axios.get(API_BASE_URL + 'article/decrealike',
                 {params: {scrapNo: scrapNo}})
                 .then(() => {
                 });
         } else {
-          axios.get('http://localhost:8080/article/increalike',
+          axios.get(API_BASE_URL + 'article/increalike',
                 {params: {scrapNo: scrapNo}})
                 .then(() => {
                 });
@@ -184,17 +186,17 @@ export default {
         // console.log("싫어요 axios");
         console.log(scrapNo);
         console.log(check);
-        axios.get('http://localhost:8080/article/dislike',
+        axios.get(API_BASE_URL + 'article/dislike',
                 {params: { id: this.member.id, scrapNo: scrapNo}})
                 .then(() => {
                 });
         if(check == true) {
-          axios.get('http://localhost:8080/article/decreadislike',
+          axios.get(API_BASE_URL + 'article/decreadislike',
                 {params: {scrapNo: scrapNo}})
                 .then(() => {
                 });
         } else {
-          axios.get('http://localhost:8080/article/increadislike',
+          axios.get(API_BASE_URL + 'article/increadislike',
                 {params: {scrapNo: scrapNo}})
                 .then(() => {
                 });

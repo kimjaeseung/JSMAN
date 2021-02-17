@@ -156,7 +156,8 @@
 <script>
 import Alert from '../components/Alert.vue';
 import axios from 'axios';
-const API_URL = 'http://localhost:8080';
+import { API_BASE_URL } from '@/config';
+const API_URL = API_BASE_URL;
 const id = localStorage.getItem('id');
 const isLogged = localStorage.getItem('access-token');
 
@@ -215,7 +216,7 @@ export default {
       if (this.logged !== null) {
         this.saved = !this.saved;
         const scrapNo = this.newsInfo.scrapNo;
-        axios.get(`${API_URL}`+'/article/save'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        axios.get(`${API_URL}`+'article/save'+`?id=${id}`+`&scrapNo=${scrapNo}`)
         .then((res)=> {
           if (res.data.message == 'success' && this.saved == true) {
             console.log(res.data.message)
@@ -230,7 +231,7 @@ export default {
     },
     saveCheck() {
       const newsNo = this.newsInfo.newsNo;
-      axios.get(`${API_URL}`+'/article/savelist'+`?id=${id}`)
+      axios.get(`${API_URL}`+'article/savelist'+`?id=${id}`)
       .then((res)=> {
         let data = res.data;
         data.forEach(element => {
@@ -248,7 +249,7 @@ export default {
       if (this.logged !== null) {
         this.liked = !this.liked;
         const scrapNo = this.newsInfo.scrapNo;
-        axios.get(`${API_URL}`+'/article/like'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        axios.get(`${API_URL}`+'article/like'+`?id=${id}`+`&scrapNo=${scrapNo}`)
         .then((res)=> {
           if (res.data.message == 'success' && this.liked == true) {
             console.log('like', res.data.message)
@@ -265,7 +266,7 @@ export default {
       if (this.logged !== null) {
         this.disliked = !this.disliked;
         const scrapNo = this.newsInfo.scrapNo;
-        axios.get(`${API_URL}`+'/article/dislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        axios.get(`${API_URL}`+'article/dislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
         .then((res)=> {
           if (res.data.message == 'success' && this.disliked == true) {
             console.log('dislike', res.data.message)
@@ -280,7 +281,7 @@ export default {
     },
     likeCheck() {
       const scrapNo = this.newsInfo.scrapNo;
-      axios.get(`${API_URL}`+'/article/islike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+      axios.get(`${API_URL}`+'article/islike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
       .then((res)=> {
         if (res.data.message === 'success') {
           this.liked = true;
@@ -291,7 +292,7 @@ export default {
       .catch((err) => {
         console.log(err)
       })
-      axios.get(`${API_URL}`+'/article/isdislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+      axios.get(`${API_URL}`+'article/isdislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
       .then((res)=> {
         if (res.data.message === 'success') {
           this.disliked = true;

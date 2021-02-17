@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     getData: function () {
-      axios.get(`${API_URL}`+'/subscribe'+`?id=${id}`)
+      axios.get(`${API_URL}`+'subscribe'+`?id=${id}`)
       .then((res)=>{
         let subscribes = res.data;
         subscribes.forEach(element => {
@@ -100,7 +100,7 @@ export default {
             avatar: element.thumbnail_path,
             newsLists: [],
           }
-          axios.get(`${API_URL}`+'/article/curatorscrap'+`?id=${subscriberId}`)
+          axios.get(`${API_URL}`+'article/curatorscrap'+`?id=${subscriberId}`)
           .then((res)=> {
             newsInfo.newsLists = res.data;
             this.newsInfos.push(newsInfo)
@@ -121,7 +121,7 @@ export default {
         localStorage['access-token'] === undefined
       ) {
         this.isLoggedIn = false;
-        axios.get(`${API_URL}`+'/article')
+        axios.get(`${API_URL}`+'article')
         .then((res)=> {
           this.basicNews = res.data;
         })

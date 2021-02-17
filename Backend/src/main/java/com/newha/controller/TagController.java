@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin
 public class TagController {
 	
 	@Autowired
