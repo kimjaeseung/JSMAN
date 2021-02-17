@@ -148,7 +148,7 @@ export default {
         this.$router.push('/channel/' + this.$route.params.id);
       } else {
         this.btn_name = '포스트 페이지';
-        this.$router.push(this.$route.params.id + '/board');
+        this.$router.push('/channel/' + this.$route.params.id + '/board');
       }
     },
   },

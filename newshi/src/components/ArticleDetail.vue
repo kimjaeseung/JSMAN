@@ -90,7 +90,7 @@
         <div class="article-content">
           <p v-html="news.content"></p>
         </div>
-        <div class="news-body-text hidden">
+        <div class="news-body-text hidden" v-if="news.curator_summary != undefined">
           <div class="my-3">
             <h3 class="text-center">큐레이터의 오피니언</h3>
             <p v-html="news.curator_summary"></p>
@@ -210,7 +210,9 @@ export default {
       speech(t, this.play);
     },
     swipe (direction) {
-      this.swipeDirection = direction
+      if(this.news.curator_summary != undefined) {
+        this.swipeDirection = direction
+      }
     },
     save () {
       if (this.logged !== null) {
