@@ -93,4 +93,5 @@ export default {
 .main-list {
   padding-left: 0 !important;
 }
+
 </style>
