@@ -46,7 +46,6 @@ export default {
     },
     removeBoard(index) {
       let board = this.list.splice(index, 1);
-      console.log(board);
       boardDelete(
         board[0].boardPostNo,
         (response) => {
@@ -61,8 +60,6 @@ export default {
           alert('게시물 삭제 중 에러가 발생했습니다.');
         }
       );
-      console.log(this.list);
-      console.log(index);
     },
   },
   created() {
@@ -80,8 +77,6 @@ export default {
           };
 
           if (this.member.id === localStorage['id']) {
-            console.log(this.member.id);
-            console.log(localStorage['id']);
             this.isMyPage = true;
           } else {
             this.isMyPage = false;
@@ -103,10 +98,8 @@ export default {
         if (response.status >= 200 && response.status < 300) {
           if (response.data[0].message === '게시글이 없습니다.') {
             this.hasList = false;
-            console.log(this.hasList);
           } else {
             this.hasList = true;
-            console.log(response.data);
             this.list = response.data;
           }
         }

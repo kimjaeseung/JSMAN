@@ -130,8 +130,6 @@ export default {
   },
   created() {
     //userNo를 통해 유저정보를 받아와야합니다.
-    console.log('comment');
-    console.log(this.comment);
     userInfo(
       this.comment.UserNo,
       (response) => {
@@ -147,8 +145,6 @@ export default {
               'https://newha.s3.us-east-2.amazonaws.com/default-avatar.png';
           }
           if (this.member.id === localStorage['id']) {
-            console.log(this.member.id);
-            console.log(localStorage['id']);
             this.isMyComment = true;
           } else {
             this.isMyComment = false;

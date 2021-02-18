@@ -281,7 +281,6 @@ export default {
               id,
               (resp) => {
                 if (resp.status >= 200 && resp.status < 300) {
-                  console.log(resp.data['confirm']);
                   this.validNumCheck = resp.data['confirm'];
                 } else {
                   console.log(resp);

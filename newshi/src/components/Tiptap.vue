@@ -280,7 +280,6 @@ export default {
   },
   methods: {
     save() {
-      console.log(this.tags.length);
       if (this.tags.length < 1) {
         alert('태그를 설정해주세요.');
         return;
@@ -289,8 +288,6 @@ export default {
       for (let i = 0; i < this.tags.length; i++) {
         fullTag = fullTag + '#' + this.tagName[this.tags[i]];
       }
-      console.log(this.editor.getHTML());
-      console.log(fullTag);
       this.$emit('saveData', this.editor.getHTML(), fullTag);
       this.isSaveOnce = true;
     },

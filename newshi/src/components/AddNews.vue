@@ -123,7 +123,6 @@ export default {
             num + '번째 기사가 아직 저장되지 않았습니다. 확인해주시기 바랍니다.'
           );
           this.focus[i] = true;
-          console.log(this.focus);
           return;
         }
         let news = {
@@ -140,7 +139,6 @@ export default {
           this.post[i].summary = '';
         }
       }
-      console.log(this.post);
       this.overlay = true;
       saveArticle(
         this.post,
@@ -172,8 +170,6 @@ export default {
     removeURL(index) {
       this.post.splice(index, 1);
       this.focus.splice(index, 1);
-      console.log(this.post);
-      console.log(index);
     },
     saveOther(summary, tags, index) {
       let news = {
@@ -183,7 +179,6 @@ export default {
       };
       this.post.splice(index, 1, news);
       this.focus[index] = false;
-      console.log(this.post[index]);
     },
   },
   created() {

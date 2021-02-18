@@ -72,7 +72,6 @@ export default {
     getMember: function(val) {
       this.member = val;
       this.subsCheck();
-      console.log(this.isSubs);
     },
   },
     data() {
@@ -87,7 +86,6 @@ export default {
     },
     methods: {
       move(newsInfo){
-        console.log(newsInfo);
         let newsInfo2 = {
           article_bot_summary: newsInfo.article_bot_summary[0],
           article_date: newsInfo.article_date[0],
@@ -153,7 +151,6 @@ export default {
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       },
       toChannel(id) {
-        console.log(id);
         this.$router.push('/channel/' + id);
       },
     },
@@ -166,8 +163,6 @@ export default {
           this.member = this.$store.getters.userProfile;
         }
 
-        console.log(this.$route.params.mode);
-        console.log(this.$route.params.search_word);
         if(this.$route.params.mode == 'curator') {
           let name = this.$route.params.search_word;
           //이름으로 아이디랑 썸네일 받아오기

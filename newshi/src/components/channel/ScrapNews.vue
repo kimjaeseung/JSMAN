@@ -76,7 +76,6 @@ export default {
   },
   methods: {
     move(newsInfo){
-        console.log(newsInfo);
         let newsInfo2 = {
           article_bot_summary: newsInfo.article_bot_summary[0],
           article_date: newsInfo.article_date[0],
@@ -147,9 +146,6 @@ export default {
       }
       check = check[0];
       if (localStorage['access-token'] && localStorage['access-token'] !== '') {
-        // console.log('좋아요 axios');
-        console.log(scrapNo);
-        console.log(check);
         axios.get(API_BASE_URL + 'article/like',
                 {params: { id: this.member.id, scrapNo: scrapNo}})
                 .then(() => {
@@ -178,9 +174,6 @@ export default {
       }
       check = check[0];
       if (localStorage['access-token'] && localStorage['access-token'] !== '') {
-        // console.log("싫어요 axios");
-        console.log(scrapNo);
-        console.log(check);
         axios.get(API_BASE_URL + 'article/dislike',
                 {params: { id: this.member.id, scrapNo: scrapNo}})
                 .then(() => {
