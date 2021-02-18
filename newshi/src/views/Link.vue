@@ -78,8 +78,6 @@ export default {
       );
     },
     kakaoCopy() {
-      // let desc = prompt('설명을 작성해주세요.', `${this.id} 포스트입니다.`);
-      // console.log(desc);
       window.Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {

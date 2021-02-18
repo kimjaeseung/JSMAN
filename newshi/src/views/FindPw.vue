@@ -74,7 +74,7 @@ export default {
                 if (resp.status >= 200 && resp.status < 300) {
                   this.validNumCheck = resp.data['confirm'];
                 } else {
-                  console.log(resp);
+                  alert('이메일 인증에 실패했습니다.');
                 }
               },
               (error) => {

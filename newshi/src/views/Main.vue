@@ -47,9 +47,7 @@
         </v-slide-group>
       </v-sheet>
       <NewsList :news-infos="newsInfos" />
-      <div v-if="this.subscribers.length == 0"
-        class="mx-auto my-2"
-      >
+      <div v-if="this.subscribers.length == 0" class="mx-auto my-2">
         <v-alert
           v-model="alert"
           dismissible
@@ -64,7 +62,7 @@
         </v-alert>
       </div>
     </v-row>
-    
+
     <v-row class="main-news" v-else>
       <v-list>
         <template v-for="(newsInfo, i) in basicNews">
@@ -169,7 +167,6 @@ export default {
         })
         .then(() => {
           this.$router.go(this.$router.currentRoute);
-          console.log('구독 성공');
         });
     },
   },
