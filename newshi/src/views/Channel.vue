@@ -104,7 +104,6 @@ export default {
           followers.forEach((follower) => {
             if (follower.id == this.$route.params.id) {
               this.isSubs = true;
-              console.log(follower.id);
             }
           });
         })

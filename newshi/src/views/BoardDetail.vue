@@ -62,7 +62,6 @@ export default {
           alert('게시물 삭제 중 에러가 발생했습니다.');
         }
       );
-      console.log(this.list);
       console.log(index);
     },
   },

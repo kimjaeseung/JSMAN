@@ -32,7 +32,6 @@ export default {
         content: content,
         is_notice: this.board.is_notice,
       };
-      console.log(modifiedBoard);
       boardUpdate(
         modifiedBoard,
         (response) => {

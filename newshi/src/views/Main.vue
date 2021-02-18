@@ -145,7 +145,6 @@ export default {
       var frm = new FormData();
       frm.append('id', id);
       frm.append('id2', subscribeid);
-      console.log(id, subscribeid);
       axios
         .post(`${API_URL}` + 'subsc', frm, {
           headers: { 'Content-Type': 'multipart/form-data' },
