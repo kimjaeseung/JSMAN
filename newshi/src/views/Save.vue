@@ -4,7 +4,7 @@
     <div v-if="this.logged !== null">
       <v-divider></v-divider>
       <!-- <List :news-items="newsItems" /> -->
-      <v-list>
+      <v-list v-if="newsItems.length !== 0">
         <template v-for="(newsInfo, i) in newsItems">
           <v-list-item
             class="main-list"
@@ -23,6 +23,21 @@
           </v-list-item>
         </template>
       </v-list>
+      <div v-else>
+        <v-alert
+          v-model="alert"
+          type="warning"
+          border="bottom"
+          elevation="4"
+          colored-border
+          icon="mdi-alert-octagon-outline"
+          fixed
+        >
+        <span>아직 저장한 뉴스가 없습니다.</span>
+        <span><v-icon>mdi-bookmark-outline</v-icon>버튼을 눌러 뉴스를 저장해보세요!</span>
+          
+        </v-alert>
+      </div>
     </div>
     <div v-else>
       <Alert />
@@ -50,7 +65,7 @@ export default {
   methods: {
     getSaveList: function() {
       axios
-        .get(`${API_URL}` + '/article/savelist' + `?id=${id}`)
+        .get(`${API_URL}` + 'article/savelist' + `?id=${id}`)
         .then((res) => {
           this.newsItems = res.data;
         })
