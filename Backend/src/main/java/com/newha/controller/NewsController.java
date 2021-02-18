@@ -95,7 +95,7 @@ public class NewsController {
 					// get page
 					driver.get(url);
 					driver.findElement(By.linkText("요약봇")).click();
-					Thread.sleep(500);
+					Thread.sleep(800);
 					String summary = driver.findElement(By.className("_contents_body")).getText();// 요약봇
 					news.setArticle_bot_summary(summary);
 				} catch (Exception e) {

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import router from '@/router';
 import { getInfo } from '@/api/user.js';
 Vue.use(Vuex);
 
@@ -45,7 +46,7 @@ const store = new Vuex.Store({
 
               localStorage.clear();
               commit('SET_USER', null);
-              window.location.href('http://i4a307.p.ssafy.io/');
+              router.push({ name: 'Main' });
             }
           },
           (error) => {
@@ -54,7 +55,7 @@ const store = new Vuex.Store({
 
             localStorage.clear();
             commit('SET_USER', null);
-            window.location.href('http://i4a307.p.ssafy.io/');
+            router.push({ name: 'Main' });
           }
         );
       }
