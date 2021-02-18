@@ -46,7 +46,6 @@
         >로그인</v-btn
       >
     </v-form>
-    <hr style="height: 15px; " />
     <v-row style="max-width: 600px">
       <v-col class="d-flex justify-center pa-0">
         <v-btn
