@@ -16,10 +16,9 @@
       <v-spacer />
       <v-icon @click="toSearch">mdi-magnify</v-icon>
       <v-dialog
-        style="position: fixed"
         v-model="dialog"
-        width="500"
-        height="500"
+        width="600"
+        height="600"
         v-if="!logged"
         :fullscreen="isFull"
         transition="dialog-top-transition"
@@ -72,7 +71,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    
+
     <!-- Footer Start -->
     <template>
       <div class="overflow-hidden">

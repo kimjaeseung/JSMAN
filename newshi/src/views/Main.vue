@@ -1,29 +1,18 @@
 <template>
   <v-container>
     <div v-if="this.isLoggedIn == true">
-      <v-sheet
-        class="mx-auto"
-        max-width="800"
-      >
-        <v-slide-group
-          v-model="model"
-          center-active
-          id="recommend"
-        >
-          <v-slide-item
-            v-for="(user, idx) in users"
-            :key="idx"
-          >
-            <v-card 
+      <v-sheet class="mx-auto" max-width="800">
+        <v-slide-group v-model="model" center-active id="recommend">
+          <v-slide-item v-for="(user, idx) in users" :key="idx">
+            <v-card
               class="d-flex flex-row ma-2"
               max-width="200"
               min-width="140"
               elevation="3"
             >
-              <v-list-item-content 
-                class="justify-center"
-              >
+              <v-list-item-content class="justify-center">
                 <div class="mx-auto text-center">
+                  <div @click="toChannel(user.id[0])">
                   <v-avatar
                     color="brown"
                     class="elevation-5"
@@ -31,13 +20,11 @@
                     <v-img v-if="user.thumnail_path !== undefined" :src="user.thumnail_path[0]"></v-img>
                   </v-avatar>
                   <h3 v-if="user.name !== undefined">{{ user.name[0] }}</h3>
-                  <span class="caption mt-1" 
-                    v-for="tag in user.tag"
-                    :key="tag"
-                  >
+                  <span class="caption mt-1" v-for="tag in user.tag" :key="tag">
                     #{{ tag }}
                   </span>
                   <br>
+                  </div>
                   <v-btn
                     class="mt-1"
                     rounded
@@ -60,16 +47,15 @@
     <div v-else>
       <v-list>
         <template v-for="(newsInfo, i) in basicNews">
-          <v-list-item
-            :key="newsInfo+i"
-            @click="move(newsInfo)"
-          >
-            <v-list-item-avatar rounded >
+          <v-list-item :key="newsInfo + i" @click="move(newsInfo)">
+            <v-list-item-avatar rounded>
               <v-img :src="newsInfo.image_path" centered></v-img>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title v-html="newsInfo.title"></v-list-item-title>
-              <v-list-item-subtitle v-html="newsInfo.company"></v-list-item-subtitle>
+              <v-list-item-subtitle
+                v-html="newsInfo.company"
+              ></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </template>
@@ -86,11 +72,14 @@ const API_URL = API_BASE_URL;
 const id = localStorage.getItem('id');
 
 export default {
-  name: "Main",
-  components: { 
+  name: 'Main',
+  components: {
     NewsList,
   },
   methods: {
+    toChannel(curator) {
+      this.$router.push('channel/' + curator);
+    },
     getData: function () {
       axios.get(`${API_URL}`+'subscribe'+`?id=${id}`)
       .then((res)=>{
@@ -111,54 +100,58 @@ export default {
             console.log(err)
           })
         });
-      })
-      .catch((err) => {
-        console.log(err)
-      })
     },
-    isLogged: function () {
+    isLogged: function() {
       if (
         localStorage.getItem('access-token') === null ||
         localStorage.getItem('access-token') === '' ||
         localStorage['access-token'] === undefined
       ) {
         this.isLoggedIn = false;
-        axios.get(`${API_URL}`+'article')
-        .then((res)=> {
-          this.basicNews = res.data;
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+        axios
+          .get(`${API_URL}` + 'article')
+          .then((res) => {
+            this.basicNews = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
         this.isLoggedIn = true;
       }
     },
-    move(newsInfo){
-      this.$router.push({name: 'Article', params: {newsNo: newsInfo.newsNo, newsInfo2: newsInfo} })
+    move(newsInfo) {
+      this.$router.push({
+        name: 'Article',
+        params: { newsNo: newsInfo.newsNo, newsInfo2: newsInfo },
+      });
     },
-    getRecommend(){
-      axios.get(`${API_URL}`+'/userrecommend'+`?id=${id}`)
-      .then((res)=>{
-        this.users = res.data;
-      })
-      .catch((err)=>{
-        console.log(err)
-      })
+    getRecommend() {
+      axios
+        .get(`${API_URL}` + 'userrecommend' + `?id=${id}`)
+        .then((res) => {
+          this.users = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     follow(subscribeid) {
       var frm = new FormData();
-      frm.append("id", id);
-      frm.append("id2", subscribeid);
+      frm.append('id', id);
+      frm.append('id2', subscribeid);
       console.log(id, subscribeid);
-      axios.post(`${API_URL}`+'subsc', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
-      .then(() => {
-        this.$router.go(this.$router.currentRoute);
-        console.log('구독 성공')
-      })
+      axios
+        .post(`${API_URL}` + 'subsc', frm, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        })
+        .then(() => {
+          this.$router.go(this.$router.currentRoute);
+          console.log('구독 성공');
+        });
     },
   },
-  data: function () {
+  data: function() {
     return {
       tab: null,
       newsInfos: [],
@@ -166,12 +159,12 @@ export default {
       basicNews: [],
       users: [],
       model: null,
-    }
+    };
   },
-  created: function () {
+  created: function() {
     this.isLogged();
     this.isLoggedIn ? this.getData(): this.isLoggedIn;
-    this.getRecommend();
+    this.isLoggedIn ? this.getRecommend(): this.isLoggedIn;
   }
 }
 </script>
@@ -181,7 +174,7 @@ export default {
   align-items: center;
   bottom: 0;
   justify-content: center;
-  opacity: .5;
+  opacity: 0.5;
   position: absolute;
   width: 100%;
 }
