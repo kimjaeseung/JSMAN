@@ -86,10 +86,15 @@
         ></v-text-field>
       </ValidationProvider>
       <span><h4>관심 목록</h4></span>
-      <v-row justify="space-around">
-        <v-col cols="10" sm="10" md="8">
-          <v-sheet outlined width="330">
-            <v-chip-group v-model="tags" multiple active-class="yellow --text">
+      <v-row style="max-width=600px">
+        <v-col>
+          <v-sheet outlined>
+            <v-chip-group
+              v-model="tags"
+              multiple
+              active-class="yellow --text"
+              column
+            >
               <v-chip border large v-for="tag in tagName" :key="tag">
                 {{ tag }}
               </v-chip>
@@ -148,13 +153,14 @@
       <v-btn v-show="isDupEmailCheck" @click="resendEmail()">재발송</v-btn>
 
       <span><h4>관심 목록</h4></span>
-      <v-row justify="space-around">
-        <v-col cols="10" sm="10" md="8">
-          <v-sheet outlined width="330">
+      <v-row style="max-width=600px">
+        <v-col>
+          <v-sheet outlined>
             <v-chip-group
-              v-model="formData.tags"
+              v-model="tags"
               multiple
               active-class="yellow --text"
+              column
             >
               <v-chip border large v-for="tag in tagName" :key="tag">
                 {{ tag }}
@@ -238,9 +244,12 @@ export default {
   watch: {
     id: function() {
       this.checkForm();
+      this.isDupEmailCheck = false;
+      this.isEmailValid = false;
     },
     name: function() {
       this.checkForm();
+      this.isDupNameCheck = false;
     },
     password: function() {
       this.checkForm();
