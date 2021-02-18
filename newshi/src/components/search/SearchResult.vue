@@ -29,11 +29,6 @@
                 <v-col class="caption">
                   {{news.article_date[0]}}
                 </v-col>
-                <v-col class="d-flex justify-end">
-                  <v-btn fab x-small dark color="grey">
-                    <v-icon>mdi-plus</v-icon>
-                  </v-btn>
-                </v-col>
               </v-row>
               <v-row no-gutters>
                 <v-col class="ma-auto" cols=auto>
