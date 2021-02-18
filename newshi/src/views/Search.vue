@@ -36,7 +36,9 @@ export default {
     methods: {
         search(event) {
             if(event.charAt(0) == '#') {
-                this.$router.push('/search/hashtag/' + event.substring(1));
+                let page = event.substring(1).replace('/', '%2F');
+                console.log(page);
+                this.$router.push('/search/hashtag/' + page);
             } else this.$router.push('/search/curator/' + event);
         }
     },
