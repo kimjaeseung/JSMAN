@@ -17,7 +17,8 @@
       <v-icon @click="toSearch">mdi-magnify</v-icon>
       <v-dialog
         v-model="dialog"
-        width="700"
+        @keydown.esc="dialog = false"
+        width="600"
         v-if="!logged"
         :fullscreen="isFull"
         transition="dialog-top-transition"
