@@ -13,17 +13,21 @@
               <v-list-item-content class="justify-center">
                 <div class="mx-auto text-center">
                   <div @click="toChannel(user.id[0])">
-                  <v-avatar
-                    color="brown"
-                    class="elevation-5"
-                  >
-                    <v-img v-if="user.thumnail_path !== undefined" :src="user.thumnail_path[0]"></v-img>
-                  </v-avatar>
-                  <h3 v-if="user.name !== undefined">{{ user.name[0] }}</h3>
-                  <span class="caption mt-1" v-for="tag in user.tag" :key="tag">
-                    #{{ tag }}
-                  </span>
-                  <br>
+                    <v-avatar color="brown" class="elevation-5">
+                      <v-img
+                        v-if="user.thumnail_path !== undefined"
+                        :src="user.thumnail_path[0]"
+                      ></v-img>
+                    </v-avatar>
+                    <h3 v-if="user.name !== undefined">{{ user.name[0] }}</h3>
+                    <span
+                      class="caption mt-1"
+                      v-for="tag in user.tag"
+                      :key="tag"
+                    >
+                      #{{ tag }}
+                    </span>
+                    <br />
                   </div>
                   <v-btn
                     class="mt-1"
@@ -80,25 +84,25 @@ export default {
     toChannel(curator) {
       this.$router.push('channel/' + curator);
     },
-    getData: function () {
-      axios.get(`${API_URL}`+'subscribe'+`?id=${id}`)
-      .then((res)=>{
+    getData: function() {
+      axios.get(`${API_URL}` + 'subscribe' + `?id=${id}`).then((res) => {
         let subscribes = res.data;
-        subscribes.forEach(element => {
+        subscribes.forEach((element) => {
           let subscriberId = element.id;
           let newsInfo = {
             name: element.name,
             avatar: element.thumbnail_path,
             newsLists: [],
-          }
-          axios.get(`${API_URL}`+'article/curatorscrap'+`?id=${subscriberId}`)
-          .then((res)=> {
-            newsInfo.newsLists = res.data;
-            this.newsInfos.push(newsInfo)
-          })
-          .catch((err) => {
-            console.log(err)
-          })
+          };
+          axios
+            .get(`${API_URL}` + 'article/curatorscrap' + `?id=${subscriberId}`)
+            .then((response) => {
+              newsInfo.newsLists = response.data;
+              this.newsInfos.push(newsInfo);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         });
       });
     },
@@ -164,10 +168,10 @@ export default {
   },
   created: function() {
     this.isLogged();
-    this.isLoggedIn ? this.getData(): this.isLoggedIn;
-    this.isLoggedIn ? this.getRecommend(): this.isLoggedIn;
-  }
-}
+    this.isLoggedIn ? this.getData() : this.isLoggedIn;
+    this.isLoggedIn ? this.getRecommend() : this.isLoggedIn;
+  },
+};
 </script>
 
 <style>
