@@ -46,8 +46,25 @@
           </v-slide-item>
         </v-slide-group>
       </v-sheet>
+      <div v-if="this.subscribers.length == 0"
+        class="mx-auto my-2"
+      >
+        <v-alert
+          v-model="alert"
+          dismissible
+          color="#fcbf49"
+          border="bottom"
+          elevation="4"
+          colored-border
+          icon="mdi-cursor-pointer"
+          fixed
+        >
+          추천 받은 큐레이터를 구독해보세요
+        </v-alert>
+      </div>
       <NewsList :news-infos="newsInfos" />
     </v-row>
+    
     <v-row class="main-news" v-else>
       <v-list>
         <template v-for="(newsInfo, i) in basicNews">
@@ -87,6 +104,7 @@ export default {
     getData: function() {
       axios.get(`${API_URL}` + 'subscribe' + `?id=${id}`).then((res) => {
         let subscribes = res.data;
+        this.subscribers = subscribes;
         subscribes.forEach((element) => {
           let subscriberId = element.id;
           let newsInfo = {
@@ -164,6 +182,8 @@ export default {
       basicNews: [],
       users: [],
       model: null,
+      subscribers: [],
+      alert: true,
     };
   },
   created: function() {
