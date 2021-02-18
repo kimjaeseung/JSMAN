@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot="{ hover }">
-    <v-card>
+    <v-card class="pl-3">
       <v-card-title class="card-title">
         <v-list style="padding: 0px;">
           <v-list-item style="padding: 0px;">

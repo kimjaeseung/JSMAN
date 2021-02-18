@@ -1,54 +1,68 @@
 <template>
   <v-dialog v-model="addDialog" fullscreen v-if="isLogged">
+    <v-overlay :value="overlay">
+      <v-progress-circular
+      :size="60"
+      indeterminate
+    ></v-progress-circular>
+    </v-overlay>
     <template v-slot:activator="{ on, attrs }">
-      <v-btn color="#fcbf49" dark fixed bottom right fab v-bind="attrs" v-on="on">
+      <v-btn
+        color="#fcbf49"
+        dark
+        fixed
+        bottom
+        right
+        fab
+        v-bind="attrs"
+        v-on="on"
+      >
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
     </template>
-    
+
     <v-card>
       <v-container>
-      <v-toolbar>
-        <v-btn icon @click="addDialog = !addDialog">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
-        <v-spacer />
-        <v-toolbar-title>포스트 만들기</v-toolbar-title>
-        <v-spacer />
-      </v-toolbar>
-      
-      <v-form class="pa-6" @submit.prevent="registURL">
-        <ValidationProvider name="url" rules="url" v-slot="{ errors }">
+        <v-toolbar>
+          <v-btn icon @click="addDialog = !addDialog">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-spacer />
+          <v-toolbar-title>포스트 만들기</v-toolbar-title>
+          <v-spacer />
+        </v-toolbar>
+
+        <v-form class="pa-6" @submit.prevent="registURL">
+          <ValidationProvider name="url" rules="url" v-slot="{ errors }">
+            <v-text-field
+              v-model="url"
+              :error-messages="errors"
+              required
+              placeholder="URL Ctrl+C 복사 Ctrl+V 붙여넣기"
+              autocapitalize="off"
+            ></v-text-field>
+          </ValidationProvider>
+          <v-btn color="#fcbf49" dark rounded @click="registURL">
+            저장
+          </v-btn>
+        </v-form>
+        <NewsForm
+          v-for="(news, index) in post"
+          :key="index"
+          :num="index"
+          :news="news"
+          :focus="focus[index]"
+          @remove="removeURL"
+          @save="saveOther"
+        ></NewsForm>
+        <v-form class="pa-6" @submit.prevent="registPost">
           <v-text-field
-            v-model="url"
-            :error-messages="errors"
+            v-model="postName"
             required
-            placeholder="URL Ctrl+C 복사 Ctrl+V 붙여넣기"
-            autocapitalize="off"
+            placeholder="포스트 제목을 작성해주세요"
           ></v-text-field>
-        </ValidationProvider>
-        <v-btn color="#fcbf49" dark rounded @click="registURL">
-          저장
-        </v-btn>
-      </v-form>
-      <NewsForm
-        v-for="(news, index) in post"
-        :key="index"
-        :num="index"
-        :news="news"
-        @remove="removeURL"
-        @save="saveOther"
-      ></NewsForm>
-      <v-form class="pa-6" @submit.prevent="registPost">
-        <v-text-field
-          v-model="postName"
-          required
-          placeholder="포스트 제목을 작성해주세요"
-        ></v-text-field>
-        <v-btn color="#fcbf49" dark rounded @click="registPost"
-          >등록
-        </v-btn>
-      </v-form>
+          <v-btn color="#fcbf49" dark rounded @click="registPost">등록 </v-btn>
+        </v-form>
       </v-container>
     </v-card>
   </v-dialog>
@@ -81,6 +95,7 @@ export default {
       addDialog: null,
       url: '',
       post: [],
+      focus: [],
       postName: '',
       overlay: false,
     };
@@ -94,6 +109,7 @@ export default {
         tags: [],
       };
       this.post.push(news);
+      this.focus.push(false);
       this.url = '';
     },
     registPost() {
@@ -102,6 +118,15 @@ export default {
         return;
       }
       for (let i = 0; i < this.post.length; i++) {
+        if (this.post[i].summary == '' || this.post[i].tags == []) {
+          let num = i + 1;
+          alert(
+            num + '번째 기사가 아직 저장되지 않았습니다. 확인해주시기 바랍니다.'
+          );
+          this.focus[i] = true;
+          console.log(this.focus);
+          return;
+        }
         let news = {
           url: this.post[i].url,
           summary: this.post[i].summary,
@@ -110,6 +135,11 @@ export default {
           name: this.postName,
         };
         this.post.splice(i, 1, news);
+      }
+      for (let i = 0; i < this.post.length; i++) {
+        if (this.post[i].summary == '<p></p>') {
+          this.post[i].summary = '';
+        }
       }
       console.log(this.post);
       this.overlay = true;
@@ -142,6 +172,7 @@ export default {
     },
     removeURL(index) {
       this.post.splice(index, 1);
+      this.focus.splice(index, 1);
       console.log(this.post);
       console.log(index);
     },
@@ -152,6 +183,7 @@ export default {
         tags: tags,
       };
       this.post.splice(index, 1, news);
+      this.focus[index] = false;
       console.log(this.post[index]);
     },
   },
