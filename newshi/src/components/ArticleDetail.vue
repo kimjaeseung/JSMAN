@@ -236,20 +236,22 @@ export default {
       }
     },
     saveCheck() {
-      const newsNo = this.newsInfo.newsNo;
-      axios.get(`${API_URL}`+'article/savelist'+`?id=${id}`)
-      .then((res)=> {
-        let data = res.data;
-        data.forEach(element => {
-          if (element.newsNo === newsNo) {
-            this.saved = true;
-            console.log(newsNo, this.saved)
-          }
-        });
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (this.logged !== null) {
+        const newsNo = this.newsInfo.newsNo;
+        axios.get(`${API_URL}`+'article/savelist'+`?id=${id}`)
+        .then((res)=> {
+          let data = res.data;
+          data.forEach(element => {
+            if (element.newsNo === newsNo) {
+              this.saved = true;
+              console.log(newsNo, this.saved)
+            }
+          });
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
     },
     like () {
       if (this.logged !== null) {
@@ -286,29 +288,31 @@ export default {
       }
     },
     likeCheck() {
-      const scrapNo = this.newsInfo.scrapNo;
-      axios.get(`${API_URL}`+'article/islike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
-      .then((res)=> {
-        if (res.data.message === 'success') {
-          this.liked = true;
-        } else {
-          this.liked = false;
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-      axios.get(`${API_URL}`+'article/isdislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
-      .then((res)=> {
-        if (res.data.message === 'success') {
-          this.disliked = true;
-        } else {
-          this.disliked = false;
-        }
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      if (this.logged !== null) {
+        const scrapNo = this.newsInfo.scrapNo;
+        axios.get(`${API_URL}`+'article/islike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        .then((res)=> {
+          if (res.data.message === 'success') {
+            this.liked = true;
+          } else {
+            this.liked = false;
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+        axios.get(`${API_URL}`+'article/isdislike'+`?id=${id}`+`&scrapNo=${scrapNo}`)
+        .then((res)=> {
+          if (res.data.message === 'success') {
+            this.disliked = true;
+          } else {
+            this.disliked = false;
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
     },
   },
   created: function () {
