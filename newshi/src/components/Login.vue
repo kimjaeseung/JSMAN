@@ -15,18 +15,22 @@
     </v-toolbar>
 
     <v-form class="pa-6" @submit.prevent="onSubmit">
-      <ValidationProvider name="id" rules="required|email" v-slot="{ errors }">
+      <ValidationProvider
+        name="아이디"
+        rules="required|email"
+        v-slot="{ errors }"
+      >
         <v-text-field
           v-model="id"
           :error-messages="errors"
-          label="E-mail"
+          label="아이디"
           required
           autocapitalize="off"
         ></v-text-field>
       </ValidationProvider>
 
       <ValidationProvider
-        name="password"
+        name="비밀번호"
         rules="required|password"
         v-slot="{ errors }"
       >
@@ -97,8 +101,7 @@ Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });
 extend('password', {
-  message:
-    'password should include lower-case, numeric digit, special chracter($@$!%*#?&).',
+  message: '숫자, 영어 소문자, 특수문자로 비밀번호를 구성해주세요.',
   validate: (value) => {
     return /^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$@$!%*#?&]).*$/.test(value);
   },

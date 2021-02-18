@@ -15,42 +15,46 @@
     </v-toolbar>
     <v-form class="pa-6" @submit.prevent="onJoin">
       <ValidationProvider
-        name="joinId"
+        name="아이디"
         rules="required|email"
         v-slot="{ errors }"
       >
         <v-text-field
           v-model="id"
           :error-messages="errors"
-          label="E-mail"
+          label="아이디"
           required
           autocapitalize="off"
         ></v-text-field>
         <v-btn v-show="!isDupEmailCheck" @click="emailCheck()"
-          >Email 인증</v-btn
+          >아이디 인증</v-btn
         >
       </ValidationProvider>
 
       <v-text-field
         v-model="validNum"
         required
-        v-show="isDupEmailCheck"
+        v-show="isDupEmailCheck && !isEmailValid"
         placeholder="인증번호를 입력해주세요"
       ></v-text-field>
-      <v-btn v-show="isDupEmailCheck" @click="emailValidCheck()"
+      <v-btn
+        v-show="isDupEmailCheck && !isEmailValid"
+        @click="emailValidCheck()"
         >인증번호 확인</v-btn
       >
-      <v-btn v-show="isDupEmailCheck" @click="resendEmail()">재발송</v-btn>
+      <v-btn v-show="isDupEmailCheck && !isEmailValid" @click="resendEmail()"
+        >재발송</v-btn
+      >
 
       <ValidationProvider
-        name="joinName"
+        name="이름"
         rules="required|min:2"
         v-slot="{ errors }"
       >
         <v-text-field
           v-model="name"
           :error-messages="errors"
-          label="name"
+          label="이름"
           required
           autocapitalize="off"
         ></v-text-field>
@@ -59,7 +63,7 @@
       </ValidationProvider>
 
       <ValidationProvider
-        name="joinPassword"
+        name="비밀번호"
         rules="required|password"
         v-slot="{ errors }"
       >
@@ -73,7 +77,7 @@
       </ValidationProvider>
 
       <ValidationProvider
-        name="joinPasswordConfirm"
+        name="비밀번호 확인"
         rules="required|password|passwordConfirm:@joinPassword"
         v-slot="{ errors }"
       >
@@ -129,12 +133,12 @@
         <v-text-field
           v-model="kakaoId"
           :error-messages="errors"
-          label="E-mail"
+          label="아이디"
           required
           autocapitalize="off"
         ></v-text-field>
         <v-btn v-show="!isDupEmailCheck" @click="emailCheck()"
-          >Email 인증</v-btn
+          >아이디 인증</v-btn
         >
       </ValidationProvider>
 
@@ -144,10 +148,14 @@
         v-show="isDupEmailCheck"
         placeholder="인증번호를 입력해주세요"
       ></v-text-field>
-      <v-btn v-show="isDupEmailCheck" @click="emailValidCheck()"
+      <v-btn
+        v-show="isDupEmailCheck && !isEmailValid"
+        @click="emailValidCheck()"
         >인증번호 확인</v-btn
       >
-      <v-btn v-show="isDupEmailCheck" @click="resendEmail()">재발송</v-btn>
+      <v-btn v-show="isDupEmailCheck && !isEmailValid" @click="resendEmail()"
+        >재발송</v-btn
+      >
 
       <span><h4>관심 목록</h4></span>
       <v-row style="max-width=600px">
@@ -189,8 +197,7 @@ Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });
 extend('password', {
-  message:
-    'password should include lower-case, numeric digit, special chracter($@$!%*#?&).',
+  message: '숫자, 영어 소문자, 특수문자로 비밀번호를 구성해주세요.',
   validate: (value) => {
     return /^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$@$!%*#?&]).*$/.test(value);
   },
@@ -200,7 +207,7 @@ extend('passwordConfirm', {
   validate(value, { target }) {
     return value === target;
   },
-  message: 'Password confirmation does not match',
+  message: '비밀번호가 일치하지 않습니다.',
 });
 
 export default {

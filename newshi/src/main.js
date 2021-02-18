@@ -3,14 +3,18 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
-import { ValidationProvider, extend } from 'vee-validate';
+import { ValidationProvider, extend, localize } from 'vee-validate';
+import { required, email } from 'vee-validate/dist/rules';
 import firebase from 'firebase';
 import './styles/tiptap/main.scss';
 import VueClipboard from 'vue-clipboard2';
-
+import ko from 'vee-validate/dist/locale/ko.json';
 const moment = require('moment');
 require('moment/locale/ko');
 
+localize('ko', ko);
+extend('required', required);
+extend('email', email);
 Vue.use(require('vue-moment'), {
   moment,
 });

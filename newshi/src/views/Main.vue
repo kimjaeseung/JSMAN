@@ -189,4 +189,7 @@ export default {
 .main-news {
   padding-bottom: 50px;
 }
+.v-list {
+  max-width: 100vw !important;
+}
 </style>
