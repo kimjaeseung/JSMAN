@@ -48,9 +48,9 @@
           @login="getLogged"
         ></Join>
       </v-dialog>
-      <v-menu open-on-hover offset-y v-else>
+      <v-menu :open-on-hover="isClicked" offset-y v-else>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" icon>
+          <v-btn v-bind="attrs" v-on="on" icon @click="isClicked = !isClicked">
             <v-icon>mdi-account</v-icon>
           </v-btn>
         </template>
@@ -117,9 +117,11 @@
           </v-list-item>
           <v-divider />
           <v-list-item v-for="(menu, index) in menus" :key="index">
-            <v-list-item-icon>
-              <v-icon>mdi-{{ menu.icon }}</v-icon>
-            </v-list-item-icon>
+            <router-link :to="menu.router">
+              <v-list-item-icon>
+                <v-icon>mdi-{{ menu.icon }}</v-icon>
+              </v-list-item-icon>
+            </router-link>
             <router-link :to="menu.router">
               <v-list-item-title>
                 {{ menu.title }}
@@ -193,6 +195,7 @@ export default {
       close: '',
       value: 1,
       alert: true,
+      isClicked: false,
     };
   },
   computed: {
@@ -266,8 +269,7 @@ export default {
       this.logged = false;
       this.logout();
       this.member = {};
-      if (this.$router.currentRoute == '/') window.location.reload();
-      else this.$router.push('/');
+      this.$router.push('/');
     },
     closeFooter() {
       localStorage.setItem('closeFooter', true);
