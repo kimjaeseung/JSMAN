@@ -42,19 +42,14 @@
         ></v-text-field>
         <br />
       </ValidationProvider>
-      <v-btn
-        :disabled="!isValid"
-        color="orange lighten-4
-"
-        @click="onSubmit"
+      <v-btn :disabled="!isValid" color="orange lighten-4" @click="onSubmit"
         >로그인</v-btn
       >
     </v-form>
     <hr style="height: 15px; " />
-    <v-row>
-      <v-col>
+    <v-row style="max-width: 600px">
+      <v-col class="d-flex justify-center pa-0">
         <v-btn
-          class="ml-6"
           color="#C62828"
           dark
           @click="loginWithGoogle"
@@ -65,7 +60,7 @@
           구글 로그인
         </v-btn>
       </v-col>
-      <v-col style="width:0">
+      <v-col class="d-flex justify-center pa-0">
         <v-btn width="183" height="45">
           <img
             class="kakao_btn"
@@ -76,9 +71,18 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-row class="ma-6">
-      <h4>혹시 비밀번호가 기억나지 않으신가요?</h4>
-      <h4>그러시다면, <a href="/findpw">비밀번호찾기</a>를 클릭하세요.</h4>
+    <v-row style="max-width: 600px">
+      <v-col> </v-col>
+    </v-row>
+    <v-row style="max-width: 600px">
+      <v-col class="d-flex justify-center pa-0">
+        <h4>혹시 비밀번호가 기억나지 않으신가요?</h4>
+      </v-col>
+    </v-row>
+    <v-row style="max-width: 600px">
+      <v-col class="d-flex justify-center pa-0">
+        <h4>그러시다면, <a href="/findpw">비밀번호찾기</a>를 클릭하세요.</h4>
+      </v-col>
     </v-row>
   </v-card>
 </template>
