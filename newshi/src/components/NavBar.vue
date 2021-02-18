@@ -33,7 +33,7 @@
             <span>로그인</span>
           </v-tooltip>
         </template>
-        <v-card height="426px">
+        <v-card height="435px">
         <Login
           v-if="isLogin"
           @closeDialog="closeDialog"
