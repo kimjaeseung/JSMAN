@@ -112,7 +112,7 @@ export default {
       alert('현재 페이지가 만료되었습니다. 메인으로 이동하겠습니다.');
       this.goMain();
     }
-    this.url = `http://i4a307.p.ssafy.io/${this.id}/${this.postNo}`;
+    this.url = `http://i4a307.p.ssafy.io/channel/${this.id}/scrap/${this.postNo}`;
   },
 };
 </script>
