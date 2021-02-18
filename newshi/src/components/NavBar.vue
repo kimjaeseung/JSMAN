@@ -18,6 +18,7 @@
       <v-dialog
         style="position: fixed"
         v-model="dialog"
+        @keydown.esc="dialog = false"
         width="600"
         v-if="!logged"
         :fullscreen="isFull"

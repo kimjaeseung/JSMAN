@@ -36,6 +36,7 @@
           :error-messages="errors"
           label="비밀번호"
           required
+          @keyup.enter="onSubmit"
         ></v-text-field>
         <br />
       </ValidationProvider>
@@ -43,7 +44,8 @@
         >로그인</v-btn
       >
     </v-form>
-    <v-row style="max-width: 600px">
+    <hr style="height: 15px; padding-bottom: 5px " />
+    <v-row style="max-width: 600px; padding-top: 20px; margin : 0">
       <v-col class="d-flex justify-center pa-0">
         <v-btn
           color="#C62828"
@@ -52,7 +54,7 @@
           width="183"
           height="45"
         >
-          <v-icon class="mr-5" left>mdi-google</v-icon>
+          <v-icon>mdi-google</v-icon>
           구글 로그인
         </v-btn>
       </v-col>
@@ -123,7 +125,7 @@ export default {
     },
     onSubmit() {
       if (!this.isValid)
-        return alert('내용을 다시 한번 확인해주시길 바랍니다.');
+        return alert('아이디, 비밀번호를 다시 한번 확인해주시길 바랍니다.');
       let { id, password } = this;
       let info = {
         id,
@@ -140,6 +142,7 @@ export default {
             this.login();
           } else {
             this.isLoginError = true;
+            alert('로그인에 실패하셨습니다. 다시 한번 확인해주시길 바랍니다.');
           }
         },
         (error) => {
