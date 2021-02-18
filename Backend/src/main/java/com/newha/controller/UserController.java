@@ -564,7 +564,7 @@ public class UserController {
 				m.put("id", new String[] {user.getId()});
 				m.put("platformType", new String[] {user.getPlatformType()});
 				
-				List<String> temp = service.selectJoinTagByuserNo(userNo);
+				List<String> temp = service.selectJoinTagByuserNo(user.getUserNo());
 				String tags [] = new String[temp.size()];
 				int cnt = 0;
 				for (String s : temp) {
