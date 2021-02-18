@@ -176,7 +176,7 @@ export default {
   created: function () {
     this.isLogged();
     this.isLoggedIn ? this.getData(): this.isLoggedIn;
-    this.getRecommend();
+    this.isLoggedIn ? this.getRecommend(): this.isLoggedIn;
   }
 }
 </script>
