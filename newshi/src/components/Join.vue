@@ -1,6 +1,6 @@
 <template>
   <v-card v-if="!isKakao">
-    <v-toolbar color="orange lighten-4">
+    <v-toolbar color="#fcbf49">
       <v-btn icon @click="closeDialog">
         <v-icon>mdi-close</v-icon>
       </v-btn>
@@ -103,15 +103,12 @@
         </v-col>
       </v-row>
       <br />
-      <v-btn color="orange lighten-4" @click="onJoin">회원가입</v-btn>
+      <v-btn color="#fcbf49" @click="onJoin">회원가입</v-btn>
     </v-form>
   </v-card>
 
   <v-card v-else>
-    <v-toolbar
-      color="orange lighten-4
-"
-    >
+    <v-toolbar color="#fcbf49">
       <v-btn icon @click="closeDialog">
         <v-icon>mdi-close</v-icon>
       </v-btn>
@@ -170,7 +167,7 @@
         </v-col>
       </v-row>
       <br />
-      <v-btn color="orange lighten-4" @click="onKakaoJoin">회원가입</v-btn>
+      <v-btn color="#fcbf49" @click="onKakaoJoin">회원가입</v-btn>
     </v-form>
   </v-card>
 </template>

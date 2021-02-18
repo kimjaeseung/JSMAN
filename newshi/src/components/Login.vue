@@ -1,9 +1,6 @@
 <template>
-  <v-card v-if="isLogin">
-    <v-toolbar
-      color="orange lighten-4
-"
-    >
+  <v-card v-if="isLogin" class="pb-5">
+    <v-toolbar color="#fcbf49">
       <v-btn icon @click="closeDialog">
         <v-icon>mdi-close</v-icon>
       </v-btn>
@@ -203,7 +200,7 @@ export default {
             thumbnail_path: kakao_account.profile.profile_image_url,
             platform_type: 'Kakao',
           };
-          if (info.id === undefined) {
+          if (info.id === null) {
             this.changeKakao(info);
           } else {
             socialLogin(

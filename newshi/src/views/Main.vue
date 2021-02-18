@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div v-if="this.isLoggedIn == true">
+    <v-row class="main-news" v-if="this.isLoggedIn == true">
       <v-sheet class="mx-auto" max-width="800">
         <v-slide-group v-model="model" center-active id="recommend">
           <v-slide-item v-for="(user, idx) in users" :key="idx">
@@ -47,8 +47,8 @@
         </v-slide-group>
       </v-sheet>
       <NewsList :news-infos="newsInfos" />
-    </div>
-    <div v-else>
+    </v-row>
+    <v-row class="main-news" v-else>
       <v-list>
         <template v-for="(newsInfo, i) in basicNews">
           <v-list-item :key="newsInfo + i" @click="move(newsInfo)">
@@ -64,7 +64,7 @@
           </v-list-item>
         </template>
       </v-list>
-    </div>
+    </v-row>
   </v-container>
 </template>
 
@@ -185,5 +185,8 @@ export default {
 }
 #recommend .theme--dark.v-card {
   background-color: #222222 !important;
+}
+.main-news {
+  padding-bottom: 50px;
 }
 </style>
