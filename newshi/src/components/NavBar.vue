@@ -16,6 +16,7 @@
       <v-spacer />
       <v-icon @click="toSearch">mdi-magnify</v-icon>
       <v-dialog
+        style="position: fixed"
         v-model="dialog"
         @keydown.esc="dialog = false"
         width="600"
@@ -33,6 +34,7 @@
             <span>로그인</span>
           </v-tooltip>
         </template>
+        <v-card height="435px">
         <Login
           v-if="isLogin"
           @closeDialog="closeDialog"
@@ -48,6 +50,7 @@
           @changeKakao="changeKakao"
           @login="getLogged"
         ></Join>
+        </v-card>
       </v-dialog>
       <v-menu :open-on-hover="isClicked" offset-y v-else>
         <template v-slot:activator="{ on, attrs }">
@@ -71,7 +74,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-
+    
     <!-- Footer Start -->
     <template>
       <div class="overflow-hidden">
