@@ -100,6 +100,7 @@ export default {
             console.log(err)
           })
         });
+      });
     },
     isLogged: function() {
       if (
