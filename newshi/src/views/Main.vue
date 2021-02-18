@@ -24,6 +24,7 @@
                 class="justify-center"
               >
                 <div class="mx-auto text-center">
+                  <div @click="toChannel(user.id[0])">
                   <v-avatar
                     color="brown"
                     class="elevation-5"
@@ -38,6 +39,7 @@
                     #{{ tag }}
                   </span>
                   <br>
+                  </div>
                   <v-btn
                     class="mt-1"
                     rounded
@@ -91,6 +93,9 @@ export default {
     NewsList,
   },
   methods: {
+    toChannel(curator) {
+      this.$router.push('channel/' + curator);
+    },
     getData: function () {
       axios.get(`${API_URL}`+'subscribe'+`?id=${id}`)
       .then((res)=>{
