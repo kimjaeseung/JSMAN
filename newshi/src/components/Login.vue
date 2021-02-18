@@ -43,8 +43,7 @@
         >로그인</v-btn
       >
     </v-form>
-    <hr style="height: 15px; padding-bottom: 5px " />
-    <v-row style="max-width: 600px; padding-top: 20px">
+    <v-row style="max-width: 600px">
       <v-col class="d-flex justify-center pa-0">
         <v-btn
           color="#C62828"
