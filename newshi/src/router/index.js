@@ -36,7 +36,6 @@ VueRouter.prototype.push = function push(location) {
 
 const requireAuth = () => (to, from, next) => {
   if (localStorage['access-token'] && localStorage['access-token'] !== '') {
-    console.log(localStorage['access-token']);
     return next();
   } else {
     return next('/');
