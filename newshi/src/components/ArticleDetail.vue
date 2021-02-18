@@ -244,7 +244,6 @@ export default {
           data.forEach(element => {
             if (element.newsNo === newsNo) {
               this.saved = true;
-              console.log(newsNo, this.saved)
             }
           });
         })

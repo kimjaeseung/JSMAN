@@ -265,7 +265,6 @@ export default {
     };
   },
   created() {
-    console.log(this.board);
     if (this.board !== undefined) {
       this.editor.setContent(this.board.content);
       this.title = this.board.title;
@@ -279,8 +278,6 @@ export default {
       this.$emit('cancel');
     },
     save() {
-      console.log('타이틀!!!');
-      console.log(this.title);
       this.$emit('saveData', this.editor.getHTML(), this.title);
     },
     showLinkMenu(attrs) {

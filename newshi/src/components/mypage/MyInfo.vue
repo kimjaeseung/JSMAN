@@ -10,7 +10,7 @@
           <!-- 프로필 -->
           <v-dialog v-model="dialog">
             <template v-slot:activator="{ on, attrs }">
-              <v-avatar class="elevation-13" size="110px">
+              <v-avatar class="elevation-13 mr-2" size="110px">
                 <v-avatar size="100px" v-bind="attrs" v-on="on">
                   <v-img :src="member.thumbnail_path"></v-img>
                 </v-avatar>
@@ -188,7 +188,7 @@ export default {
       var frm = new FormData();
       frm.append("id", this.member.id);
       frm.append("id2", id);
-      console.log(id);
+      
       axios.post(API_BASE_URL + 'subscdelete', frm, { headers: { 'Content-Type': 'multipart/form-data' }})
       .then(() => {
         this.$router.go(this.$router.currentRoute);
@@ -200,7 +200,6 @@ export default {
       this.tags.forEach(function(tag) {
         params.append("list",tag_dict[tag]);
       });
-      console.log(this.member.id);
       axios.get(API_BASE_URL + 'tagListUpdate', 
       { params: params },
     ).then(() => { 
@@ -211,11 +210,9 @@ export default {
       })
     },
     toChannel(curator) {
-      console.log(curator + "채널로");
       this.$router.push('channel/' + curator);
     },
     fileUpload() {
-      console.log(this.file);
       let file = this.file;
       const fileName = file.name;
       uploadImage(
@@ -224,7 +221,6 @@ export default {
           if (response.data.message === 'success') {
             this.imageSrc =
               'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
-            console.log(this.imageSrc);
             var frm = new FormData();
             frm.append("id", this.member.id);
             frm.append("thumbnail_path", this.imageSrc);
@@ -270,7 +266,6 @@ export default {
       })
       })
       
-      console.log(this.hashtags);
     },
     mouseover() {
       alert('Hello')

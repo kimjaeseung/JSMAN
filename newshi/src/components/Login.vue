@@ -164,13 +164,11 @@ export default {
             thumbnail_path: result.user.photoURL,
             platform_type: 'Google',
           };
-          console.log(user);
           socialLogin(
             user,
             (response) => {
               if (response.data.message === 'success') {
                 let token = response.data['access-token'];
-                console.log(token);
                 localStorage.setItem('access-token', token);
                 localStorage.setItem('id', user.id);
                 this.login();
@@ -211,7 +209,6 @@ export default {
               (response) => {
                 if (response.data.message === 'success') {
                   let token = response.data['access-token'];
-                  console.log('token');
                   localStorage.setItem('access-token', token);
                   localStorage.setItem('id', info.id);
                   this.login();

@@ -113,7 +113,6 @@ export default {
     getMember: function(val) {
       this.member = val;
       this.subsCheck();
-      console.log(this.isSubs);
     },
   },
   methods: {

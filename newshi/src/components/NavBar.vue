@@ -231,7 +231,6 @@ export default {
   methods: {
     ...mapActions(['logout', 'getUserInfo']),
     toChannel() {
-      // console.log(this.member.id);
       this.$router.push('/channel/' + this.member.id);
     },
     toSearch() {
@@ -264,7 +263,6 @@ export default {
       this.logged = true;
       this.getUserInfo();
       this.member = this.$store.getters.userProfile;
-      console.log(this.member);
       this.dialog = !this.dialog;
       this.isLogin = true;
       window.location.reload();

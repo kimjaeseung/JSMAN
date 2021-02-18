@@ -78,7 +78,6 @@ export default {
       this.show = true;
     },
     vfileUploaded(file) {
-      console.log(file);
       const fileName = file.name;
       uploadImage(
         file,
@@ -86,7 +85,6 @@ export default {
           if (response.data.message === 'success') {
             this.imageSrc =
               'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
-            console.log(this.imageSrc);
           } else {
             alert('이미지 업로드에 실패했습니다.');
           }
@@ -108,7 +106,6 @@ export default {
           if (response.data.message === 'success') {
             this.imageSrc =
               'https://newha.s3.us-east-2.amazonaws.com/' + fileName;
-            console.log(this.imageSrc);
           } else {
             alert('이미지 업로드에 실패했습니다.');
           }

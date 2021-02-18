@@ -69,7 +69,6 @@ export default {
     member: function() {
       if(this.member.id == this.$route.params.id){
         this.isMyPage = true;
-        console.log("isMyPage");
       }
     }
   },
@@ -99,7 +98,6 @@ export default {
         this.dialog=true;
       },
       modify() {
-        console.log(this.modify_postNo);
         axios.put(API_BASE_URL + 'article/post', { id: this.$route.params.id, name: this.modify_title, postNo: this.modify_postNo})
         .then(() => {
           window.location.reload();
