@@ -6,11 +6,11 @@
           <v-slide-item v-for="(user, idx) in users" :key="idx">
             <v-card
               class="d-flex flex-row ma-2"
-              max-width="200"
-              min-width="140"
+              max-width="200px"
+              min-width="160px"
               elevation="3"
             >
-              <v-list-item-content class="justify-center">
+              <v-list-item-content class="justify-center pa-2">
                 <div class="mx-auto text-center">
                   <div @click="toChannel(user.id[0])">
                     <v-avatar color="brown" class="elevation-5">
@@ -46,6 +46,7 @@
           </v-slide-item>
         </v-slide-group>
       </v-sheet>
+      <NewsList :news-infos="newsInfos" />
       <div v-if="this.subscribers.length == 0"
         class="mx-auto my-2"
       >
@@ -62,7 +63,6 @@
           추천 받은 큐레이터를 구독해보세요
         </v-alert>
       </div>
-      <NewsList :news-infos="newsInfos" />
     </v-row>
     
     <v-row class="main-news" v-else>
@@ -207,5 +207,8 @@ export default {
 }
 .main-news {
   padding-bottom: 50px;
+}
+.v-list {
+  max-width: 100vw !important;
 }
 </style>
