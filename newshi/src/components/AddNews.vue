@@ -1,13 +1,11 @@
 <template>
   <v-dialog v-model="addDialog" fullscreen v-if="isLogged">
     <v-overlay :value="overlay">
-      <v-progress-circular
-      :size="60"
-      indeterminate
-    ></v-progress-circular>
+      <v-progress-circular :size="60" indeterminate></v-progress-circular>
     </v-overlay>
     <template v-slot:activator="{ on, attrs }">
       <v-btn
+        v-if="isLogged"
         color="#fcbf49"
         dark
         fixed
@@ -98,6 +96,7 @@ export default {
       focus: [],
       postName: '',
       overlay: false,
+      isLogged: false,
     };
   },
   methods: {
@@ -187,16 +186,14 @@ export default {
       console.log(this.post[index]);
     },
   },
-  computed: {
-    isLogged() {
-      if (
-        localStorage['access-token'] === undefined ||
-        localStorage['access-token'] === null ||
-        localStorage['access-token'] === ''
-      )
-        return false;
-      else return true;
-    },
+  created() {
+    if (
+      localStorage['access-token'] === undefined ||
+      localStorage['access-token'] === null ||
+      localStorage['access-token'] === ''
+    ) {
+      this.isLogged = false;
+    } else this.isLogged = true;
   },
 };
 </script>
