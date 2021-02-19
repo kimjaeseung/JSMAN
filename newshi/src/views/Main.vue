@@ -4,7 +4,7 @@
       <v-sheet class="mx-auto" max-width="800">
         <v-slide-group v-model="model" 
           center-active id="recommend"
-          class="v-slide-group-max"
+          class="v-slide-group-maxvw"
         >
           <v-slide-item v-for="(user, idx) in users" :key="idx">
             <v-card
@@ -211,7 +211,7 @@ export default {
 .v-list {
   max-width: 100vw !important;
 }
-.v-slide-group-max{
+.v-slide-group-maxvw{
   max-width: 100vw !important;
 }
 </style>
