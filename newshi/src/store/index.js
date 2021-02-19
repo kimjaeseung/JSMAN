@@ -17,7 +17,6 @@ const store = new Vuex.Store({
   mutations: {
     SET_USER(state, userProfile) {
       state.userProfile = userProfile;
-      console.log(state.userProfile);
     },
     SET_THEME_MODE(state, themeMode) {
       state.themeMode = themeMode;
@@ -35,7 +34,6 @@ const store = new Vuex.Store({
           (response) => {
             if (response.data.message === 'success') {
               let user = response.data['userInfo'];
-              console.log(user);
               if (user.thumbnail_path == null) {
                 user.thumbnail_path =
                   'https://newha.s3.us-east-2.amazonaws.com/default-avatar.png';

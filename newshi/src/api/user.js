@@ -35,7 +35,7 @@ function socialLogin(info, success, fail) {
     id: info.id,
     platformType: info.platform_type,
   };
-  console.log(user);
+
   instance
     .post('user/socialLogin', user)
     .then(success)
@@ -60,7 +60,7 @@ function join(info, success, fail) {
       tag: info.tags,
     },
   ];
-  console.log(list);
+
   instance
     .post('join', list)
     .then(success)
@@ -156,8 +156,6 @@ function userInfo(userNo, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
-
-  console.log(userNo);
 
   instance
     .get('userInfo', {

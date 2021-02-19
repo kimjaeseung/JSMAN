@@ -28,7 +28,7 @@ function uploadImage(image, success, fail) {
   );
   const form = new FormData();
   form.append('file', image);
-  console.log(form);
+
   fileInstance
     .post('/uploadFile', form)
     .then(success)
@@ -39,11 +39,7 @@ function boardInsert(board, id, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
-  // const list = new FormData();
-  // list.append('board', board);
-  // list.append('id', id);
-  // console.log(list.board);
-  // console.log(list.id);
+
   const list = [
     {
       title: board.title,
@@ -53,7 +49,6 @@ function boardInsert(board, id, success, fail) {
       id: id,
     },
   ];
-  console.log(list);
   // [
   //   {
   //     "title": "새로운 큐레이터",
@@ -73,16 +68,6 @@ function boardUpdate(b, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
-
-  console.log(b);
-  // const frm = new FormData();
-  // frm.append('boardPostNo', b.boardPostNo);
-  // frm.append('content', b.content);
-  // frm.append('date', b.date);
-  // frm.append('is_notice', b.is_notice);
-  // frm.append('title', b.title);
-  // frm.append('userNo', b.userNo);
-  // frm.append('visit_cnt', b.visit_cnt);
 
   instance
     .put('/boardUpdate', b)
@@ -124,8 +109,6 @@ function boardCommentInsert(comment, success, fail) {
     'access-token'
   );
 
-  console.log(comment);
-
   var frm = new FormData();
   frm.append('boardPostNo', comment.boardPostNo);
   frm.append('id', comment.id);
@@ -149,8 +132,6 @@ function boardCommentUpdate(comment, success, fail) {
     content: comment.Content,
     date: comment.Date,
   };
-  console.log(bc);
-  console.log('상단은 코멘트입니다');
 
   instance
     .put('/boardCommentUpdate', bc)

@@ -1,25 +1,15 @@
-<template>
-  
-</template>
+<template> </template>
 
 <script>
-
 export default {
   name: 'List',
-  props: [
-    'basicNews'
-  ],
+  props: ['basicNews'],
   data() {
     return {
-      newsItem: this.basicNews
-    }
+      newsItem: this.basicNews,
+    };
   },
-  created: function () {
-    console.log(this.basicNews)
-  }
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
