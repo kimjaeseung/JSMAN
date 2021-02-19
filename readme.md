@@ -85,7 +85,7 @@ $ yarn serve
 
 ## 기술스택
 
-![Skillset](Readme.assets/skillset.png)
+![Skillset](README.assets/skillset.png)
 
 
 
@@ -127,55 +127,55 @@ $ yarn serve
 
 [뉴스피드 메인 페이지]
 
-![main](readme.assets/main-1613703924841.png)
+![main](README.assets/main-1613703924841.png)
 
 [뉴스피드 메인 페이지 - 다크모드]
 
-![main_black](readme.assets/main_black-1613703924841.png)
+![main_black](README.assets/main_black-1613703924841.png)
 
 [뉴스 상세 페이지]
 
-![Article](readme.assets/article-1613703885289.png)
+![Article](README.assets/article-1613703885289.png)
 
-![article_play](readme.assets/article_play-1613703885289.png)
+![article_play](README.assets/article_play-1613703885289.png)
 
-![](readme.assets/article_save-1613703924841.png)
+![](README.assets/article_save-1613703924841.png)
 
 [저장한 기사 페이지]
 
-![save](readme.assets/save-1613703924841.png)
+![save](README.assets/save-1613703924841.png)
 
 [검색 페이지]
 
-![search](readme.assets/search-1613703924841.png)
+![search](README.assets/search-1613703924841.png)
 
 [포스트 작성 페이지]
 
-![post](readme.assets/post-1613703924841.png)
+![post](README.assets/post-1613703924841.png)
 
 [포스트 성공 후 링크 공유 페이지]
 
-![post_success](readme.assets/post_success-1613703924841.png)
+![post_success](README.assets/post_success-1613703924841.png)
 
-![mypage](readme.assets/mypage-1613703924841.png)
+![mypage](README.assets/mypage-1613703924841.png)
 
-![tag](readme.assets/tag-1613703924841.png)
+![tag](README.assets/tag-1613703924841.png)
 
-![mypost](readme.assets/mypost-1613703924841.png)
+![mypost](README.assets/mypost-1613703924841.png)
 
 [피드백 메일 작성 페이지]
 
-![feedback](readme.assets/feedback-1613703924840.png)
+![feedback](README.assets/feedback-1613703924840.png)
 
-![feedback_success](readme.assets/feedback_success-1613703924841.png)
+![feedback_success](README.assets/feedback_success-1613703924841.png)
 
 [정책 페이지]
 
-![policy](readme.assets/policy-1613703924841.png)
+![policy](README.assets/policy-1613703924841.png)
 
 [팀 & 서비스 소개 페이지]
 
-![team](readme.assets/team-1613703924841.png)
+![team](README.assets/team-1613703924841.png)
 
 
 
