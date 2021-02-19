@@ -2,7 +2,10 @@
   <v-container>
     <v-row class="main-news" v-if="this.isLoggedIn == true">
       <v-sheet class="mx-auto" max-width="800">
-        <v-slide-group v-model="model" center-active id="recommend">
+        <v-slide-group v-model="model" 
+          center-active id="recommend"
+          class="v-slide-group-maxvw"
+        >
           <v-slide-item v-for="(user, idx) in users" :key="idx">
             <v-card
               class="d-flex flex-row ma-2"
@@ -206,6 +209,9 @@ export default {
   padding-bottom: 50px;
 }
 .v-list {
+  max-width: 100vw !important;
+}
+.v-slide-group-maxvw{
   max-width: 100vw !important;
 }
 </style>

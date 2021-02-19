@@ -108,6 +108,7 @@ public class UserController {
 	public ResponseEntity<Map<String, Integer>> emailAuth(
 			@ApiParam(value = "String", required = true) @RequestParam String id) throws MessagingException {
 		int confirm = (int) ((Math.random() * (9999 - 1000)) + 1000);
+		// System.out.println(confirm);
 		HttpStatus status = null;
 		Map<String, Integer> map = new HashMap<>();
 		try {
