@@ -1,4 +1,5 @@
 import { createInstance } from './index.js';
+// import 'url-search-params-polyfill';
 
 const instance = createInstance();
 // const config = {
@@ -14,10 +15,11 @@ function login(info, success, fail) {
     name: null,
     password: info.password,
     thumbnail_path: null,
+    platformType: null,
   };
 
   instance
-    .post('user/login', JSON.stringify(user))
+    .post('user/login', user)
     .then(success)
     .catch(fail);
 }
@@ -27,14 +29,15 @@ function socialLogin(info, success, fail) {
     'access-token'
   );
   const user = {
-    id: info.id,
     name: info.name,
     password: null,
     thumbnail_path: info.thumbnail_path,
+    id: info.id,
+    platformType: info.platform_type,
   };
 
   instance
-    .post('user/social', JSON.stringify(user))
+    .post('user/socialLogin', user)
     .then(success)
     .catch(fail);
 }
@@ -43,21 +46,23 @@ function join(info, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
-  const user = {
-    id: info.id,
-    name: info.name,
-    password: info.password,
-    thumbnail_path: info.thumbnail_path,
-  };
-
-  const tags = info.tags;
+  // var params = new URLSearchParams();
+  // params.append('tag', tag);
+  const list = [
+    {
+      id: info.id,
+      name: info.name,
+      password: info.password,
+      thumbnail_path: info.thumbnail_path,
+      platform_type: null,
+    },
+    {
+      tag: info.tags,
+    },
+  ];
 
   instance
-    .post('user/join', JSON.stringify(user), {
-      params: {
-        tags: tags,
-      },
-    })
+    .post('join', list)
     .then(success)
     .catch(fail);
 }
@@ -68,18 +73,26 @@ function emailTest(id, success, fail) {
   );
 
   instance
-    .post('user/emailCheck', JSON.stringify(id))
+    .get('idcheck', {
+      params: {
+        id: id,
+      },
+    })
     .then(success)
     .catch(fail);
 }
 
-function emailValidTest(num, success, fail) {
+function emailValidTest(id, success, fail) {
   instance.defaults.headers['access-token'] = window.localStorage.getItem(
     'access-token'
   );
 
   instance
-    .post('user/emailValidCheck', JSON.stringify(num))
+    .get('emailauth', {
+      params: {
+        id: id,
+      },
+    })
     .then(success)
     .catch(fail);
 }
@@ -90,7 +103,11 @@ function nameTest(name, success, fail) {
   );
 
   instance
-    .post('user/nameCheck', JSON.stringify(name))
+    .get('namecheck', {
+      params: {
+        name: name,
+      },
+    })
     .then(success)
     .catch(fail);
 }
@@ -101,19 +118,51 @@ function getInfo(id, success, fail) {
   );
 
   instance
-    .post('user/getInfo', JSON.stringify(id))
+    .get('user', {
+      params: {
+        id: id,
+      },
+    })
     .then(success)
     .catch(fail);
 }
 
 function changePassword(info, success, fail) {
-  const user = {
-    id: info.id,
-    password: info.password,
-  };
+  var frm = new FormData();
+  frm.append('id', info.id);
+  frm.append('password', info.password);
 
   instance
-    .post('user/changePw', JSON.stringify(user))
+    .put('changePassword', frm)
+    .then(success)
+    .catch(fail);
+}
+
+function sidebarUser(id, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+  instance
+    .get('sidebarUser', {
+      params: {
+        id: id,
+      },
+    })
+    .then(success)
+    .catch(fail);
+}
+
+function userInfo(userNo, success, fail) {
+  instance.defaults.headers['access-token'] = window.localStorage.getItem(
+    'access-token'
+  );
+
+  instance
+    .get('userInfo', {
+      params: {
+        userNo: userNo,
+      },
+    })
     .then(success)
     .catch(fail);
 }
@@ -125,6 +174,8 @@ export {
   emailValidTest,
   nameTest,
   getInfo,
+  userInfo,
   socialLogin,
   changePassword,
+  sidebarUser,
 };

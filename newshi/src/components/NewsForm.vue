@@ -1,22 +1,33 @@
 <template>
-  <v-expansion-panels v-model="panel" accordion>
-    <v-expansion-panel>
-      <v-expansion-panel-header
-        hide-actions
-        class="panels rounded-xl no-margin"
-      >
-        <v-row class="no-margin">
-          <v-col class="no-margin"
-            ><div class="ellipsis">{{ news.url }}</div></v-col
+  <v-expansion-panels v-model="panel">
+    <v-expansion-panel class="panels">
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-expansion-panel-header
+            hide-actions
+            class="panels"
+            v-bind="attrs"
+            v-on="on"
           >
-          <v-col class="no-margin">
-            <v-btn color="red darken-4 " dark icon @click="remove"
-              ><v-icon large>mdi-close</v-icon></v-btn
-            ></v-col
-          >
-        </v-row>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content class="pl-6">
+            <v-row>
+              <v-btn color="red darken-3" 
+                icon
+                dark
+                height="50px"
+                class="close"
+                @click="remove"
+              >
+                <v-icon medium>mdi-close-circle-outline</v-icon>
+              </v-btn>
+              <v-col class="ellipsis my-auto">{{ title }}
+                <v-icon >mdi-arrow-down-drop-circle-outline</v-icon>
+              </v-col>
+            </v-row>
+          </v-expansion-panel-header>
+        </template>
+        <span>클릭하시면 이 기사에 대한 오피니언과 해시태그를 추가할 수 있습니다.</span>
+      </v-tooltip>
+      <v-expansion-panel-content>
         <Tiptap @saveData="saveOther"></Tiptap>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -24,7 +35,7 @@
 </template>
 
 <script>
-import Tiptap from '@/components/TiptapBoard.vue';
+import Tiptap from '@/components/Tiptap.vue';
 
 export default {
   name: 'NewsForm',
@@ -34,6 +45,7 @@ export default {
   props: {
     news: Object,
     num: Number,
+    focus: Boolean,
   },
   data() {
     return {
@@ -63,15 +75,21 @@ export default {
       this.panel = [];
     },
   },
+  created() {
+    if (this.news.url.indexOf('naver') != -1) {
+      this.title = '네이버뉴스 ' + (this.num + 1);
+    } else {
+      this.title = '다른 뉴스 ' + this.num;
+    }
+  },
 };
 </script>
 
 <style>
 .panels {
   border: 1px solid gray;
-  background-color: lightgray;
-  width: 80%;
-  height: 10%;
+  background-color: transparent;
+  padding: 0px;
 }
 .left-border {
   border-left: 2px solid gray;
@@ -82,9 +100,6 @@ export default {
   float: right;
 }
 .ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
+  vertical-align: middle;
 }
 </style>

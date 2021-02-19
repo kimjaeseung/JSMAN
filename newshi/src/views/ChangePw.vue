@@ -46,8 +46,7 @@ Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
 });
 extend('password', {
-  message:
-    'password should include lower-case, numeric digit, special chracter($@$!%*#?&).',
+  message: '숫자, 영어 소문자, 특수문자로 비밀번호를 구성해주세요.',
   validate: (value) => {
     return /^.*(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[$@$!%*#?&]).*$/.test(value);
   },
@@ -57,7 +56,7 @@ extend('passwordConfirm', {
   validate(value, { target }) {
     return value === target;
   },
-  message: 'Password confirmation does not match',
+  message: '비밀번호가 일치하지 않습니다.',
 });
 
 export default {
@@ -73,15 +72,9 @@ export default {
   },
   created: function() {
     this.id = this.$route.params.id;
-    console.log(this.id);
   },
   methods: {
     changePw() {
-      if (this.password == 'blue!!1100') {
-        alert('비밀번호 변경에 성공했습니다.');
-        this.$router.push('/');
-        return;
-      }
       let { id, password } = this;
       let info = {
         id,

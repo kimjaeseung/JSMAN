@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <nav-bar></nav-bar>
-    <br /><br /><br />
-    <router-view></router-view>
+    <br /><br />
+    <router-view :key="$route.fullPath"></router-view>
     <AddNews></AddNews>
   </v-app>
 </template>
@@ -12,7 +12,10 @@ import NavBar from './components/NavBar.vue';
 import AddNews from './components/AddNews.vue';
 
 export default {
-  components: { NavBar, AddNews },
+  components: { 
+    NavBar, 
+    AddNews, 
+  },
 };
 </script>
 <style>

@@ -21,7 +21,7 @@ public class JwtServiceImpl implements JwtService {
 	public static final Logger logger = LoggerFactory.getLogger(JwtServiceImpl.class);
 
 	private static final String TK = "ssafySecret";
-	private static final int EXPIRE_MINUTES = 60;
+	private static final int EXPIRE_MINUTES = 60 * 24;
 
 	@Override
 	public <T> String create(String key, T data, String subject) {

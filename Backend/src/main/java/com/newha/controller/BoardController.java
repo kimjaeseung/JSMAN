@@ -1,5 +1,6 @@
 package com.newha.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.newha.service.BoardService;
+import com.newha.service.S3Service;
 import com.newha.service.UserService;
 import com.newha.vo.Board;
 import com.newha.vo.BoardComment;
@@ -28,13 +31,16 @@ import io.swagger.annotations.ApiParam;
 
 @Api("BoardController V1")
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin
 public class BoardController {
 	@Autowired
 	private BoardService service;
 
 	@Autowired
 	private UserService userservice;
+	
+	@Autowired
+	private S3Service s3service;
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
@@ -42,25 +48,48 @@ public class BoardController {
 	@ApiOperation(value = "게시글 정보 insert", notes = "게시글 정보 insert 결과'success' 또는 'fail' 문자열을 리턴", response = Map.class)
 	@PostMapping(value = "/boardInsert")
 	public ResponseEntity<Map<String, String>> boardInsert(
-			@ApiParam(value = "Board", required = true) @RequestBody Board b,
-			@ApiParam(value = "String", required = true) @RequestParam String id
-			) {
+			@ApiParam(value = "Board", required = true) @RequestBody List<Map<String, Object>> list) {
 		Map<String, String> map = new HashMap<>();
 		HttpStatus status = null;
-
+		
+		Board b = new Board();
+		b.setContent((String)list.get(0).get("content"));
+		b.setTitle((String)list.get(0).get("title"));
+				
 		try {
-			String userNo = Integer.toString(userservice.userNo(id));
+			String userNo = Integer.toString(userservice.userNo((String)list.get(1).get("id")));
 			b.setUserNo(userNo);
 			service.boardInsert(b);
 			map.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
 	}
-
+	
+	@ApiOperation(value = "s3에 파일 업로드", notes = "'SUCCESS' 또는 'FAIL' 문자열을 리턴", response = Map.class)
+	@PostMapping("/uploadFile")
+	public ResponseEntity<Map<String, String>> uploadFile(@RequestBody MultipartFile file) {
+		Map<String, String> map = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			System.out.println("start");
+			File f = new File(file.getOriginalFilename());
+			file.transferTo(f);
+			s3service.uploadOnS3(file.getOriginalFilename(), f);
+			status = HttpStatus.ACCEPTED;
+			map.put("message", SUCCESS); 
+		} catch (Exception e) {
+			map.put("message", FAIL);
+			e.printStackTrace();
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, String>>(map, status);
+	}
+	
 	@ApiOperation(value = "게시판 리스트", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
 	@GetMapping(value = "/boardList")
 	public ResponseEntity<List<Map<String, String>>> boardList(
@@ -70,9 +99,15 @@ public class BoardController {
 		HttpStatus status = null;
 		try {
 			List<Integer> l = service.boardListNo(userNo);
+			if(l.size() == 0) {
+				Map<String, String> map = new HashMap<String, String>();
+				map.put("message", "게시글이 없습니다.");
+				list.add(map);
+			}
 			for (int i = 0; i < l.size(); i++) {
 				String temp = Integer.toString(l.get(i));
 				Map<String, String> map = new HashMap<String, String>();
+
 				Board board = service.selectBoard(temp);
 				String boardCommentCount = service.boardCommentCount(temp);
 				map.put("boardPostNo", board.getBoardPostNo());
@@ -82,13 +117,13 @@ public class BoardController {
 				map.put("userNo", board.getUserNo());
 				map.put("content", board.getContent());
 				map.put("is_notice", board.getIs_notice());
-				
 				map.put("boardCommentCount", boardCommentCount); // 댓글 갯수
 				
 				list.add(map);
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<List<Map<String, String>>>(list, status);
@@ -109,7 +144,6 @@ public class BoardController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
-
 	}
 
 	@ApiOperation(value = "게시판 삭제", notes = "성공/실패 여부에 따라 http 상태코드 출력", response = Map.class)
@@ -124,6 +158,7 @@ public class BoardController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -154,6 +189,7 @@ public class BoardController {
 			
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		service.visitCnt(boardPostNo);
@@ -167,7 +203,7 @@ public class BoardController {
 			@ApiParam(value = "String", required = true) @RequestParam String id,
 			@ApiParam(value = "String", required = true) @RequestParam String content) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-
+		
 		HttpStatus status = null;
 		try {
 			service.boardCommentInsert(boardPostNo, id, content);
@@ -175,6 +211,7 @@ public class BoardController {
 			for (int i = 0; i < l.size(); i++) {
 				String commentNo = Integer.toString(l.get(i));
 				BoardComment bc = service.boardComment(commentNo);
+				System.out.println(bc.getBoardPostNo());
 				Map<String, String> temp = new HashMap<String, String>();
 				temp.put("BoardPostNo", bc.getBoardPostNo());
 				temp.put("CommentNo", bc.getCommentNo());
@@ -185,6 +222,7 @@ public class BoardController {
 			}
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<List<Map<String, String>>>(list, status);
@@ -202,6 +240,7 @@ public class BoardController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);
@@ -219,6 +258,7 @@ public class BoardController {
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			map.put("message", FAIL);
+			e.printStackTrace();
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, String>>(map, status);

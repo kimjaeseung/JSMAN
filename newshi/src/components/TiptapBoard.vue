@@ -1,7 +1,17 @@
 <template>
-  <div>
+  <v-container>
+    <v-row>
+      <v-form>
+        <v-text-field
+          class="board-title"
+          v-model="title"
+          placeholder="제목을 작성해주세요"
+        >
+        </v-text-field>
+      </v-form>
+    </v-row>
     <div class="editor">
-      <Modal ref="ytmodal" @onConfirm="addCommand" @addFile="addImageFile" />
+      <Modal ref="ytmodal" @onConfirm="addCommand" />
       <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
         <div class="menubar">
           <button
@@ -180,16 +190,14 @@
       <v-divider dark></v-divider>
       <editor-content class="editor__content" :editor="editor" />
     </div>
+
     <v-row>
-      <v-form>
-        <v-text-field v-model="title" placeholder="제목을 작성해주세요">
-        </v-text-field>
-      </v-form>
+      <v-col class="d-flex flex-row-reverse ma-1">
+        <v-btn class="ml-2" @click="cancel">취소</v-btn>
+        <v-btn class="ml-2" @click="save">등록</v-btn>
+      </v-col>
     </v-row>
-    <v-row class="d-flex flex-row-reverse">
-      <v-btn @click="save">등록</v-btn>
-    </v-row>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -223,6 +231,9 @@ export default {
     EditorMenuBubble,
     Modal,
   },
+  props: {
+    board: Object,
+  },
   data() {
     return {
       editor: new Editor({
@@ -250,16 +261,24 @@ export default {
       }),
       linkUrl: null,
       linkMenuIsActive: false,
-      files: [],
       title: '',
     };
+  },
+  created() {
+    if (this.board !== undefined) {
+      this.editor.setContent(this.board.content);
+      this.title = this.board.title;
+    }
   },
   beforeDestroy() {
     this.editor.destroy();
   },
   methods: {
+    cancel() {
+      this.$emit('cancel');
+    },
     save() {
-      this.$emit('saveData', this.editor.getHTML(), this.files, this.title);
+      this.$emit('saveData', this.editor.getHTML(), this.title);
     },
     showLinkMenu(attrs) {
       this.linkUrl = attrs.href;
@@ -289,9 +308,6 @@ export default {
       if (data.command !== null) {
         data.command(data.data);
       }
-    },
-    addImageFile(file) {
-      this.files.push(file);
     },
   },
 };
@@ -342,7 +358,8 @@ export default {
 }
 .editor {
   border: 2px solid gray;
-  width: 80%;
+  margin: 0px;
+  width: 100%;
 }
 .editor__content {
   min-height: 300px;
@@ -363,5 +380,13 @@ symbol {
   *[d='M0 0h24v24H0z'] {
     display: none;
   }
+}
+.board-title {
+  padding-left: 5%;
+  padding-bottom: 10px;
+  min-width: 350px;
+}
+.menubar {
+  padding-left: 13px;
 }
 </style>

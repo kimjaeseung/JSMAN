@@ -94,4 +94,49 @@ public class UserServiceImpl implements UserService {
 		return dao.selectName(name);
 	}
 
+	@Override
+	public void socialInsert(User user) {
+		dao.socialInsert(user);
+	}
+
+	@Override
+	public void updatePassword(String id, String oldpassword, String newpassword) {
+		dao.updatePassword(id, oldpassword, newpassword);
+	}
+
+	@Override
+	public void updateName(String id, String name) {
+		dao.updateName(id, name);
+	}
+
+	@Override
+	public List<String> tagList(int userNo) {
+		return dao.tagList(userNo);
+	}
+
+	@Override
+	public void tagDelete(int userNo) {
+		dao.tagDelete(userNo);
+	}
+
+	@Override
+	public User socialLogin(User u) {
+		return dao.socialLogin(u);
+	}
+	
+	@Override
+	public List<User> selectUserByTag(String userNo) {
+		return dao.selectUserByTag(userNo);
+	}
+
+	@Override
+	public void changePassword(String id, String password) {
+		dao.changePassword(id, password);
+	}
+	
+	@Override
+	public List<String> selectJoinTagByuserNo(String userNo) {
+		return dao.selectJoinTagByuserNo(userNo);
+	}
+
 }

@@ -10,6 +10,10 @@
 		select followUserNo from follow where userNo = #{userNo};
 	</select>
 	
+	<select id="tagList" resultType="String">
+		select name from join_tag where userNo = #{userNo};
+	</select>
+	
 	<select id="selectUser" resultType="User">
 		select * from user where userNo = #{userNo}
 	</select>
@@ -26,8 +30,19 @@
 		select count(*) from user where name = #{name}
 	</select>
 	
+	<select id="selectUserByTag" parameterType="String" resultType="User">
+		select * from user where userNo in (select userNo from user_scrap_news where scrapNo in(
+				select scrapNo from post_tag where tagNo in(
+				select tagNo from hashtag where name in(
+				select name from join_tag where userNo = #{userNo}))));
+	</select>
+	
 	<select id="userNo" resultType="int">
 		select userNo from user where id = #{id}
+	</select>
+	
+	<select id="selectJoinTagByuserNo" parameterType="string" resultType="String">
+		select name from join_tag where userNo = #{userNo}
 	</select>
 	
 	<insert id="insertTag" parameterType="string">
@@ -38,12 +53,24 @@
 		insert into user values(null,#{name},#{password},null,#{id},#{platformType})
 	</insert>
 
+	<insert id="socialInsert" parameterType="User">
+		insert into user values(null,#{name},#{password},#{thumbnail_path},#{id},#{platformType})
+	</insert>
+
 	<delete id="delete" parameterType="string">
 		delete from user where id = #{id}
 	</delete>
 	
+	<delete id="tagDelete" parameterType="int">
+		delete from join_tag where userNo = #{userNo}
+	</delete>
+	
 	<select id="selectOne" resultType="User">
 		select * from user where id = #{id} and password = #{password}
+	</select>
+	
+	<select id="socialLogin" resultType="User">
+		select * from user where id = #{id}
 	</select>
 	
 	<select id="selectOneById" parameterType="string" resultType="User">
@@ -52,6 +79,18 @@
 
 	<update id="update" parameterType="string">
 		update user set password = #{password}, thumbnail_path = #{thumbnail_path} where id = #{id};
+	</update>
+	
+	<update id="updatePassword" parameterType="string">
+		update user set password = #{newpassword} where id = #{id} and password = #{oldpassword};
+	</update>
+	
+	<update id="changePassword" parameterType="string">
+		update user set password = #{password} where id = #{id};
+	</update>
+	
+	<update id="updateName" parameterType="string">
+		update user set name = #{name} where id = #{id};
 	</update>
 	
 	<update id="thumbnailPath" parameterType="String">

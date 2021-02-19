@@ -103,7 +103,7 @@ public class NewsDAOImpl implements NewsDAO {
 	}
 
 	@Override
-	public List<String> selectUserScrapNews(String userNo) {
+	public List<UserScrapNews> selectUserScrapNews(String userNo) {
 		return mapper.selectUserScrapNews(userNo);
 	}
 
@@ -160,5 +160,85 @@ public class NewsDAOImpl implements NewsDAO {
 	@Override
 	public UserGoodNews selectDisLikeNews(UserGoodNews userGoodNews) {
 		return mapper.selectDisLikeNews(userGoodNews);
+	}
+	
+	@Override
+	public List<UserGoodNews> selectUserGoodNewsByUserNo(String userNo) {
+		return mapper.selectUserGoodNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public News selectNewsByScrapNo(String scrapNo) {
+		return mapper.selectNewsByScrapNo(scrapNo);
+	}
+	
+	@Override
+	public List<NewsImage> selectNewImageByNewsNo(String newsNo) {
+		return mapper.selectNewImageByNewsNo(newsNo);
+	}
+	
+	@Override
+	public List<News> selectNewsByTagName(String tagName) {
+		return mapper.selectNewsByTagName(tagName);
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName) {
+		return mapper.selectUserScrapNewsByTagName(tagName);
+	}
+	
+	@Override
+	public List<News> selectNewsByUserNo(String userNo) {
+		return mapper.selectNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo) {
+		return mapper.selectUserScrapNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public List<Post> selectPostByTag(String tag) {
+		return mapper.selectPostByTag(tag);
+	}
+	
+	@Override
+	public List<Post> selectPostByLikeName(String name) {
+		return mapper.selectPostByLikeName(name);
+	}
+	
+	@Override
+	public UserScrapNews selectUserScrapNewsByScrapNo(String scrapNo) {
+		return mapper.selectUserScrapNewsByScrapNo(scrapNo);
+	}
+	
+	@Override
+	public List<News> selectAllNews() {
+		return mapper.selectAllNews();
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByNewsNo(String newsNo) {
+		return mapper.selectUserScrapNewsByNewsNo(newsNo);
+	}
+	
+	@Override
+	public User selectUserByName(String name) {
+		return mapper.selectUserByName(name);
+	}
+	
+	@Override
+	public News selectNewsByNewsNo(String newsNo) {
+		return mapper.selectNewsByNewsNo(newsNo);
+	}
+	
+	@Override
+	public User selectUserByUserNo(String userNo) {
+		return mapper.selectUserByUserNo(userNo);
+	}
+	
+	@Override
+	public List<User> selectUserByTag(String userNo) {
+		return mapper.selectUserByTag(userNo);
 	}
 }

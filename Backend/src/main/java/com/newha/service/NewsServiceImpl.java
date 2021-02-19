@@ -103,7 +103,7 @@ public class NewsServiceImpl implements NewsService {
 	}
 
 	@Override
-	public List<String> selectUserScrapNews(String userNo) {
+	public List<UserScrapNews> selectUserScrapNews(String userNo) {
 		return dao.selectUserScrapNews(userNo);
 	}
 
@@ -160,5 +160,85 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public UserGoodNews selectDisLikeNews(UserGoodNews userGoodNews) {
 		return dao.selectDisLikeNews(userGoodNews);
+	}
+	
+	@Override
+	public List<UserGoodNews> selectUserGoodNewsByUserNo(String userNo) {
+		return dao.selectUserGoodNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public News selectNewsByScrapNo(String scrapNo) {
+		return dao.selectNewsByScrapNo(scrapNo);
+	}
+	
+	@Override
+	public List<NewsImage> selectNewImageByNewsNo(String newsNo) {
+		return dao.selectNewImageByNewsNo(newsNo);
+	}
+	
+	@Override
+	public List<News> selectNewsByTagName(String tagName) {
+		return dao.selectNewsByTagName(tagName);
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByTagName(String tagName) {
+		return dao.selectUserScrapNewsByTagName(tagName);
+	}
+	
+	@Override
+	public List<News> selectNewsByUserNo(String userNo) {
+		return dao.selectNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByUserNo(String userNo) {
+		return dao.selectUserScrapNewsByUserNo(userNo);
+	}
+	
+	@Override
+	public List<Post> selectPostByTag(String tag) {
+		return dao.selectPostByTag(tag);
+	}
+	
+	@Override
+	public List<Post> selectPostByLikeName(String name) {
+		return dao.selectPostByLikeName(name);
+	}
+	
+	@Override
+	public UserScrapNews selectUserScrapNewsByScrapNo(String scrapNo) {
+		return dao.selectUserScrapNewsByScrapNo(scrapNo);
+	}
+	
+	@Override
+	public List<News> selectAllNews() {
+		return dao.selectAllNews();
+	}
+	
+	@Override
+	public List<UserScrapNews> selectUserScrapNewsByNewsNo(String newsNo) {
+		return dao.selectUserScrapNewsByNewsNo(newsNo);
+	}
+	
+	@Override
+	public User selectUserByName(String name) {
+		return dao.selectUserByName(name);
+	}
+	
+	@Override
+	public News selectNewsByNewsNo(String newsNo) {
+		return dao.selectNewsByNewsNo(newsNo);
+	}
+	
+	@Override
+	public User selectUserByUserNo(String userNo) {
+		return dao.selectUserByUserNo(userNo);
+	}
+	
+	@Override
+	public List<User> selectUserByTag(String userNo) {
+		return dao.selectUserByTag(userNo);
 	}
 }
